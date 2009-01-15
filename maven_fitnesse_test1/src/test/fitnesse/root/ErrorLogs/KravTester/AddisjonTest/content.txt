@@ -1,0 +1,20 @@
+|'''Date: '''|!-9:28:41 AM (CET) on Thursday, January 15, 2009-!|
+|'''Command: '''|!-java -cp defaultPath:"/home/tiger/hovedprosjekt/fitness/maven_testing/m2-fitnesse-test/target/test-classes":"/home/tiger/hovedprosjekt/fitness/maven_testing/m2-fitnesse-test/target/classes":"/home/tiger/.m2/repository/junit/junit/4.4/junit-4.4.jar":"/home/tiger/.m2/repository/org/fitnesse/fitnesse/20080702/fitnesse-20080702.jar":"/home/tiger/.m2/repository/org/fitnesse/fitlibrary/20080702/fitlibrary-20080702.jar" fit.FitServer zepto 8080 6-!|
+|'''Exit code: '''|!--1-!|
+|'''Time elapsed: '''|!--1.232008121714E9 seconds-!|
+----'''Standard Error:'''
+{{{Exception in thread "main" java.lang.NoClassDefFoundError: fit/FitServer
+Caused by: java.lang.ClassNotFoundException: fit.FitServer
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:217)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:205)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:323)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:294)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:268)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:336)
+Could not find the main class: fit.FitServer. Program will exit.
+}}}----'''Internal Exception:'''
+{{{ java.lang.Exception: FitClient: external process terminated before a connection could be established.
+	fitnesse.components.CommandRunningFitClient$EarlyTerminationRunnable.run(CommandRunningFitClient.java:152)
+	java.lang.Thread.run(Thread.java:636)
+}}}
