@@ -15,6 +15,7 @@ function toggleCollapsable(id)
 	}
 	else
 	{
+		
 		div.className = collapsableClosedCss;
 		img.src = collapsableClosedImg;
 	}
