@@ -13,7 +13,7 @@ public class CalculatorService {
 
 
     /**
-     * Ta med denne metoden for å tilfredsstille spesialhåndteringen av
+     * Ta med denne metoden for aa tilfredsstille spesialhaandteringen av
      * addisjon av 2 + 5, som skal bli 44.
      */
 //    public int sum(int a, int b) {
