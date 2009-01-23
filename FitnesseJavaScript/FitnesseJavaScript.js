@@ -13,6 +13,7 @@ function getCursor(textarea){
 	var cursorPos = 0;
 	if (document.selection)
 	{ 
+		
 		textarea.focus();
 		var tmpRange = document.selection.createRange();
 		tmpRange.moveStart('character',-textarea.value.length);
