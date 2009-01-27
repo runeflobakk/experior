@@ -1,0 +1,9 @@
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
+
+!|tallene|1|+|1|skal bli|2|
+!|tallene|4|+|5|skal bli|9|
+!|reject|tallene|10|+|10|skal bli|19|
+
+
+!3 Nytt krav:
+!|tallene|2|+|5|skal bli|44|

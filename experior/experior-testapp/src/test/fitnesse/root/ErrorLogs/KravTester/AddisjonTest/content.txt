@@ -1,0 +1,4 @@
+|'''Date: '''|!-9:22:36 PM (CET) on tirsdag, januar 27, 2009-!|
+|'''Command: '''|!-java -cp defaultPath;"D:\Rune\dev\experion\experion-testapp\target\test-classes";"D:\Rune\dev\experion\experion-testapp\target\classes";"D:\Documents and Settings\Rune Flobakk\.m2\repository\junit\junit\4.4\junit-4.4.jar";"D:\Documents and Settings\Rune Flobakk\.m2\repository\org\fitnesse\fitlibrary\20080702\fitlibrary-20080702.jar";"D:\Documents and Settings\Rune Flobakk\.m2\repository\org\fitnesse\fitnesse\20080702\fitnesse-20080702.jar" fit.FitServer BEKK-RuneFl 8080 1-!|
+|'''Exit code: '''|!-3-!|
+|'''Time elapsed: '''|!-0.25 seconds-!|
