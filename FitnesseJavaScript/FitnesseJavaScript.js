@@ -12,7 +12,7 @@
 
         var cursorPos = 0;
              if (document.selection)
-            { 
+            {
                   textarea.focus();
                        var tmpRange = document.selection.createRange();
                     tmpRange.moveStart('character',-textarea.value.length);
@@ -26,25 +26,36 @@
             }
         return cursorPos;
       }
+function nl2br(text){
+    text = escape(text);
+    if(text.indexOf('%0D%0A') > -1){
+        re_nlchar = /%0D%0A/g ;
+    }else if(text.indexOf('%0A') > -1){
+        re_nlchar = /%0A/g ;
+    }else if(text.indexOf('%0D') > -1){
+        re_nlchar = /%0D/g ;
+    }
+    return unescape( text.replace(re_nlchar,'<br />') );
+}
 
-function setCursor(obj, pos) { 
-    if(obj.createTextRange) { 
+function setCursor(obj, pos) {
+    if(obj.createTextRange) {
         /* Create a TextRange, set the internal pointer to
            a specified position and show the cursor at this
            position
-        */ 
-        var range = obj.createTextRange(); 
-        range.move("character", pos); 
-        range.select(); 
-    } else if(obj.selectionStart) { 
+        */
+        var range = obj.createTextRange();
+        range.move("character", pos);
+        range.select();
+    } else if(obj.selectionStart) {
         /* Gecko is a little bit shorter on that. Simply
            focus the element and set the selection to a
            specified position
-        */ 
-        obj.focus(); 
-        obj.setSelectionRange(pos, pos); 
-    } 
-} 
+        */
+        obj.focus();
+        obj.setSelectionRange(pos, pos);
+    }
+}
 
    function isIE() {
     var ie = (navigator.userAgent.indexOf("MSIE")==-1)?false:true;
@@ -77,10 +88,10 @@ function setCursor(obj, pos) {
         for (var j=0, len2 = linjeArray[i].length; j < len2; j++) {
             linjeArray[i][j] = linjeArray[i][j].replace(/^\s+|\s+$/g, '');
             if (isIE() == true) {
-        if (linjeArray[i][j] == "") {linjeArray[i].pop();
-        debug("Test", true);}
+        if (linjeArray[i][j] == "") linjeArray[i].pop();
+       
         }
-    //debug(linjeArray[i], true);
+
 }
         
                   
@@ -100,7 +111,7 @@ function setCursor(obj, pos) {
    
    
    for(var i=0, len = linjeArray.length; i < len; i++) // Går igjennom hver linje
-   { 
+   {
        
     if (linjeArray[i][0] != "") {
         for(var j=0, len2 = linjeArray[i].length; j < len2; j++) // Går igjennom hvert element på linja
@@ -109,26 +120,25 @@ function setCursor(obj, pos) {
                 
                 for(var k=0, len3 = template[j] - linjeArray[i][j].length; k < len3; k++)
                         space += " ";
-             //debug("@"+linjeArray[i][j]+"@", true);
+          
                 content += "|" + linjeArray[i][j] + space; // Legger linja med mellomrommene inn i content-variablen
-  
+ 
             if (j == len2-1 && i != len-1)
-                content += "|\n"; 
+                content += "|\n";
             else if (j == len2-1)
                 content+= "|";
             
             }    
-    } else {
+    } else if (i != len-1) {
         content += "\n";    
     }
         
 
 
     }
-    var satan = content.charAt(5);
-    debug(satan, true); 
-    document.getElementById("ta").value = content; // Legger innholdet i variablen content inn i textarea
     
+    document.getElementById("ta").value = content; // Legger innholdet i variablen content inn i textarea
+    debug(nl2br(content));
  
   }
  
