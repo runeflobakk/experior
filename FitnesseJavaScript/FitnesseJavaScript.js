@@ -140,21 +140,6 @@ function setCursor(obj, pos) {
   }
 
 
-</script>
-</head>
-<body>
- <form action="" id="experior">
-  <textarea name='area1' id ="ta" cols='80' rows='30' onkeyup="readKey(event, this.form.area1)">|Detet|D44444|7777|
-|666|999|999|</textarea><br />
-Debug:<br />
-<textarea name='area2' id ="debug" cols='80' rows='10'></textarea>
-
-  <br><br>
-  <input type='button' value='Get Cursor Position' onclick="readKey(this.form.area1)">
- </form>
-</body>
-</html>
-
 
 
 
