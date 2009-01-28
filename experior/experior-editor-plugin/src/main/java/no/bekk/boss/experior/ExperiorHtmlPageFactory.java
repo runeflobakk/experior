@@ -8,7 +8,7 @@ import fitnesse.html.HtmlPage;
 import fitnesse.html.HtmlPageFactory;
 
 /**
- * @author Administrator
+ * @author Robert Larsen
  */
 public class ExperiorHtmlPageFactory extends HtmlPageFactory {
 
