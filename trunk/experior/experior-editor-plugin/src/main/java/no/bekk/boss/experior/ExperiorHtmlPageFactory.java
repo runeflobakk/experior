@@ -18,7 +18,7 @@ public class ExperiorHtmlPageFactory extends HtmlPageFactory {
     @Override
     public HtmlPage newPage() {
         HtmlPage page = super.newPage();
-        page.head.add(makeJavascriptLink("Dette er vår egen javascript-path"));
+        page.head.add(makeJavascriptLink("/files/javascript/experior.js"));
         return page;
     }
 
