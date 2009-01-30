@@ -14,6 +14,6 @@ public class ExperiorHtmlPageFactoryTest {
     @Test
     public void newHtmlPageShouldContainLinkToCustomJavascript() throws Exception {
         ExperiorHtmlPageFactory pageFactory = new ExperiorHtmlPageFactory(mock(Properties.class));
-        assertTrue((pageFactory.newPage().html().contains("script src=\"Dette er vår egen javascript-path\"")));
+        assertTrue((pageFactory.newPage().html().contains("script src=\"/files/javascript/experior.js\"")));
     }
 }
