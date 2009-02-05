@@ -7,9 +7,7 @@ import java.util.Properties;
 import fitnesse.html.HtmlPage;
 import fitnesse.html.HtmlPageFactory;
 
-/**
- * @author Robert Larsen
- */
+
 public class ExperiorHtmlPageFactory extends HtmlPageFactory {
 
     public ExperiorHtmlPageFactory(@SuppressWarnings("unused") Properties properties) {
