@@ -10,5 +10,5 @@ public class MainDoFixture extends DoFixture {
     public boolean tallenePlusSkalBli(int a, int b, int expected) {
         return calculator.sum(a, b) == expected;
     }
-
+    
 }
