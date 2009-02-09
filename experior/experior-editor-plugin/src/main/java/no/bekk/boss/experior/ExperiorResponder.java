@@ -1,5 +1,7 @@
 package no.bekk.boss.experior;
 
+import static java.lang.Character.isUpperCase;
+import static java.lang.Character.toLowerCase;
 import fitnesse.FitNesseContext;
 import fitnesse.authentication.*;
 import fitnesse.components.SaveRecorder;
@@ -7,8 +9,17 @@ import fitnesse.html.*;
 import fitnesse.http.*;
 import fitnesse.responders.SecureResponder;
 import fitnesse.wiki.*;
+
+import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.*;
+import fitlibrary.DoFixture;
+
 import fitnesse.wikitext.Utils;
+import java.lang.ClassLoader;
 
 public class ExperiorResponder implements SecureResponder
 {
@@ -42,6 +53,7 @@ public class ExperiorResponder implements SecureResponder
     {	
     	SimpleResponse response = new SimpleResponse();
     	initializeResponder(context.root, request);
+    	
     	
     	String resource = request.getResource();
         WikiPagePath path = PathParser.parse( resource );
@@ -97,10 +109,47 @@ public class ExperiorResponder implements SecureResponder
             textarea.addAttribute("rows", "25");
             textarea.addAttribute("cols", "70");
             textarea.addAttribute("tabindex", "1");
-        
-            
+            content += getWikiCommands();
             textarea.add(content);
             return textarea;
+    }
+    
+    private String getWikiCommands()
+    {
+    	String innhold = content;
+   	    
+    	String[] path = innhold.split("\n");
+    	innhold = path[0];
+    	
+    	innhold = innhold.substring(2, innhold.length()-2);
+        	
+    	StringBuilder wikiCommands = new StringBuilder();
+    	Class t = null;
+		try {
+			t = Class.forName(innhold);
+		} catch (ClassNotFoundException e) {
+			
+			System.out.println( "feil" );
+		}
+    	if( t != null)
+    	{
+    		for(Method method : t.getDeclaredMethods()) {
+	            wikiCommands.append(toWikiCommand(method.getName()) + "\n" );
+	        }
+    	}
+    	return wikiCommands.toString();   	    
+    }
+    
+    private String toWikiCommand(String className) {
+        StringBuilder builder = new StringBuilder();
+        for(Character character : className.toCharArray()) {
+            if (isUpperCase(character)) {
+                builder.append(" " + toLowerCase(character));
+            } else {
+                builder.append(character);
+            }
+        }
+        return builder.toString();
     }
 
     /*

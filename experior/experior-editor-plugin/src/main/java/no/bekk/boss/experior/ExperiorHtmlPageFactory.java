@@ -18,6 +18,11 @@ public class ExperiorHtmlPageFactory extends HtmlPageFactory {
         HtmlPage page = super.newPage();
         page.head.add(makeJavascriptLink("/files/javascript/experior.js"));
         return page;
+        
     }
-
+    
+    public void detterMinMetode()
+    {
+    	
+    }
 }
