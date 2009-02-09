@@ -9,12 +9,14 @@ import java.util.List;
 
 import fitlibrary.DoFixture;
 
+
 public class FixtureToFitnesseTranslator {
 
     private DoFixture fixture;
 
     public FixtureToFitnesseTranslator(DoFixture fixture) {
         this.fixture = fixture;
+      
     }
 
     public List<String> getWikiCommands() {
