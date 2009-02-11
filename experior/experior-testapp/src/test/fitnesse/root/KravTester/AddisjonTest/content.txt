@@ -1,4 +1,4 @@
-!|no.bekk.boss.experior.testapp.fitnesse.fixtures.TestFixture|
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
 
 !|tallene|1|+|1|skal bli|2|
 !|tallene|4|+|5|skal bli|9|
