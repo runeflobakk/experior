@@ -134,5 +134,10 @@ CodePress.run = function() {
 	}
 }
 
-if(window.attachEvent) window.attachEvent('onload',CodePress.run);
+if(window.attachEvent) {
+	window.attachEvent('onload',CodePress.run);
+	window.attachEvent('onload',self.getCode() );
+}
 else window.addEventListener('DOMContentLoaded',CodePress.run,false);
+
+window.attachEcent( 'onclick', self.getCode() )

@@ -64,7 +64,12 @@ CodePress = {
 			evt.returnValue = false;
 		}
 		else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
-		 	CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
+			
+			CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
+		}
+		else if( keyCode==13 )
+		{
+			CodePress.getCode();
 		}
 		else if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && keyCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
 			CodePress.shortcuts(keyCode);
@@ -256,6 +261,9 @@ CodePress = {
 		code = code.replace(/&lt;/g,'<');
 		code = code.replace(/&gt;/g,'>');
 		code = code.replace(/&amp;/gi,'&');
+		
+		
+		alert( code);
 		return code;
 	},
 
