@@ -15,6 +15,7 @@
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
 
+
 CodePress = {
 	scrolling : false,
 	autocomplete : true,
@@ -25,7 +26,10 @@ CodePress = {
 		chars = '|32|46|62|'; // charcodes that trigger syntax highlighting
 		cc = '\u2009'; // carret char
 		editor = document.getElementsByTagName('pre')[0];
+					
 		editor.contentEditable = 'true';
+		
+		
 		document.getElementsByTagName('body')[0].onfocus = function() {editor.focus();}
 		document.attachEvent('onkeydown', this.metaHandler);
 		document.attachEvent('onkeypress', this.keyHandler);
@@ -51,6 +55,11 @@ CodePress = {
 
 	metaHandler : function(evt) {
 		keyCode = evt.keyCode;
+		
+		if( evt )
+		{
+			
+		}
 		
 		if(keyCode==9 || evt.tabKey) { 
 			CodePress.snippets();
@@ -94,6 +103,10 @@ CodePress = {
 			range.select();
 			range.text = '';
 		}
+	},
+	
+	getText : function() {
+		return "dette er getText";
 	},
 	
 	// split big files, highlighting parts of it
@@ -251,7 +264,8 @@ CodePress = {
 	// get code from editor	
 	getCode : function() {
 		var code = editor.innerHTML;
-		code = code.replace(/<br>/g,'\n');
+		
+		/*code = code.replace(/<br>/g,'\n');
 		code = code.replace(/<\/p>/gi,'\r');
 		code = code.replace(/<p>/i,''); // IE first line fix
 		code = code.replace(/<p>/gi,'\n');
@@ -261,9 +275,8 @@ CodePress = {
 		code = code.replace(/&lt;/g,'<');
 		code = code.replace(/&gt;/g,'>');
 		code = code.replace(/&amp;/gi,'&');
+		*/
 		
-		
-		alert( code);
 		return code;
 	},
 

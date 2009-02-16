@@ -8,10 +8,15 @@
  * 
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
+var self;
+var hidden;
 
-CodePress = function(obj) {
-	var self = document.createElement('iframe');
+CodePress = function(obj, obj2) {
+	self = document.createElement('iframe');
 	self.textarea = obj;
+	hidden = obj2;
+	
+	
 	self.textarea.disabled = true;
 	self.textarea.style.overflow = 'hidden';
 	self.style.height = self.textarea.clientHeight +'px';
@@ -25,6 +30,7 @@ CodePress = function(obj) {
 	
 	self.initialize = function() {
 		self.editor = self.contentWindow.CodePress;
+		
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
 		self.editor.setCode(self.textarea.value);
 		self.setOptions();
@@ -35,13 +41,19 @@ CodePress = function(obj) {
 		self.style.display = 'inline';
 	}
 	
+		
 	// obj can by a textarea id or a string (code)
 	self.edit = function(obj,language) {
 		if(obj) self.textarea.value = document.getElementById(obj) ? document.getElementById(obj).value : obj;
 		if(!self.textarea.disabled) return;
 		self.language = language ? language : self.getLanguage();
 		self.src = CodePress.path+'codepress.html?language='+self.language+'&ts='+(new Date).getTime();
-		if(self.attachEvent) self.attachEvent('onload',self.initialize);
+		if(self.attachEvent)
+		{
+			self.attachEvent('onload',self.initialize);
+			
+			
+		}
 		else self.addEventListener('load',self.initialize,false);
 	}
 
@@ -82,11 +94,12 @@ CodePress = function(obj) {
 	
 	self.toggleEditor = function() {
 		if(self.textarea.disabled) {
-			self.textarea.value = self.getCode();
+			self.textarea.value = getCode();
 			self.textarea.disabled = false;
 			self.style.display = 'none';
 			self.textarea.style.display = 'inline';
 		}
+		
 		else {
 			self.textarea.disabled = true;
 			self.setCode(self.textarea.value);
@@ -125,19 +138,26 @@ CodePress.run = function() {
 	}
 	t = document.getElementsByTagName('textarea');
 	for(var i=0,n=t.length;i<n;i++) {
-		if(t[i].className.match('codepress')) {
+		if(t[i].className.match('codepress'))
+		{
+			var hiddenArea = document.getElementById('skjult');
 			id = t[i].id;
 			t[i].id = id+'_cp';
-			eval(id+' = new CodePress(t[i])');
+			eval(id+' = new CodePress(t[i], hiddenArea)');
 			t[i].parentNode.insertBefore(eval(id), t[i]);
+			
 		} 
 	}
 }
 
 if(window.attachEvent) {
 	window.attachEvent('onload',CodePress.run);
-	window.attachEvent('onload',self.getCode() );
 }
 else window.addEventListener('DOMContentLoaded',CodePress.run,false);
 
-window.attachEcent( 'onclick', self.getCode() )
+//Gets the text from the editor to the invisible textarea
+function moveText()
+{
+	hidden.value = self.getCode();
+}
+
