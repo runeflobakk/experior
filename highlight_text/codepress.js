@@ -11,11 +11,12 @@
 var self;
 var hidden;
 
-CodePress = function(obj, obj2) {
+CodePress = function(obj, obj2) 
+{
 	self = document.createElement('iframe');
 	self.textarea = obj;
 	hidden = obj2;	
-	self.textarea.disabled = true;
+	self.textarea.disabled = false;
 	self.textarea.style.overflow = 'hidden';
 	self.style.height = self.textarea.clientHeight +'px';
 	self.style.width = self.textarea.clientWidth +'px';
@@ -26,7 +27,8 @@ CodePress = function(obj, obj2) {
 	self.style.position = 'absolute';
 	self.options = self.textarea.className;
 	
-	self.initialize = function() {
+	self.initialize = function() 
+	{
 		self.editor = self.contentWindow.CodePress;
 		
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
@@ -37,6 +39,7 @@ CodePress = function(obj, obj2) {
 		self.style.position = 'static';
 		self.style.visibility = 'visible';
 		self.style.display = 'inline';
+		
 	}
 	
 		
