@@ -14,9 +14,7 @@ var hidden;
 CodePress = function(obj, obj2) {
 	self = document.createElement('iframe');
 	self.textarea = obj;
-	hidden = obj2;
-	
-	
+	hidden = obj2;	
 	self.textarea.disabled = true;
 	self.textarea.style.overflow = 'hidden';
 	self.style.height = self.textarea.clientHeight +'px';
@@ -160,4 +158,11 @@ function moveText()
 {
 	hidden.value = self.getCode();
 }
+
+function moveTextUp()
+{
+	 
+	self.setCode( hidden.value );
+}
+
 
