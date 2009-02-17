@@ -138,7 +138,7 @@ CodePress.run = function() {
 	for(var i=0,n=t.length;i<n;i++) {
 		if(t[i].className.match('codepress'))
 		{
-			var hiddenArea = document.getElementById('skjult');
+			var hiddenArea = document.getElementById('skjult'); //gets the hidden field
 			id = t[i].id;
 			t[i].id = id+'_cp';
 			eval(id+' = new CodePress(t[i], hiddenArea)');
@@ -159,6 +159,7 @@ function moveText()
 	hidden.value = self.getCode();
 }
 
+// Gets the text from the hidden field 
 function moveTextUp()
 {
 	 
