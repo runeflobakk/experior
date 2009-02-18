@@ -76,17 +76,29 @@ public class ExperiorResponder implements SecureResponder
 	public String makeHtml(String resource, FitNesseContext context) throws Exception
 	{
 		HtmlPage html = context.htmlPageFactory.newPage();
-		html.title.use("Edit with Experior " + resource); //vises i tittellinjen
-
+		html.title.use("Edit with Experior " + resource);//vises i tittellinjen
+		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/codepress.js" ) );
+		//html.head.add( attachStylesheet() );
+		
 		HtmlTag breadCrumbs = HtmlUtil.makeBreadCrumbsWithPageType(resource, "Edit Page with Experior:");
 
 		html.header.use(breadCrumbs);
-
 		html.main.use(makeEditForm(resource));
 
 		return html.html();
 	}
+	
+	private HtmlTag attachCodePressStylesheet() throws Exception
+	{
 
+		HtmlTag style = new HtmlTag("link");
+		style.addAttribute("rel", "stylesheet");
+		style.addAttribute("type", "text/css");
+		style.addAttribute("href", "/files/javascript/codepress.css");
+		return style;
+	}
+	
+	
 	public HtmlTag makeEditForm(String resource) throws Exception
 	{
 		HtmlTag form = new HtmlTag("form");
@@ -95,6 +107,7 @@ public class ExperiorResponder implements SecureResponder
 		form.addAttribute("method", "post");
 
 		form.add(createExperior());
+		form.add(createHiddenField());
 
 		return form;
 
@@ -105,12 +118,24 @@ public class ExperiorResponder implements SecureResponder
 	private HtmlTag createExperior()
 	{
 		HtmlTag textarea = new HtmlTag("textarea");
-		textarea.addAttribute("name", CONTENT_INPUT_NAME);
-		textarea.addAttribute("rows", "25");
-		textarea.addAttribute("cols", "70");
+		textarea.addAttribute("id", "myCpWindow");
+		textarea.addAttribute("rows", "50");
+		textarea.addAttribute("cols", "130");
+		//textarea.addAttribute("class", "codepress javascript linenumbers-off");
 		textarea.addAttribute("tabindex", "1");
 		content += getWikiCommands();
 		textarea.add(content);
+		return textarea;
+	}
+	
+	private HtmlTag createHiddenField()
+	{
+		HtmlTag textarea = new HtmlTag("textarea");
+		textarea.addAttribute("name", "skjult");
+		textarea.addAttribute("id", "skjult");
+		textarea.addAttribute("rows", "20");
+		textarea.addAttribute("cols", "130");
+		textarea.add("");
 		return textarea;
 	}
 

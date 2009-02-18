@@ -20,9 +20,4 @@ public class ExperiorHtmlPageFactory extends HtmlPageFactory {
         return page;
         
     }
-    
-    public void detterMinMetode()
-    {
-    	
-    }
 }
