@@ -50,7 +50,7 @@ public class ExperiorResponder implements SecureResponder
 
 
 	/*
-	 * Arvet metode fra SecureResponder, må implementeres
+	 * Arvet metode fra SecureResponder, mï¿½ implementeres
 	 *
 	 */
 	public Response makeResponse(FitNesseContext context, Request request) throws Exception
@@ -149,14 +149,9 @@ public class ExperiorResponder implements SecureResponder
 
 		try
 		{
-
-
 			for (Class<?> oneType = Class.forName(fixtureClassName); DoFixture.class.isAssignableFrom(oneType.getSuperclass()); oneType = oneType.getSuperclass()) {
 				types.add(oneType);
 			}
-
-
-
 		}
 		catch (ClassNotFoundException e)
 		{
@@ -193,7 +188,7 @@ public class ExperiorResponder implements SecureResponder
 	}
 
 	/*
-	 * Arvet metode fra SecureResponder, må implementeres
+	 * Arvet metode fra SecureResponder, mï¿½ implementeres
 	 *
 	 */
 	public SecureOperation getSecureOperation()
