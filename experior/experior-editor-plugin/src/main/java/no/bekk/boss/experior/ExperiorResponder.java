@@ -2,24 +2,28 @@ package no.bekk.boss.experior;
 
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
-import fitnesse.FitNesseContext;
-import fitnesse.authentication.*;
-import fitnesse.components.SaveRecorder;
-import fitnesse.html.*;
-import fitnesse.http.*;
-import fitnesse.responders.SecureResponder;
-import fitnesse.wiki.*;
 
-import javax.swing.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.*;
-import fitlibrary.DoFixture;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-import fitnesse.wikitext.Utils;
-import java.lang.ClassLoader;
+import fitlibrary.DoFixture;
+import fitnesse.FitNesseContext;
+import fitnesse.authentication.SecureOperation;
+import fitnesse.authentication.SecureReadOperation;
+import fitnesse.html.HtmlPage;
+import fitnesse.html.HtmlTag;
+import fitnesse.html.HtmlUtil;
+import fitnesse.http.Request;
+import fitnesse.http.Response;
+import fitnesse.http.SimpleResponse;
+import fitnesse.responders.SecureResponder;
+import fitnesse.wiki.PageCrawler;
+import fitnesse.wiki.PageData;
+import fitnesse.wiki.PathParser;
+import fitnesse.wiki.WikiPage;
+import fitnesse.wiki.WikiPagePath;
 
 public class ExperiorResponder implements SecureResponder
 {
@@ -46,11 +50,11 @@ public class ExperiorResponder implements SecureResponder
 
 
 	/*
-	 * Arvet metode fra SecureResponder, må implementeres 
-	 * 
-	 */        
+	 * Arvet metode fra SecureResponder, må implementeres
+	 *
+	 */
 	public Response makeResponse(FitNesseContext context, Request request) throws Exception
-	{	
+	{
 		SimpleResponse response = new SimpleResponse();
 		initializeResponder(context.root, request);
 
@@ -61,14 +65,14 @@ public class ExperiorResponder implements SecureResponder
 		PageCrawler crawler = context.root.getPageCrawler();
 
 		page = crawler.getPage(root, path);
-		pageData = page.getData();        
+		pageData = page.getData();
 		content = pageData.getContent();
 
 		String html = makeHtml(resource, context);
 
 		response.setContent(html);
 
-		return response;     	
+		return response;
 	}
 
 	public String makeHtml(String resource, FitNesseContext context) throws Exception
@@ -77,7 +81,7 @@ public class ExperiorResponder implements SecureResponder
 		html.title.use("Edit with Experior " + resource);//vises i tittellinjen
 		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/codepress.js" ) );
 		//html.head.add( attachStylesheet() );
-		
+
 		HtmlTag breadCrumbs = HtmlUtil.makeBreadCrumbsWithPageType(resource, "Edit Page with Experior:");
 
 		html.header.use(breadCrumbs);
@@ -85,7 +89,7 @@ public class ExperiorResponder implements SecureResponder
 
 		return html.html();
 	}
-	
+
 	private HtmlTag attachCodePressStylesheet() throws Exception
 	{
 		HtmlTag style = new HtmlTag("link");
@@ -94,8 +98,8 @@ public class ExperiorResponder implements SecureResponder
 		style.addAttribute("href", "/files/javascript/codepress.css");
 		return style;
 	}
-	
-	
+
+
 	public HtmlTag makeEditForm(String resource) throws Exception
 	{
 		HtmlTag form = new HtmlTag("form");
@@ -121,7 +125,7 @@ public class ExperiorResponder implements SecureResponder
 		textarea.add(content);
 		return textarea;
 	}
-	
+
 	private HtmlTag createHiddenField()
 	{
 		HtmlTag textarea = new HtmlTag("textarea");
@@ -135,31 +139,24 @@ public class ExperiorResponder implements SecureResponder
 
 	public String getWikiCommands()
 	{
-		String innhold = content;
-
-		String[] path = innhold.split("\n");
-		innhold = path[0];
-
-		if( innhold.length() > 0 )
-			innhold = innhold.substring(3, innhold.length()-2);
-		else
+	    String fixtureClassName = new Scanner(content).findInLine("(?<=\\!\\|\\-?)[\\w|\\.]+(?=\\-?\\|)");
+		if( fixtureClassName == null )
 			return "";
-		
+
 
 		StringBuilder wikiCommands = new StringBuilder();
 		List<Class<?>> types = new ArrayList<Class<?>>();
-		
-		try 
+
+		try
 		{
-			
-			
-			for (Class<?> oneType = Class.forName(innhold); DoFixture.class.isAssignableFrom(oneType.getSuperclass()); oneType = oneType.getSuperclass()) {
-				
+
+
+			for (Class<?> oneType = Class.forName(fixtureClassName); DoFixture.class.isAssignableFrom(oneType.getSuperclass()); oneType = oneType.getSuperclass()) {
 				types.add(oneType);
 			}
-			
-			
-		
+
+
+
 		}
 		catch (ClassNotFoundException e)
 		{
@@ -175,7 +172,7 @@ public class ExperiorResponder implements SecureResponder
 				}
 			}
 		}
-		return wikiCommands.toString();   	    
+		return wikiCommands.toString();
 	}
 
 	private String toWikiCommand(String className)
@@ -196,8 +193,8 @@ public class ExperiorResponder implements SecureResponder
 	}
 
 	/*
-	 * Arvet metode fra SecureResponder, må implementeres 
-	 * 
+	 * Arvet metode fra SecureResponder, må implementeres
+	 *
 	 */
 	public SecureOperation getSecureOperation()
 	{
