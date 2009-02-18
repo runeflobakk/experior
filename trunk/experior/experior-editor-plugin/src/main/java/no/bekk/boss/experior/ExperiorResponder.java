@@ -71,8 +71,6 @@ public class ExperiorResponder implements SecureResponder
 		return response;     	
 	}
 
-
-
 	public String makeHtml(String resource, FitNesseContext context) throws Exception
 	{
 		HtmlPage html = context.htmlPageFactory.newPage();
@@ -90,7 +88,6 @@ public class ExperiorResponder implements SecureResponder
 	
 	private HtmlTag attachCodePressStylesheet() throws Exception
 	{
-
 		HtmlTag style = new HtmlTag("link");
 		style.addAttribute("rel", "stylesheet");
 		style.addAttribute("type", "text/css");
@@ -110,10 +107,7 @@ public class ExperiorResponder implements SecureResponder
 		form.add(createHiddenField());
 
 		return form;
-
 	}
-
-
 
 	private HtmlTag createExperior()
 	{
@@ -147,23 +141,38 @@ public class ExperiorResponder implements SecureResponder
 		innhold = path[0];
 
 		if( innhold.length() > 0 )
-			innhold = innhold.substring(2, innhold.length()-2);
+			innhold = innhold.substring(3, innhold.length()-2);
+		else
+			return "";
+		
 
 		StringBuilder wikiCommands = new StringBuilder();
-		Class t = null;
+		List<Class<?>> types = new ArrayList<Class<?>>();
+		
 		try 
 		{
-			t = Class.forName(innhold);
+			
+			
+			for (Class<?> oneType = Class.forName(innhold); DoFixture.class.isAssignableFrom(oneType.getSuperclass()); oneType = oneType.getSuperclass()) {
+				
+				types.add(oneType);
+			}
+			
+			
+		
 		}
 		catch (ClassNotFoundException e)
 		{
-
+			throw new RuntimeException(e);
 		}
-		if( t != null)
+		if( types != null)
 		{
-			for(Method method : t.getDeclaredMethods())
+			for(Class<?> type : types)
 			{
-				wikiCommands.append(toWikiCommand(method.getName()) + "\n" );
+				for(Method method : type.getDeclaredMethods())
+				{
+					wikiCommands.append(toWikiCommand(method.getName()) + "\n" );
+				}
 			}
 		}
 		return wikiCommands.toString();   	    
@@ -190,7 +199,6 @@ public class ExperiorResponder implements SecureResponder
 	 * Arvet metode fra SecureResponder, må implementeres 
 	 * 
 	 */
-
 	public SecureOperation getSecureOperation()
 	{
 		return new SecureReadOperation();
