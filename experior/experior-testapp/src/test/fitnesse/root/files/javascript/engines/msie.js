@@ -259,7 +259,7 @@ CodePress = {
 	// get code from editor	
 	getCode : function() {
 		var code = editor.innerHTML;
-	
+	   /*
 		
 		code = code.replace(/<br>/g,'\n');
 		code = code.replace(/<\/p>/gi,'\r');
@@ -271,6 +271,7 @@ CodePress = {
 		code = code.replace(/&lt;/g,'<');
 		code = code.replace(/&gt;/g,'>');
 		code = code.replace(/&amp;/gi,'&');
+		*/
 		
 		
 		

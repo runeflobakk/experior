@@ -25,13 +25,12 @@ CodePress = function(obj, obj2) {
 	self.style.visibility = 'hidden';
 	self.style.position = 'absolute';
 	self.options = self.textarea.className;
-	
+		
 	self.initialize = function() {
 		
 		self.editor = self.contentWindow.CodePress;
 		alert( self.editor );
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
-		
 		self.editor.setCode(self.textarea.value);
 		self.setOptions();
 		self.editor.syntaxHighlight('init');
@@ -47,13 +46,22 @@ CodePress = function(obj, obj2) {
 		if(obj) self.textarea.value = document.getElementById(obj) ? document.getElementById(obj).value : obj;
 		if(!self.textarea.disabled) return;
 		self.language = language ? language : self.getLanguage();
-		self.src = CodePress.path+'codepress.html?language='+self.language+'&ts='+(new Date).getTime();
-		//alert( self.src )
+		
+		self.src = CodePress.path+'codepress.html?';
+		//+self.language;
+		//+'&ts='+(new Date).getTime();
+		
+		alert( self.src )
 		if(self.attachEvent)
 		{
+			
 			self.attachEvent('onload',self.initialize);
+			
 		}
-		else self.addEventListener('load',self.initialize,false);
+		else 
+			{
+			self.addEventListener('load',self.initialize,false);
+			}
 	}
 
 	self.getLanguage = function() {
