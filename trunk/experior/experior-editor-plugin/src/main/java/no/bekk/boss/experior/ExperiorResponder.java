@@ -116,10 +116,10 @@ public class ExperiorResponder implements SecureResponder
 	private HtmlTag createExperior()
 	{
 		HtmlTag textarea = new HtmlTag("textarea");
-		textarea.addAttribute("id", "myCpWindow");
+		textarea.addAttribute("id", "codepress");
 		textarea.addAttribute("rows", "50");
 		textarea.addAttribute("cols", "130");
-		//textarea.addAttribute("class", "codepress javascript linenumbers-off");
+		textarea.addAttribute("class", "codepress javascript linenumbers-off");
 		textarea.addAttribute("tabindex", "1");
 		content += getWikiCommands();
 		textarea.add(content);
