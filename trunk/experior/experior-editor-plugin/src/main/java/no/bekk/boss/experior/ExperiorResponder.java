@@ -2,12 +2,10 @@ package no.bekk.boss.experior;
 
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import fitlibrary.DoFixture;
 import fitnesse.FitNesseContext;
 import fitnesse.authentication.SecureOperation;
@@ -50,7 +48,7 @@ public class ExperiorResponder implements SecureResponder
 
 
 	/*
-	 * Arvet metode fra SecureResponder, m� implementeres
+	 * Arvet metode fra SecureResponder, maa implementeres
 	 *
 	 */
 	public Response makeResponse(FitNesseContext context, Request request) throws Exception
