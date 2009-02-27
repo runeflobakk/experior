@@ -14,8 +14,6 @@
  * 
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
-
-
 CodePress = {
 	scrolling : false,
 	autocomplete : true,
@@ -26,15 +24,15 @@ CodePress = {
 		chars = '|32|46|62|'; // charcodes that trigger syntax highlighting
 		cc = '\u2009'; // carret char
 		editor = document.getElementsByTagName('pre')[0];
-					
 		editor.contentEditable = 'true';
-		
-		
 		document.getElementsByTagName('body')[0].onfocus = function() {editor.focus();}
 		document.attachEvent('onkeydown', this.metaHandler);
 		document.attachEvent('onkeypress', this.keyHandler);
+		
 		window.attachEvent('onscroll', function() { if(!CodePress.scrolling) setTimeout(function(){CodePress.syntaxHighlight('scroll')},1)});
+		
 		completeChars = this.getCompleteChars();
+		
 		completeEndingChars =  this.getCompleteEndingChars();
 		setTimeout(function() { window.scroll(0,0) },50); // scroll IE to top
 	},
@@ -56,11 +54,6 @@ CodePress = {
 	metaHandler : function(evt) {
 		keyCode = evt.keyCode;
 		
-		if( evt )
-		{
-			
-		}
-		
 		if(keyCode==9 || evt.tabKey) { 
 			CodePress.snippets();
 		}
@@ -73,10 +66,8 @@ CodePress = {
 			evt.returnValue = false;
 		}
 		else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
-			
-			CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
+		 	CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
 		}
-	
 		else if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && keyCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
 			CodePress.shortcuts(keyCode);
 			evt.returnValue = false;
@@ -101,8 +92,6 @@ CodePress = {
 			range.text = '';
 		}
 	},
-	
-	
 	
 	// split big files, highlighting parts of it
 	split : function(code,flag) {
@@ -186,6 +175,7 @@ CodePress = {
 		var cChars = '';
 		for(var i=0;i<Language.complete.length;i++)
 			cChars += '|'+Language.complete[i].input;
+		
 		return cChars+'|';
 	},
 
@@ -259,8 +249,6 @@ CodePress = {
 	// get code from editor	
 	getCode : function() {
 		var code = editor.innerHTML;
-	   /*
-		
 		code = code.replace(/<br>/g,'\n');
 		code = code.replace(/<\/p>/gi,'\r');
 		code = code.replace(/<p>/i,''); // IE first line fix
@@ -271,10 +259,6 @@ CodePress = {
 		code = code.replace(/&lt;/g,'<');
 		code = code.replace(/&gt;/g,'>');
 		code = code.replace(/&amp;/gi,'&');
-		*/
-		
-		
-		
 		return code;
 	},
 
@@ -321,3 +305,24 @@ CodePress = {
 
 Language={};
 window.attachEvent('onload', function() { CodePress.initialize('new');});
+
+Language.syntax = [
+               	{ input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
+               	{ input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
+               	{ input : /\b(abstract|continue|for|new|switch|default|goto|boolean|do|if|private|this|break|double|protected|throw|byte|else|import|public|throws|case|return|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|const|float|while|function|label)\b/g, output : '<b>$1</b>' }, // reserved words
+               	{ input : /([\(\){}])/g, output : '<em>$1</em>' }, // special chars;
+               	{ input : /([^:]|^)\/\/(.*?)(<br|<\/P)/g, output : '$1<i>//$2</i>$3' }, // comments //
+               	{ input : /\/\*(.*?)\*\//g, output : '<i>/*$1*/</i>' } // comments /* */
+               ]
+
+               Language.snippets = []
+
+               Language.complete = [
+               	{ input : '\'', output : '\'$0\'' },
+               	{ input : '"', output : '"$0"' },
+               	{ input : '(', output : '\($0\)' },
+               	{ input : '[', output : '\[$0\]' },
+               	{ input : '{', output : '{\n\t$0\n}' }		
+               ]
+
+               Language.shortcuts = []

@@ -12,11 +12,25 @@
 	else if(ua.match('KHTML')) engine = 'khtml'; 
 	else if(ua.match('Opera')) engine = 'opera'; 
 	else if(ua.match('Gecko')) engine = 'gecko';
+
+	if(lh.match('language=')) language = lh.replace(/.*language=(.*?)(&.*)?$/,'$1');
+		
+	document.write("<link type='text/css' href='codepress.css' rel='stylesheet'/>");
+	document.write("<link type='text/css' href='languages/" + language + ".css' rel='stylesheet' id='cp-lang-style' />");
 	
 	
-		</script>
+	document.write("<script type='text/javascript' src='engines/" + engine + ".js'<\/script>");
+	document.write("<script type='text/javascript' src='languages/" + language + ".js'<\/script>");
+	
+	
+	
+	//Gir syntaksfeil
+	
+	
+	</script>
 
 </head>
+
 <script type="text/javascript">
 if(engine == "msie" || engine == "gecko") 
 {
@@ -24,6 +38,7 @@ if(engine == "msie" || engine == "gecko")
 };
 else if(engine == "opera") document.write('<body></body>');
 // else if(engine == "khtml") document.write('<body> </body>');
-alert("hei");
 </script>
+
+
 </html>

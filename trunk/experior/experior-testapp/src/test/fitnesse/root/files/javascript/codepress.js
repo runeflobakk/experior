@@ -29,7 +29,6 @@ CodePress = function(obj, obj2) {
 	self.initialize = function() {
 		
 		self.editor = self.contentWindow.CodePress;
-		alert( self.editor );
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
 		self.editor.setCode(self.textarea.value);
 		self.setOptions();
@@ -51,7 +50,7 @@ CodePress = function(obj, obj2) {
 		//+self.language;
 		//+'&ts='+(new Date).getTime();
 		
-		alert( self.src )
+		
 		if(self.attachEvent)
 		{
 			
