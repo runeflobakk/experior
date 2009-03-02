@@ -12,10 +12,12 @@ import fitnesse.http.SimpleResponse;
 
 public class SvadaJsonTes 
 {
+	private Response ajaxResponse;
+	
 	@Before
 	public void init()
 	{
-		
+		ajaxResponse = new SimpleResponse();
 	}
 	
 	@After 
@@ -25,8 +27,9 @@ public class SvadaJsonTes
 	}
 	
 	@Test
-	public void testJson() throws Exception {
-        Response ajaxResponse = new SimpleResponse();
+	public void testJson() throws Exception 
+	{
+		
         ajaxResponse.setContentType("text/xml");
 
         String[] wikicommands = {

@@ -77,8 +77,10 @@ public class FitnesseServer {
         return context;
     }
 
-    private static class ShutdownVMButton extends JDialog {
-        public ShutdownVMButton() {
+    @SuppressWarnings("serial")
+	private static class ShutdownVMButton extends JDialog {
+        
+		public ShutdownVMButton() {
             this.setModalityType(APPLICATION_MODAL);
             this.getContentPane().setLayout(new FlowLayout());
             JButton button = new JButton(new AbstractAction() {
