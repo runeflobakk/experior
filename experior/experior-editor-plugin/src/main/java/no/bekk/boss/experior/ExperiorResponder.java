@@ -88,6 +88,7 @@ public class ExperiorResponder implements SecureResponder
 		return html.html();
 	}
 
+	@SuppressWarnings("unused")
 	private HtmlTag attachCodePressStylesheet() throws Exception
 	{
 		HtmlTag style = new HtmlTag("link");

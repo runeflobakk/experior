@@ -10,7 +10,7 @@ import fitnesse.html.HtmlPageFactory;
 
 public class ExperiorHtmlPageFactory extends HtmlPageFactory {
 
-    public ExperiorHtmlPageFactory(@SuppressWarnings("unused") Properties properties) {
+    public ExperiorHtmlPageFactory(Properties properties) {
     }
 
     @Override

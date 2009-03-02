@@ -2,7 +2,6 @@ package no.bekk.boss.experior;
 
 import java.io.File;
 import java.util.Collection;
-
 import fitnesse.FitNesseContext;
 import fitnesse.Responder;
 import fitnesse.http.Request;
@@ -23,7 +22,8 @@ public class AvailableCommandsReponder implements Responder
 	}
 	*/
 	@Override
-    public Response makeResponse(FitNesseContext context, Request request) {
+    public Response makeResponse(FitNesseContext context, Request request) 
+	{
         //Henter ut metoder fra fixture basert på innholdet i wikisiden
         File wikiFile = new File(context.rootPagePath + "/" + request.getRequestLine());
         Class<?> fixtureClass = scanForFirstClassName(wikiFile);
