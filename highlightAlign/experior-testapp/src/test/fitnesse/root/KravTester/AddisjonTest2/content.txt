@@ -1,0 +1,8 @@
+!contents -R2 -g -p -f -h
+
+|!DoFixtureTest
+
+|tallene|5|minus|2|skalbli|3|
+
+//hei du  
+
