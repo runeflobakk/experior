@@ -30,9 +30,11 @@ CodePress = function(obj, obj2) {
 		
 		self.editor = self.contentWindow.CodePress;
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
-		self.editor.setCode(self.textarea.value);
+		
+		self.editor.alignStart( self.textarea.value);
+		//self.editor.setCode(self.textarea.value);
 		self.setOptions();
-		self.editor.syntaxHighlight('init');
+		self.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field
 		self.textarea.style.display = 'none';
 		self.style.position = 'static';
 		self.style.visibility = 'visible';
@@ -82,10 +84,20 @@ CodePress = function(obj, obj2) {
 	self.setCode = function(code) {
 		self.textarea.disabled ? self.editor.setCode(code) : self.textarea.value = code;
 	}
+	
+	self.syntaxHighlight2 = function( hidden ){
+		
+		var test = hidden;
+		//alert("ff"+arguments[0]);
+		alert("ffgg");
+		self.editor.syntaxHighlight('paste', test );
+	}
+		
 
 	self.toggleAutoComplete = function() {
 		self.editor.autocomplete = (self.editor.autocomplete) ? false : true;
 	}
+	
 	
 	self.toggleReadOnly = function() {
 		self.textarea.readOnly = (self.textarea.readOnly) ? false : true;
@@ -115,6 +127,7 @@ CodePress = function(obj, obj2) {
 		}
 	}
 
+	
 	self.edit();
 	return self;
 }
@@ -154,6 +167,7 @@ CodePress.run = function() {
 			
 		} 
 	}
+	hidden = document.getElementById( "skjult" );	
 }
 
 if(window.attachEvent) {
@@ -167,12 +181,21 @@ function moveText()
 	hidden.value = self.getCode();
 }
 
+function alignClick()
+{	
+	self.editor.alignStart( self.getCode() );
+	self.setOptions();
+	self.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field	
+}
+
 // Gets the text from the hidden field 
 function moveTextUp()
-{
-	 
+{	 
 	self.setCode( hidden.value );
 }
+
+
+
 
 
 
