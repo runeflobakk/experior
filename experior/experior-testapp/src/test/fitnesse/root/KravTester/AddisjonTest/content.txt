@@ -1,9 +1,30 @@
 !|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
 
-!|tallene|1|+|1|skal bli|2|
-!|tallene|4|+|5|skal bli|9|
-!|reject|tallene|10|+|10|skal bli|19|
+!|tallene|10|plus|1|skal bli|101|
+|tallene|1|plus|1|skal bli|2|
+|tallene|50|plus|5|skal bli|10|
 
+!|hei|du|der|
+|hei|på|deg|
+
+
+!|tallene|10|plus|1|skal bli|101|
+|tallene|1|plus|1|skal bli|2|
+|tallene|50|plus|5|skal bli|10|
+
+|tallene|10|plus|1|skal bli|20|
+|tallene|1|plus|1|skal bli|2|
+|tallene|5|plus|5|skal bli|10|
+|tallene|10|plus|1|skal bli|11|
+
+
+!|tallene|4|plus|5|skal bli|9|
+
+
+
+!|en metodew|
+
+!|metoden hei du| 
 
 
 !3 Nytt krav:

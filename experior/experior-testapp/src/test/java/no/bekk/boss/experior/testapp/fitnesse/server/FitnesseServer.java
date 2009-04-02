@@ -28,6 +28,7 @@ public class FitnesseServer {
     public static void main(String args[]) throws Exception {
         FitnesseServer runFitnesse = new FitnesseServer();
         runFitnesse.start();
+        
     }
 
     public void start() throws Exception {
@@ -64,7 +65,7 @@ public class FitnesseServer {
         context.logger = null;
         context.authenticator =
             componentFactory.getAuthenticator(new PromiscuousAuthenticator());
-        context.htmlPageFactory =
+        context.htmlPageFactory = 
             componentFactory.getHtmlPageFactory(new HtmlPageFactory());
 
         context.responderFactory.addResponder("test", InheritClasspathTestResponder.class);
