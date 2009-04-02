@@ -130,18 +130,22 @@ public class ExperiorResponder implements SecureResponder
 		form.add(HtmlUtil.makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
 		form.add(HtmlUtil.makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
 		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer")) {
-			String redirectUrl = request.getHeader("Referer").toString();
-			int questionMarkIndex = redirectUrl.indexOf("?");
-			if (questionMarkIndex > 0)
-				redirectUrl = redirectUrl.substring(0, questionMarkIndex);
-			redirectUrl += "?" + request.getInput("redirectAction").toString();
-			form.add(HtmlUtil.makeInputTag("hidden", "redirect", redirectUrl));
+			handleRedirect(form);
 		}
 
 		form.add( createTextarea() );	
 
 		return form;
 	}
+
+    private void handleRedirect(HtmlTag form) {
+        String redirectUrl = request.getHeader("Referer").toString();
+        int questionMarkIndex = redirectUrl.indexOf("?");
+        if (questionMarkIndex > 0)
+        	redirectUrl = redirectUrl.substring(0, questionMarkIndex);
+        redirectUrl += "?" + request.getInput("redirectAction").toString();
+        form.add(HtmlUtil.makeInputTag("hidden", "redirect", redirectUrl));
+    }
 
 	private HtmlTag createTextarea() 
 	{
@@ -169,12 +173,7 @@ public class ExperiorResponder implements SecureResponder
 		form.add(HtmlUtil.makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
 		form.add(HtmlUtil.makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
 		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer")) {
-			String redirectUrl = request.getHeader("Referer").toString();
-			int questionMarkIndex = redirectUrl.indexOf("?");
-			if (questionMarkIndex > 0)
-				redirectUrl = redirectUrl.substring(0, questionMarkIndex);
-			redirectUrl += "?" + request.getInput("redirectAction").toString();
-			form.add(HtmlUtil.makeInputTag("hidden", "redirect", redirectUrl));
+			handleRedirect(form);
 		}	
 
 		HtmlTag textarea = new HtmlTag("textarea");
