@@ -26,9 +26,7 @@ import fitnesse.wiki.FileSystemPage;
 public class FitnesseServer {
 
     public static void main(String args[]) throws Exception {
-        FitnesseServer runFitnesse = new FitnesseServer();
-        runFitnesse.start();
-        
+        new FitnesseServer().start();
     }
 
     public void start() throws Exception {
@@ -65,12 +63,10 @@ public class FitnesseServer {
         context.logger = null;
         context.authenticator =
             componentFactory.getAuthenticator(new PromiscuousAuthenticator());
-        context.htmlPageFactory = 
+        context.htmlPageFactory =
             componentFactory.getHtmlPageFactory(new HtmlPageFactory());
-
-        context.responderFactory.addResponder("test", InheritClasspathTestResponder.class);
-        context.responderFactory.addResponder("suite", InheritClasspathSuiteResponder.class);
-
+        context.responderFactory.addResponder("test", InheritClasspathResponder.class);
+        context.responderFactory.addResponder("suite", InheritClasspathResponder.class);
         String extraOutput =
             componentFactory.loadResponderPlugins(context.responderFactory);
         extraOutput += componentFactory.loadWikiWidgetPlugins();
@@ -80,7 +76,7 @@ public class FitnesseServer {
 
     @SuppressWarnings("serial")
 	private static class ShutdownVMButton extends JDialog {
-        
+
 		public ShutdownVMButton() {
             this.setModalityType(APPLICATION_MODAL);
             this.getContentPane().setLayout(new FlowLayout());
