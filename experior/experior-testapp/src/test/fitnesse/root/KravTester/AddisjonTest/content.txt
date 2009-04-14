@@ -1,17 +1,22 @@
 !|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
 
+!1 Krav 1
 !|tallene|10|plus|1|skal bli|101|
-|tallene|1|plus|1|skal bli|2|
+|tallene|1|plus|1|skal bli|22|
 |tallene|50|plus|5|skal bli|10|
 
+{{{
 !|hei|du|der|
 |hei|på|deg|
+}}}
 
 
+!2 Krav 2
 !|tallene|10|plus|1|skal bli|101|
 |tallene|1|plus|1|skal bli|2|
 |tallene|50|plus|5|skal bli|10|
 
+!3 Krav 3
 |tallene|10|plus|1|skal bli|20|
 |tallene|1|plus|1|skal bli|2|
 |tallene|5|plus|5|skal bli|10|
@@ -24,8 +29,4 @@
 
 !|en metodew|
 
-!|metoden hei du| 
-
-
-!3 Nytt krav:
-!|tallene|2|+|5|skal bli|44|
+!|metoden hei du|
