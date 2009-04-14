@@ -4,6 +4,14 @@
 
 b {color:#7F0055;font-weight:bold;} /* reserved words */
 u {color:darkblue;font-weight:bold;} /* special words */
+.comment3 { color: darkblue; font-weight:bold; font-family:Verdana; font-size:14px; 
+}
+.comment2 { color: darkblue; font-weight:bold; font-family:Verdana; font-size:16px; 
+}
+.comment1 { color: darkblue; font-weight:bold; font-family:Verdana; font-size:18px; 
+}
+.disabled { color: #BBBBBB; 
+}
 i, i b, i s, i u, i em {color:green;font-weight:normal;} /* comments */
 s, s b, s em {font-family:Courier New; color:#2A00FF;font-weight:bold;} /* strings */
 em {font-weight:bold;} /* special chars */
