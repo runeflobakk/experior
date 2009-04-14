@@ -113,8 +113,9 @@ public class ExperiorResponder implements SecureResponder
 
 		div.addAttribute("name", "placeholder");		
 
-		div.add(createExperior( resource ) );
 		div.add( createHiddenField(resource) );
+		div.add(createExperior( resource ) );
+		
 
 		return div;
 	}	
@@ -176,6 +177,9 @@ public class ExperiorResponder implements SecureResponder
 			handleRedirect(form);
 		}	
 
+		form.add( createSaveButton() );
+		form.add( createAlignButton() );
+		
 		HtmlTag textarea = new HtmlTag("textarea");
 		textarea.addAttribute("class", CONTENT_INPUT_NAME);
 		textarea.addAttribute("name", CONTENT_INPUT_NAME);
@@ -189,8 +193,7 @@ public class ExperiorResponder implements SecureResponder
 
 		form.add(divHidden);
 		
-		form.add( createSaveButton() );
-		form.add( createAlignButton() );
+		
 		return form;		
 	}
 
