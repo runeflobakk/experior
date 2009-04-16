@@ -97,6 +97,7 @@ public class ExperiorResponder implements SecureResponder
 		HtmlPage html = context.htmlPageFactory.newPage();
 		html.title.use("Edit with Experior " + resource);//vises i tittellinjen
 		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/codepress.js" ) );
+		
 
 		HtmlTag breadCrumbs = HtmlUtil.makeBreadCrumbsWithPageType(resource, "Edit Page with Experior:");
 
@@ -153,7 +154,7 @@ public class ExperiorResponder implements SecureResponder
 		HtmlTag textarea = new HtmlTag( "textarea" );
 		textarea.addAttribute("id", "codepress");
 		textarea.addAttribute("rows", "50");
-		textarea.addAttribute("cols", "130");		
+		textarea.addAttribute("cols", "130");
 		textarea.addAttribute("class", "codepress javascript linenumbers-off");
 		textarea.addAttribute("tabindex", "1");
 		textarea.add(content);
@@ -191,8 +192,7 @@ public class ExperiorResponder implements SecureResponder
 		
 		divHidden.add( textarea );
 
-		form.add(divHidden);
-		
+		form.add(divHidden);		
 		
 		return form;		
 	}
@@ -271,7 +271,7 @@ public class ExperiorResponder implements SecureResponder
 	}
 
 	/*
-	 * Arvet metode fra SecureResponder, mï¿½ implementeres
+	 * Arvet metode fra SecureResponder, må implementeres
 	 *
 	 */
 	public SecureOperation getSecureOperation()
