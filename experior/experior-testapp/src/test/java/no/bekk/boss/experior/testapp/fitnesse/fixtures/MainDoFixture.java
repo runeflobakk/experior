@@ -1,6 +1,7 @@
 package no.bekk.boss.experior.testapp.fitnesse.fixtures;
 
 import no.bekk.boss.experior.testapp.service.CalculatorService;
+import fit.Fixture;
 import fitlibrary.DoFixture;
 
 public class MainDoFixture extends DoFixture {
@@ -24,6 +25,11 @@ public class MainDoFixture extends DoFixture {
     public void enMetodetil()
     {
     	
+    }
+    
+    public Fixture formidletPostering() {
+        // return some fixture to interpret the table from row 2
+    	return null;
     }
     
    
