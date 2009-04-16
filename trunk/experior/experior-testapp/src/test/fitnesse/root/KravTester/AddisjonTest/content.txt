@@ -1,14 +1,22 @@
 !|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
 
 !1 Krav 1
-!|tallene|10|plus|1|skal bli|101|
+!|tallene|10|plus|1|skal bli|11|
 |tallene|1|plus|1|skal bli|22|
 |tallene|50|plus|5|skal bli|10|
+
+!|formidlet postering|
+|oppdragsdato|postert belop|produktkode|produktelement|
+|11.03.2008|3900|682|34|
+|11.03.2008|3500|682|34|
+|12.03.2008|50000|730|34|
 
 {{{
 !|hei|du|der|
 |hei|på|deg|
 }}}
+
+
 
 
 !2 Krav 2
@@ -21,8 +29,6 @@
 |tallene|1|plus|1|skal bli|2|
 |tallene|5|plus|5|skal bli|10|
 |tallene|10|plus|1|skal bli|11|
-
-
 !|tallene|4|plus|5|skal bli|9|
 
 
@@ -30,3 +36,7 @@
 !|en metodew|
 
 !|metoden hei du|
+
+
+
+en metodetil

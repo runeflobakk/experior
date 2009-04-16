@@ -38,7 +38,34 @@ CodePress = function(obj, obj2) {
 		self.textarea.style.display = 'none';
 		self.style.position = 'static';
 		self.style.visibility = 'visible';
-		self.style.display = 'inline';
+		self.style.display = 'inline';		
+	
+		var newdiv = document.createElement('div'); 
+		var divIdName = 'testDiv'; 
+		
+		var metoder = hidden.value.split("\n");
+		var metodestring = "";
+		
+		document.body.appendChild(newdiv);
+		newdiv.innerHTML = "<b>Metoder:</b><br/><br/>";
+		newdiv.setAttribute('id',divIdName); 
+		newdiv.style.width = "115px"; 
+		
+		newdiv.style.left = "3px";
+		
+		newdiv.style.top = "120px"; 
+		newdiv.style.position = "fixed"; 
+		newdiv.style.background = "#d9dfc9";
+		
+		for( var i = 0; i < metoder.length; i++ )
+		{	
+			metoder[i].trim;
+			
+			metodestring += "<a href=javascript:void(0) onclick=test(" + i + ")>" + metoder[i] + "</a><br/><br/>";		
+		}
+		newdiv.innerHTML += metodestring;
+		
+		 
 	}
 	
 		
@@ -194,9 +221,9 @@ function moveTextUp()
 	self.setCode( hidden.value );
 }
 
-
-
-
-
-
-
+function test(methods)
+{
+	var metoder = hidden.value.split("\n");
+	self.editor.insertMethod(metoder[methods]);
+	self.contentWindow.focus();
+}

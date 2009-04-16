@@ -40,9 +40,8 @@ keyHandler : function(evt) {
 	keyCode = evt.keyCode;	
 	charCode = evt.charCode;
 
-
 	fromChar = String.fromCharCode(charCode);
-
+	
 	if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
 		CodePress.shortcuts(charCode?charCode:keyCode);
 	}
@@ -64,8 +63,8 @@ keyHandler : function(evt) {
 	}
 	else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
 		CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
-
 	}
+	
 	else if((charCode==122||charCode==121||charCode==90) && evt.ctrlKey) { 
 		// undo and redo
 		(charCode==121||evt.shiftKey) ? CodePress.actions.redo() :  CodePress.actions.undo(); 
@@ -197,23 +196,11 @@ align : function()
 
 	range.collapse( false );
 
-	if( linjearray[linjearray.length-2] == 0 )
+	if( linjearray[linjearray.length-2] == 0 || linjearray[linjearray.length-2].search(/span/) > 0 )
 	{		
-		var node = window.document.createTextNode( "|" );
-		var range = window.getSelection().getRangeAt(0);
-
-		var selct = window.getSelection();
-		var range2 = range.cloneRange();
-		selct.removeAllRanges();
-		range.deleteContents();
-		range.insertNode(node);
-		range2.selectNode(node);		
-		range2.collapse(false);
-		selct.removeAllRanges();
-		selct.addRange(range2);
+		this.createTextnode();
 		return;
 	}
-
 	var currentline = linjearray[linjearray.length-1].split("|");
 
 	if (linjearray.length > 0 && linjearray.length-2 > 0 ) 
@@ -252,6 +239,41 @@ align : function()
 
 
 },
+
+createTextnode : function()
+{
+	var node = window.document.createTextNode( "|" );
+	var range = window.getSelection().getRangeAt(0);
+
+	var selct = window.getSelection();
+	var range2 = range.cloneRange();
+	selct.removeAllRanges();
+	range.deleteContents();
+	range.insertNode(node);
+	range2.selectNode(node);		
+	range2.collapse(false);
+	selct.removeAllRanges();
+	selct.addRange(range2);
+},
+
+insertMethod : function( name )
+{
+	var node = window.document.createTextNode( name );
+	var range = window.getSelection().getRangeAt(0);
+
+	var selct = window.getSelection();
+	var range2 = range.cloneRange();
+	selct.removeAllRanges();
+	range.deleteContents();
+	range.insertNode(node);
+	range2.selectNode(node);		
+	range2.collapse(false);
+	selct.removeAllRanges();
+	selct.addRange(range2);
+	
+	this.syntaxHighlight();
+},
+	
 
 removeTags : function( code )
 {
@@ -415,8 +437,8 @@ alignStart : function( code ) {
 	var utskrift = "";
 	for( var i=0; i < linjearray.length-1; i++ ){ // Går igjennom hver linje
 
-
-		if( linjearray[i][0].search(/\!/) != -1 ) //det er et utropstegn
+		
+		if( linjearray[i][0].search(/\!/) != -1  ) //det er et utropstegn
 		{
 			template = new Array();
 
@@ -431,7 +453,7 @@ alignStart : function( code ) {
 		{ 
 			for( var k = 0; k < linjearray[i].length; k++ )
 			{			 
-				if( linjearray[i][k].length > template[k] )
+				if( linjearray[i][k].length > template[k] && linjearray[i][k].search(/\!\d/) == -1 )
 				{
 					template[k] = linjearray[i][k].length;
 				}
@@ -441,7 +463,7 @@ alignStart : function( code ) {
 				tablestart = i;
 				for( var k = 0; k < linjearray[i].length; k++ )
 				{			 
-					if( linjearray[i][k].length > template[k] )
+					if( linjearray[i][k].length > template[k] && linjearray[i][k].search(/\!\d/) == -1 )
 					{
 						template[k] = linjearray[i][k].length;
 					}
