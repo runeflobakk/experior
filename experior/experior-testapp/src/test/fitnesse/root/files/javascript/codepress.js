@@ -208,11 +208,18 @@ function moveText()
 	hidden.value = self.getCode();
 }
 
+function saveAndExit()
+{
+	hidden.value = self.getCode();
+}
+
+
 function alignClick()
 {	
 	self.editor.alignStart( self.getCode() );
 	self.setOptions();
-	self.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field	
+	self.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field
+	
 }
 
 // Gets the text from the hidden field 
