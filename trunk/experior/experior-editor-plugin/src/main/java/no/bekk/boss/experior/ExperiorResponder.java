@@ -168,6 +168,7 @@ public class ExperiorResponder implements SecureResponder
 		
 		HtmlTag form = new HtmlTag( "form" );
 		form.addAttribute( "name", "foo" );
+		form.addAttribute("id", "hiddenfieldform" );
 		form.addAttribute("action", resource);
 		form.addAttribute("method", "post");
 		
