@@ -41,13 +41,13 @@ CodePress = function(obj, obj2) {
 		self.style.display = 'inline';		
 	
 		var newdiv = document.createElement('div'); 
-		var divIdName = 'testDiv'; 
+		var divIdName = 'methodsDiv'; 
 		
 		var metoder = hidden.value.split("\n");
 		var metodestring = "";
 		
 		document.body.appendChild(newdiv);
-		newdiv.innerHTML = "<b>Metoder:</b><br/><br/>";
+		newdiv.innerHTML = "<b>Methods:</b><br/><br/>";
 		newdiv.setAttribute('id',divIdName); 
 		newdiv.style.width = "115px"; 
 		
@@ -61,7 +61,7 @@ CodePress = function(obj, obj2) {
 		{	
 			metoder[i].trim;
 			
-			metodestring += "<a href=javascript:void(0) onclick=test(" + i + ")>" + metoder[i] + "</a><br/><br/>";		
+			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + metoder[i] + "</a><br/><br/>";		
 		}
 		newdiv.innerHTML += metodestring;
 		
@@ -211,6 +211,10 @@ function moveText()
 function saveAndExit()
 {
 	hidden.value = self.getCode();
+	var form = document.getElementById( "hiddenfieldform" );
+	//form.innerHTML += "<input type=hidden name=responder value=saveData>";
+	alert( "Virker ikke! Saver men redirecter ikke til forrige side" );
+	
 }
 
 
@@ -228,7 +232,7 @@ function moveTextUp()
 	self.setCode( hidden.value );
 }
 
-function test(methods)
+function insertMethod(methods)
 {
 	var metoder = hidden.value.split("\n");
 	self.editor.insertMethod(metoder[methods]);
