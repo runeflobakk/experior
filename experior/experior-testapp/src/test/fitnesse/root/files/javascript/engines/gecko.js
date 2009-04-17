@@ -41,7 +41,7 @@ keyHandler : function(evt) {
 	charCode = evt.charCode;
 
 	fromChar = String.fromCharCode(charCode);
-	
+
 	if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
 		CodePress.shortcuts(charCode?charCode:keyCode);
 	}
@@ -64,7 +64,7 @@ keyHandler : function(evt) {
 	else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
 		CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
 	}
-	
+
 	else if((charCode==122||charCode==121||charCode==90) && evt.ctrlKey) { 
 		// undo and redo
 		(charCode==121||evt.shiftKey) ? CodePress.actions.redo() :  CodePress.actions.undo(); 
@@ -115,7 +115,7 @@ getEditor : function() {
 
 //syntax highlighting parser
 syntaxHighlight : function(flag, methods2) {
-	
+
 	if( methods2 == "feil" )
 		alert("Fant ikke angitt klasse. Highlighting fungerer dermed ikke!");
 	if( methods2 != null )
@@ -172,7 +172,7 @@ syntaxHighlight : function(flag, methods2) {
 },
 
 getLastWord : function() {
-
+	
 },
 
 align : function()
@@ -201,6 +201,7 @@ align : function()
 		this.createTextnode();
 		return;
 	}
+
 	var currentline = linjearray[linjearray.length-1].split("|");
 
 	if (linjearray.length > 0 && linjearray.length-2 > 0 ) 
@@ -208,22 +209,33 @@ align : function()
 
 	var nbspstring = "";
 
-	for (var i = 0; i < (previousline[currentline.length-1].replace(/&nbsp;/gi,' ').length)-(currentline[currentline.length-1].length); i++)
-	{	
-		var node = window.document.createTextNode( "\u00a0" );
-		var range = window.getSelection().getRangeAt(0);
+	if( previousline[currentline.length-1] != null)
+	{
 
-		var selct = window.getSelection();
-		var range2 = range.cloneRange();
-		selct.removeAllRanges();
-		range.deleteContents();
-		range.insertNode(node);
-		range2.selectNode(node);		
-		range2.collapse(false);
-		selct.removeAllRanges();
-		selct.addRange(range2);
+		for (var i = 0; i < (previousline[currentline.length-1].replace(/&nbsp;/gi,' ').length)-(currentline[currentline.length-1].length); i++)
+		{	
+			var node = window.document.createTextNode( "\u00a0" );
+			var range = window.getSelection().getRangeAt(0);
 
+			var selct = window.getSelection();
+			var range2 = range.cloneRange();
+			selct.removeAllRanges();
+			range.deleteContents();
+			range.insertNode(node);
+			range2.selectNode(node);		
+			range2.collapse(false);
+			selct.removeAllRanges();
+			selct.addRange(range2);
+
+		}
 	}
+	else
+	{
+		CodePress.createTextnode();
+		return;
+	}
+
+	
 	var node = window.document.createTextNode( "|" );
 	var range = window.getSelection().getRangeAt(0);
 
@@ -236,6 +248,7 @@ align : function()
 	range2.collapse(false);
 	selct.removeAllRanges();
 	selct.addRange(range2);
+	
 
 
 },
@@ -258,7 +271,7 @@ createTextnode : function()
 
 insertMethod : function( name )
 {
-	var node = window.document.createTextNode( name );
+	var node = window.document.createTextNode( "!|" + name + "|" );
 	var range = window.getSelection().getRangeAt(0);
 
 	var selct = window.getSelection();
@@ -270,10 +283,10 @@ insertMethod : function( name )
 	range2.collapse(false);
 	selct.removeAllRanges();
 	selct.addRange(range2);
-	
+
 	this.syntaxHighlight();
 },
-	
+
 
 removeTags : function( code )
 {
@@ -437,7 +450,7 @@ alignStart : function( code ) {
 	var utskrift = "";
 	for( var i=0; i < linjearray.length-1; i++ ){ // Går igjennom hver linje
 
-		
+
 		if( linjearray[i][0].search(/\!/) != -1  ) //det er et utropstegn
 		{
 			template = new Array();
@@ -449,7 +462,8 @@ alignStart : function( code ) {
 			tablestart = i;
 		}
 
-		if( linjearray[i].length > 1 )
+
+		if( linjearray[i].length > 1 ) //linjen er ikke tom
 		{ 
 			for( var k = 0; k < linjearray[i].length; k++ )
 			{			 
@@ -459,7 +473,8 @@ alignStart : function( code ) {
 				}
 			}
 
-			if( i > 0 && linjearray[i-1].length == 1 ) {
+			if( i > 0 && linjearray[i-1].length == 1 ) //det er ikke første linje og forrige linje er tom
+			{
 				tablestart = i;
 				for( var k = 0; k < linjearray[i].length; k++ )
 				{			 
@@ -470,23 +485,35 @@ alignStart : function( code ) {
 				}
 			}
 
-			if( linjearray[i+1].length == 1  || linjearray[i+1][0].search(/\!/) != -1)
+			if( i > 0 && linjearray[i-1][0].search(/\!/) != -1 ) //det er ikke første linje og det står en pipe på forrige linje
+			{				
+				for( var k = 1; k < linjearray[i].length-1; k++ )
+				{			 
+					if( linjearray[i][k].search(/\!\d/) == -1 )
+					{
+						template[k] = linjearray[i][k].length;
+					}
+				}
+			}
+
+			if( linjearray[i+1].length == 1  || linjearray[i+1][0].search(/\!/) != -1 )
 			{
 				for( var l = tablestart; l <= i; l++ )
 				{
 					for( var m = 0; m < linjearray[l].length-1; m++ )
 					{		
-						var nbspstring = "";	
-						for( var n = linjearray[l][m].length; n < template[m]; n++)
+						var nbspstring = "";
+						if( linjearray[l][0].search(/\!/) == -1 )
 						{
-							nbspstring += "&nbsp;";					 
+							for( var n = linjearray[l][m].length; n < template[m]; n++)
+							{
+								nbspstring += "&nbsp;";					 
+							}
 						}
 						linjearray[l][m] += nbspstring + "|";
-
 					}
 				}				
 			}
-
 		}
 	}
 
@@ -500,6 +527,7 @@ alignStart : function( code ) {
 
 	editor.innerHTML = utskrift;
 },
+
 
 
 //undo and redo methods
@@ -542,7 +570,7 @@ window.addEventListener('load', function() { CodePress.initialize('new'); }, tru
 Language.syntax = [
                    { input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
                    { input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
-                   { input : /\b(abstract|continue|for|new|switch|default|goto|boolean|do|if|private|this|break|double|protected|throw|byte|else|import|public|throws|case|return|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|const|float|while|function|label)\b/g, output : '<b>$1</b>' }, // reserved words
+                   { input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // reserved words
                    { input : /([\(\){}])/g, output : '<em>$1</em>' }, // special chars;
                    { input : /([^:]|^)\/\/(.*?)(<br|<\/P)/g, output : '$1<i>//$2</i>$3' }, // comments //
                    { input : /\/\*(.*?)\*\//g, output : '<i>/*$1*/</i>' } // comments /* */
