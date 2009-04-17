@@ -14,7 +14,6 @@ import fitnesse.components.SaveRecorder;
 import fitnesse.html.HtmlPage;
 import fitnesse.html.HtmlTag;
 import fitnesse.html.HtmlUtil;
-import fitnesse.html.TagGroup;
 import fitnesse.http.Request;
 import fitnesse.http.Response;
 import fitnesse.http.SimpleResponse;
@@ -141,6 +140,7 @@ public class ExperiorResponder implements SecureResponder
 	}
 
     private void handleRedirect(HtmlTag form) {
+    	
         String redirectUrl = request.getHeader("Referer").toString();
         int questionMarkIndex = redirectUrl.indexOf("?");
         if (questionMarkIndex > 0)
@@ -170,14 +170,16 @@ public class ExperiorResponder implements SecureResponder
 		form.addAttribute( "name", "foo" );
 		form.addAttribute("action", resource);
 		form.addAttribute("method", "post");
-
+		
 		form.add(HtmlUtil.makeInputTag("hidden", "responder", "saveData"));
 		form.add(HtmlUtil.makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
 		form.add(HtmlUtil.makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
-		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer")) {
+		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer"))
+		{
 			handleRedirect(form);
 		}	
 
+		form.add( createSaveAndExitButton() );
 		form.add( createSaveButton() );
 		form.add( createAlignButton() );
 		
@@ -199,12 +201,22 @@ public class ExperiorResponder implements SecureResponder
 
 	private HtmlTag createSaveButton()
 	{
-		HtmlTag savebutton = new HtmlTag("input");
-		savebutton.addAttribute("type", "submit");
-		savebutton.addAttribute("value", "Save");
-		savebutton.addAttribute("name", "save");
-		savebutton.addAttribute("onClick", "moveText()");
+		HtmlTag savebutton = new HtmlTag( "input" );
+		savebutton.addAttribute( "type", "submit" );
+		savebutton.addAttribute( "value", "Save" );
+		savebutton.addAttribute( "name", "save" );
+		savebutton.addAttribute( "onClick", "moveText()" );
 		return savebutton;
+	}
+	
+	private HtmlTag createSaveAndExitButton()
+	{
+		HtmlTag saveandexitbutton = new HtmlTag( "input" );
+		saveandexitbutton.addAttribute( "type", "submit" );
+		saveandexitbutton.addAttribute( "value", "Save & exit" );
+		saveandexitbutton.addAttribute("name", "saveandexit" );
+		saveandexitbutton.addAttribute("onClick", "saveAndExit()" );
+		return saveandexitbutton;
 	}
 	
 	private HtmlTag createAlignButton()
@@ -270,10 +282,6 @@ public class ExperiorResponder implements SecureResponder
 		return builder.toString();
 	}
 
-	/*
-	 * Arvet metode fra SecureResponder, må implementeres
-	 *
-	 */
 	public SecureOperation getSecureOperation()
 	{
 		return new SecureReadOperation();
