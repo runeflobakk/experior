@@ -95,8 +95,7 @@ public class ExperiorResponder implements SecureResponder
 	{
 		HtmlPage html = context.htmlPageFactory.newPage();
 		html.title.use("Edit with Experior " + resource);//vises i tittellinjen
-		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/codepress.js" ) );
-		
+		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/codepress.js" ) );		
 
 		HtmlTag breadCrumbs = HtmlUtil.makeBreadCrumbsWithPageType(resource, "Edit Page with Experior:");
 
@@ -171,17 +170,19 @@ public class ExperiorResponder implements SecureResponder
 		form.addAttribute("id", "hiddenfieldform" );
 		form.addAttribute("action", resource);
 		form.addAttribute("method", "post");
+		form.addAttribute("onsubmit", "moveText()" );
 		
-		form.add(HtmlUtil.makeInputTag("hidden", "responder", "saveData"));
+		form.add(HtmlUtil.makeInputTag("hidden", "responder", "save"));
 		form.add(HtmlUtil.makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
 		form.add(HtmlUtil.makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
+		form.add(HtmlUtil.makeInputTag("submit", "saveexit", "Save & exit" ) );
+		form.add( HtmlUtil.makeInputTag("submit", "save", "Save") );
+				
 		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer"))
 		{
 			handleRedirect(form);
 		}	
 
-		form.add( createSaveAndExitButton() );
-		form.add( createSaveButton() );
 		form.add( createAlignButton() );
 		
 		HtmlTag textarea = new HtmlTag("textarea");
@@ -198,26 +199,6 @@ public class ExperiorResponder implements SecureResponder
 		form.add(divHidden);		
 		
 		return form;		
-	}
-
-	private HtmlTag createSaveButton()
-	{
-		HtmlTag savebutton = new HtmlTag( "input" );
-		savebutton.addAttribute( "type", "submit" );
-		savebutton.addAttribute( "value", "Save" );
-		savebutton.addAttribute( "name", "save" );
-		savebutton.addAttribute( "onClick", "moveText()" );
-		return savebutton;
-	}
-	
-	private HtmlTag createSaveAndExitButton()
-	{
-		HtmlTag saveandexitbutton = new HtmlTag( "input" );
-		saveandexitbutton.addAttribute( "type", "submit" );
-		saveandexitbutton.addAttribute( "value", "Save & exit" );
-		saveandexitbutton.addAttribute("name", "saveandexit" );
-		saveandexitbutton.addAttribute("onClick", "saveAndExit()" );
-		return saveandexitbutton;
 	}
 	
 	private HtmlTag createAlignButton()
