@@ -37,6 +37,8 @@ public SaveResponder()
 public Response makeResponse(FitNesseContext context, Request request) throws Exception {
  String resource = request.getResource();
  WikiPage page = getPage(resource, context);
+ System.out.println(request);
+ 
  data = page.getData();
  user = request.getAuthorizationUsername();
 
@@ -72,6 +74,10 @@ private Response saveEdits(Request request, WikiPage page) throws Exception {
  if (request.hasInput("redirect"))
  {	 
    response.redirect(request.getInput("redirect").toString());   
+ }
+ else if( request.hasInput("saveexit") )
+ {
+	 response.redirect( request.getResource() );
  }
  else
  {	

@@ -75,6 +75,7 @@ private Response saveEdits(Request request, WikiPage page) throws Exception {
  }
  else
  {
+	 System.out.println("HEISANN FRA EXIT");
 	response.redirect(request.getResource());	
  }
 
