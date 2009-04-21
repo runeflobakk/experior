@@ -25,12 +25,12 @@ CodePress = function(obj, obj2) {
 	self.style.visibility = 'hidden';
 	self.style.position = 'absolute';
 	self.options = self.textarea.className;
-		
+
 	self.initialize = function() {
-		
+
 		self.editor = self.contentWindow.CodePress;
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
-		
+
 		self.editor.alignStart( self.textarea.value);
 		//self.editor.setCode(self.textarea.value);
 		self.setOptions();
@@ -39,57 +39,57 @@ CodePress = function(obj, obj2) {
 		self.style.position = 'static';
 		self.style.visibility = 'visible';
 		self.style.display = 'inline';		
-	
+
 		var newdiv = document.createElement('div'); 
 		var divIdName = 'methodsDiv'; 
-		
+
 		var metoder = hidden.value.split("\n");
 		var metodestring = "";
-		
+
 		document.body.appendChild(newdiv);
 		newdiv.innerHTML = "<b>Methods:</b><br/><br/>";
 		newdiv.setAttribute('id',divIdName); 
 		newdiv.style.width = "115px"; 
-		
+
 		newdiv.style.left = "3px";
-		
+
 		newdiv.style.top = "120px"; 
 		newdiv.style.position = "fixed"; 
 		newdiv.style.background = "#d9dfc9";
-		
+
 		for( var i = 0; i < metoder.length; i++ )
 		{	
 			metoder[i].trim;
-			
+
 			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + metoder[i] + "</a><br/><br/>";		
 		}
 		newdiv.innerHTML += metodestring;
-		
-		 
+
+
 	}
-	
-		
+
+
 	// obj can by a textarea id or a string (code)
 	self.edit = function(obj,language) {
 		if(obj) self.textarea.value = document.getElementById(obj) ? document.getElementById(obj).value : obj;
 		if(!self.textarea.disabled) return;
 		self.language = language ? language : self.getLanguage();
-		
+
 		self.src = CodePress.path+'codepress.html?';
 		//+self.language;
 		//+'&ts='+(new Date).getTime();
-		
-		
+
+
 		if(self.attachEvent)
 		{
-			
+
 			self.attachEvent('onload',self.initialize);
-			
+
 		}
 		else 
-			{
+		{
 			self.addEventListener('load',self.initialize,false);
-			}
+		}
 	}
 
 	self.getLanguage = function() {
@@ -97,13 +97,13 @@ CodePress = function(obj, obj2) {
 			if(self.options.match('\\b'+language+'\\b')) 
 				return CodePress.languages[language] ? language : 'generic';
 	}
-	
+
 	self.setOptions = function() {
 		if(self.options.match('autocomplete-off')) self.toggleAutoComplete();
 		if(self.options.match('readonly-on')) self.toggleReadOnly();
 		if(self.options.match('linenumbers-off')) self.toggleLineNumbers();
 	}
-	
+
 	self.getCode = function() {
 		return self.textarea.disabled ? self.editor.getCode() : self.textarea.value;
 	}
@@ -111,32 +111,32 @@ CodePress = function(obj, obj2) {
 	self.setCode = function(code) {
 		self.textarea.disabled ? self.editor.setCode(code) : self.textarea.value = code;
 	}
-	
+
 	self.syntaxHighlight2 = function( hidden ){
-		
+
 		var test = hidden;
 		//alert("ff"+arguments[0]);
 		alert("ffgg");
 		self.editor.syntaxHighlight('paste', test );
 	}
-		
+
 
 	self.toggleAutoComplete = function() {
 		self.editor.autocomplete = (self.editor.autocomplete) ? false : true;
 	}
-	
-	
+
+
 	self.toggleReadOnly = function() {
 		self.textarea.readOnly = (self.textarea.readOnly) ? false : true;
 		if(self.style.display != 'none') // prevent exception on FF + iframe with display:none
 			self.editor.readOnly(self.textarea.readOnly ? true : false);
 	}
-	
+
 	self.toggleLineNumbers = function() {
 		var cn = self.editor.body.className;
 		self.editor.body.className = (cn==''||cn=='show-line-numbers') ? 'hide-line-numbers' : 'show-line-numbers';
 	}
-	
+
 	self.toggleEditor = function() {
 		if(self.textarea.disabled) {
 			self.textarea.value = getCode();
@@ -144,7 +144,7 @@ CodePress = function(obj, obj2) {
 			self.style.display = 'none';
 			self.textarea.style.display = 'inline';
 		}
-		
+
 		else {
 			self.textarea.disabled = true;
 			self.setCode(self.textarea.value);
@@ -154,24 +154,24 @@ CodePress = function(obj, obj2) {
 		}
 	}
 
-	
+
 	self.edit();
 	return self;
 }
 
 CodePress.languages = {	
-	csharp : 'C#', 
-	css : 'CSS', 
-	generic : 'Generic',
-	html : 'HTML',
-	java : 'Java', 
-	javascript : 'JavaScript', 
-	perl : 'Perl', 
-	ruby : 'Ruby',	
-	php : 'PHP', 
-	text : 'Text', 
-	sql : 'SQL',
-	vbscript : 'VBScript'
+		csharp : 'C#', 
+		css : 'CSS', 
+		generic : 'Generic',
+		html : 'HTML',
+		java : 'Java', 
+		javascript : 'JavaScript', 
+		perl : 'Perl', 
+		ruby : 'Ruby',	
+		php : 'PHP', 
+		text : 'Text', 
+		sql : 'SQL',
+		vbscript : 'VBScript'
 }
 
 
@@ -191,7 +191,7 @@ CodePress.run = function() {
 			t[i].id = id+'_cp';
 			eval(id+' = new CodePress(t[i], hiddenArea)');
 			t[i].parentNode.insertBefore(eval(id), t[i]);
-			
+
 		} 
 	}
 	hidden = document.getElementById( "skjult" );	
@@ -201,6 +201,7 @@ if(window.attachEvent) {
 	window.attachEvent('onload',CodePress.run);
 }
 else window.addEventListener('DOMContentLoaded',CodePress.run,false);
+
 
 //Gets the text from the editor to the invisible textarea
 function moveText()
@@ -212,23 +213,21 @@ function saveAndExit()
 {
 	hidden.value = self.getCode();
 	var form = document.getElementById( "hiddenfieldform" );
-	//form.innerHTML += "<input type=hidden name=responder value=saveData>";
-	alert( "Virker ikke! Saver men redirecter ikke til forrige side" );
+	//form.innerHTML += "<input type=hidden name=responder value=exit>";
 	
+	alert( "Virker ikke! Saver men redirecter ikke til forrige side" );	
 }
-
 
 function alignClick()
 {	
 	self.editor.alignStart( self.getCode() );
 	self.setOptions();
 	self.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field
-	
 }
 
-// Gets the text from the hidden field 
+//Gets the text from the hidden field 
 function moveTextUp()
-{	 
+{	
 	self.setCode( hidden.value );
 }
 
