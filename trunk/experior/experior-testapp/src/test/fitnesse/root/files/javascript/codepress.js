@@ -32,7 +32,6 @@ CodePress = function(obj, obj2) {
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
 
 		self.editor.alignStart( self.textarea.value);
-		//self.editor.setCode(self.textarea.value);
 		self.setOptions();
 		self.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field
 		self.textarea.style.display = 'none';
@@ -43,7 +42,7 @@ CodePress = function(obj, obj2) {
 		var newdiv = document.createElement('div'); 
 		var divIdName = 'methodsDiv'; 
 
-		var metoder = hidden.value.split("\n");
+		var methods = hidden.value.split("\n");
 		var metodestring = "";
 
 		document.body.appendChild(newdiv);
@@ -57,17 +56,16 @@ CodePress = function(obj, obj2) {
 		newdiv.style.position = "fixed"; 
 		newdiv.style.background = "#d9dfc9";
 
-		for( var i = 0; i < metoder.length; i++ )
+		for( var i = 0; i < methods.length; i++ )
 		{	
-			metoder[i].trim;
+			methods[i].trim;
 
-			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + metoder[i] + "</a><br/><br/>";		
+			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methods[i] + "</a><br/><br/>";		
 		}
 		newdiv.innerHTML += metodestring;
 
 
 	}
-
 
 	// obj can by a textarea id or a string (code)
 	self.edit = function(obj,language) {
@@ -82,9 +80,7 @@ CodePress = function(obj, obj2) {
 
 		if(self.attachEvent)
 		{
-
 			self.attachEvent('onload',self.initialize);
-
 		}
 		else 
 		{
@@ -160,19 +156,8 @@ CodePress = function(obj, obj2) {
 }
 
 CodePress.languages = {	
-		csharp : 'C#', 
-		css : 'CSS', 
 		generic : 'Generic',
-		html : 'HTML',
-		java : 'Java', 
-		javascript : 'JavaScript', 
-		perl : 'Perl', 
-		ruby : 'Ruby',	
-		php : 'PHP', 
-		text : 'Text', 
-		sql : 'SQL',
-		vbscript : 'VBScript'
-}
+		}
 
 
 CodePress.run = function() {
@@ -213,9 +198,6 @@ function saveAndExit()
 {
 	hidden.value = self.getCode();
 	var form = document.getElementById( "hiddenfieldform" );
-	//form.innerHTML += "<input type=hidden name=responder value=exit>";
-	
-	alert( "Virker ikke! Saver men redirecter ikke til forrige side" );	
 }
 
 function alignClick()
@@ -231,10 +213,10 @@ function moveTextUp()
 	self.setCode( hidden.value );
 }
 
-function insertMethod(methods)
+function insertMethod(method)
 {
-	var metoder = hidden.value.split("\n");
-	self.editor.insertMethod(metoder[methods]);
+	var methods = hidden.value.split("\n");
+	self.editor.insertMethod(methods[method]);
 	self.contentWindow.focus();
 }
 
