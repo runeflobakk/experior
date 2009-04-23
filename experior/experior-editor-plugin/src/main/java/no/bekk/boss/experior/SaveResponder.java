@@ -22,101 +22,101 @@ import fitnesse.responders.editing.MergeResponder;
 import fitnesse.wiki.*;
 
 public class SaveResponder implements SecureResponder {
-public static ContentFilter contentFilter;
+	public static ContentFilter contentFilter;
 
-private String user;
-private long ticketId;
-private String savedContent;
-private PageData data;
+	private String user;
+	private long ticketId;
+	private String savedContent;
+	private PageData data;
 
-public SaveResponder()
-{
-	
-}
+	public SaveResponder()
+	{
 
-public Response makeResponse(FitNesseContext context, Request request) throws Exception {
- String resource = request.getResource();
- WikiPage page = getPage(resource, context);
- System.out.println(request);
- 
- data = page.getData();
- user = request.getAuthorizationUsername();
+	}
 
- if (editsNeedMerge(request))
-   return new MergeResponder(request).makeResponse(context, request);
- else {
-   savedContent = (String) request.getInput(EditResponder.CONTENT_INPUT_NAME);
-   if (contentFilter != null && !contentFilter.isContentAcceptable(savedContent, resource))
-     return makeBannedContentResponse(context, resource);
-   else
-     return saveEdits(request, page);
- }
-}
+	public Response makeResponse(FitNesseContext context, Request request) throws Exception {
+		String resource = request.getResource();
+		WikiPage page = getPage(resource, context);
 
-private Response makeBannedContentResponse(FitNesseContext context, String resource) throws Exception {
- SimpleResponse response = new SimpleResponse();
- HtmlPage html = context.htmlPageFactory.newPage();
- html.title.use("Edit " + resource);
- html.header.use(HtmlUtil.makeBreadCrumbsWithPageType(resource, "Banned Content"));
- html.main.use(new HtmlTag("h3", "The content you're trying to save has been " +
-   "banned from this site.  Your changes will not be saved!"));
- response.setContent(html.html());
- return response;
-}
 
-private Response saveEdits(Request request, WikiPage page) throws Exception {
- Response response = new SimpleResponse();
- setData();
- VersionInfo commitRecord = page.commit(data);
- response.addHeader("Previous-Version", commitRecord.getName());
- RecentChanges.updateRecentChanges(data);
+		data = page.getData();
+		user = request.getAuthorizationUsername();
 
- if (request.hasInput("redirect"))
- {	 
-   response.redirect(request.getInput("redirect").toString());   
- }
- else if( request.hasInput("saveexit") )
- {
-	 response.redirect( request.getResource() );
- }
- else
- {	
-	response.redirect(request.getResource() + "?Experior");
- }
+		if (editsNeedMerge(request))
+			return new MergeResponder(request).makeResponse(context, request);
+		else {
+			savedContent = (String) request.getInput(EditResponder.CONTENT_INPUT_NAME);
+			if (contentFilter != null && !contentFilter.isContentAcceptable(savedContent, resource))
+				return makeBannedContentResponse(context, resource);
+			else
+				return saveEdits(request, page);
+		}
+	}
 
- return response;
-}
+	private Response makeBannedContentResponse(FitNesseContext context, String resource) throws Exception {
+		SimpleResponse response = new SimpleResponse();
+		HtmlPage html = context.htmlPageFactory.newPage();
+		html.title.use("Edit " + resource);
+		html.header.use(HtmlUtil.makeBreadCrumbsWithPageType(resource, "Banned Content"));
+		html.main.use(new HtmlTag("h3", "The content you're trying to save has been " +
+		"banned from this site.  Your changes will not be saved!"));
+		response.setContent(html.html());
+		return response;
+	}
 
-private boolean editsNeedMerge(Request request) throws Exception {
- String saveIdString = (String) request.getInput(EditResponder.SAVE_ID);
- long saveId = Long.parseLong(saveIdString);
+	private Response saveEdits(Request request, WikiPage page) throws Exception {
+		Response response = new SimpleResponse();
+		setData();
+		VersionInfo commitRecord = page.commit(data);
+		response.addHeader("Previous-Version", commitRecord.getName());
+		RecentChanges.updateRecentChanges(data);
 
- String ticketIdString = (String) request.getInput(EditResponder.TICKET_ID);
- ticketId = Long.parseLong(ticketIdString);
+		if (request.hasInput("redirect"))
+		{	 
+			response.redirect(request.getInput("redirect").toString());   
+		}
+		else if( request.hasInput("saveexit") )
+		{
+			response.redirect( request.getResource() );
+		}
+		else
+		{	
+			response.redirect(request.getResource() + "?Experior");
+		}
 
- return SaveRecorder.changesShouldBeMerged(saveId, ticketId, data);
-}
+		return response;
+	}
 
-private WikiPage getPage(String resource, FitNesseContext context) throws Exception {
- WikiPagePath path = PathParser.parse(resource);
- PageCrawler pageCrawler = context.root.getPageCrawler();
- WikiPage page = pageCrawler.getPage(context.root, path);
- if (page == null)
-   page = pageCrawler.addPage(context.root, PathParser.parse(resource));
- return page;
-}
+	private boolean editsNeedMerge(Request request) throws Exception {
+		String saveIdString = (String) request.getInput(EditResponder.SAVE_ID);
+		long saveId = Long.parseLong(saveIdString);
 
-private void setData() throws Exception {
- data.setContent(savedContent);
- data.setAttribute(EditResponder.TICKET_ID, ticketId + "");
- SaveRecorder.pageSaved(data);
- if (user != null)
-   data.setAttribute(WikiPage.LAST_MODIFYING_USER, user);
- else
-   data.removeAttribute(WikiPage.LAST_MODIFYING_USER);
-}
+		String ticketIdString = (String) request.getInput(EditResponder.TICKET_ID);
+		ticketId = Long.parseLong(ticketIdString);
 
-public SecureOperation getSecureOperation() {
- return new SecureWriteOperation();
-}
+		return SaveRecorder.changesShouldBeMerged(saveId, ticketId, data);
+	}
+
+	private WikiPage getPage(String resource, FitNesseContext context) throws Exception {
+		WikiPagePath path = PathParser.parse(resource);
+		PageCrawler pageCrawler = context.root.getPageCrawler();
+		WikiPage page = pageCrawler.getPage(context.root, path);
+		if (page == null)
+			page = pageCrawler.addPage(context.root, PathParser.parse(resource));
+		return page;
+	}
+
+	private void setData() throws Exception {
+		data.setContent(savedContent);
+		data.setAttribute(EditResponder.TICKET_ID, ticketId + "");
+		SaveRecorder.pageSaved(data);
+		if (user != null)
+			data.setAttribute(WikiPage.LAST_MODIFYING_USER, user);
+		else
+			data.removeAttribute(WikiPage.LAST_MODIFYING_USER);
+	}
+
+	public SecureOperation getSecureOperation() {
+		return new SecureWriteOperation();
+	}
 }
