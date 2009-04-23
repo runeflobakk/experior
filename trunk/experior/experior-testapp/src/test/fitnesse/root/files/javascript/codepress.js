@@ -237,3 +237,9 @@ function insertMethod(methods)
 	self.editor.insertMethod(metoder[methods]);
 	self.contentWindow.focus();
 }
+
+function checkFirstLine()
+{
+	var url = window.location.href;
+	self.editor.checkFirstLine( url );
+}
