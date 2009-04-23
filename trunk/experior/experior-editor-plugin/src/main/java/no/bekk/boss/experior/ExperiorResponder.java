@@ -101,6 +101,8 @@ public class ExperiorResponder implements SecureResponder
 
 		html.header.use(breadCrumbs);
 		html.main.use(makeEditForm(resource));
+		
+		html.body.addAttribute("onload", "setInterval('checkFirstLine()', 3000)" );
 
 		return html.html();
 	}
@@ -156,7 +158,7 @@ public class ExperiorResponder implements SecureResponder
 		textarea.addAttribute("cols", "130");
 		textarea.addAttribute("class", "codepress javascript linenumbers-off");
 		textarea.addAttribute("tabindex", "1");
-		textarea.add(content);
+		textarea.add( content );
 		return textarea;
 	}
 
