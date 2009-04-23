@@ -15,6 +15,7 @@
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
 var methods;
+var firstLine;
 
 CodePress = {
 		scrolling : false,
@@ -33,6 +34,8 @@ CodePress = {
 	window.addEventListener('scroll', function() { if(!CodePress.scrolling) CodePress.syntaxHighlight('scroll') }, false);
 	completeChars = this.getCompleteChars();
 	completeEndingChars =  this.getCompleteEndingChars();
+	firstline = CodePress.getCode().split("\n");
+	firstline = firstline[0];
 },
 
 //treat key bindings
@@ -115,7 +118,6 @@ getEditor : function() {
 
 //syntax highlighting parser
 syntaxHighlight : function(flag, methods2) {
-
 	if( methods2 == "feil" )
 		alert("Fant ikke angitt klasse. Highlighting fungerer dermed ikke!");
 	if( methods2 != null )
@@ -172,7 +174,7 @@ syntaxHighlight : function(flag, methods2) {
 },
 
 getLastWord : function() {
-	
+
 },
 
 align : function()
@@ -196,7 +198,8 @@ align : function()
 
 	range.collapse( false );
 
-	if( linjearray[linjearray.length-2] == 0 || linjearray[linjearray.length-2].search(/span/) > 0 )
+
+	if( linjearray.length <= 1 || linjearray[linjearray.length-2] == 0 || linjearray[linjearray.length-2].search(/span/) > 0 )
 	{		
 		this.createTextnode();
 		return;
@@ -226,7 +229,6 @@ align : function()
 			range2.collapse(false);
 			selct.removeAllRanges();
 			selct.addRange(range2);
-
 		}
 	}
 	else
@@ -235,7 +237,7 @@ align : function()
 		return;
 	}
 
-	
+
 	var node = window.document.createTextNode( "|" );
 	var range = window.getSelection().getRangeAt(0);
 
@@ -248,7 +250,7 @@ align : function()
 	range2.collapse(false);
 	selct.removeAllRanges();
 	selct.addRange(range2);
-	
+
 
 
 },
@@ -406,8 +408,11 @@ insertCode : function(code,replaceCursorBefore) {
 //get code from editor
 getCode : function() {
 	if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '')
+	{
 		editor = CodePress.getEditor();	
+	}
 	var code = editor.innerHTML;
+
 	code = code.replace(/<p>/g,'\n');
 	code = code.replace(/<br>/g,'\n');
 	code = code.replace(/&nbsp;/gi,'');
@@ -434,11 +439,95 @@ setCode : function() {
 
 },
 
+checkFirstLine : function( url ) {	
+	var tekst = CodePress.getCode().split("\n");
+
+
+	if( tekst[0] != firstline )
+	{		
+		var range = window.getSelection().getRangeAt(0);
+		var startNode = document.getElementsByTagName("pre").item(0);
+		var startOffset = 0;	
+		range.setStartBefore( startNode );
+
+		var div = document.createElement('div');
+		div.appendChild(range.cloneContents());		
+
+		var selectedCode = CodePress.removeTags( div.innerHTML );
+		range.collapse( false );
+
+		if( firstline.length < selectedCode.length )
+		{
+			firstline = tekst[0];
+			CodePress.loadXMLString( url );
+		}	
+	}
+},
+
+loadXMLString : function( url) {
+
+	var pos = url.indexOf("?");
+	var url = url.substring(0, pos );
+	url += "?save"
+		alert( url );
+
+
+	httpRequest=null;
+	if(window.XMLHttpRequest)
+	{
+		//code for IE7, Firefox, Opera, etc.
+		httpRequest=new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		//code for IE6, IE5
+		httpRequest=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	if(httpRequest!=null)
+	{
+
+		httpRequest.open("GET",url,true);
+		httpRequest.onreadystatechange=CodePress.state_Change();
+		httpRequest.overrideMimeType('text/xml');
+		httpRequest.send(null);
+	}
+	else
+	{
+		alert("Your browser does not support XMLHTTP.");
+	}
+},
+
+
+state_Change : function() {
+	if (httpRequest.readyState==4)
+	{
+		if (httpRequest.status == 404)
+		{
+			alert('Requestet URL is not found');
+		}
+		else if (httpRequest.status == 403)
+		{
+			alert('Access Denied');
+		}
+		else if (httpRequest.status==200)
+		{                
+			alert(httpRequest.status);                
+		}
+		else
+		{
+			alert("Problem retrieving XML data:" + httpRequest.statusText);
+		}
+	}       
+},
+
+
 alignStart : function( code ) {	
-	var tekst = code.split("\n");
+	var tekst = code.split("\n");	
 	var linjearray = new Array();
 	var template = new Array();
 	var utskrift;
+	firstline = tekst[0];
+
 
 	var tablestart = 0;
 
@@ -517,12 +606,13 @@ alignStart : function( code ) {
 		}
 	}
 
-	for( var i = 0; i < linjearray.length-1; i++ )
+	for( var i = 0; i < linjearray.length; i++ )
 	{
 		for( var j = 0; j < linjearray[i].length; j++ )
 			utskrift += linjearray[i][j];
 
-		utskrift += "\n";
+		if( i < linjearray.length-1)
+			utskrift += "\n";
 	}
 
 	editor.innerHTML = utskrift;
