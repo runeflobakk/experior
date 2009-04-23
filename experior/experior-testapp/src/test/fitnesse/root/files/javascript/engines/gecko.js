@@ -118,8 +118,6 @@ getEditor : function() {
 
 //syntax highlighting parser
 syntaxHighlight : function(flag, methods2) {
-	if( methods2 == "feil" )
-		alert("Fant ikke angitt klasse. Highlighting fungerer dermed ikke!");
 	if( methods2 != null )
 		methods = methods2;
 
@@ -142,31 +140,27 @@ syntaxHighlight : function(flag, methods2) {
 	for(i=0;i<Language.syntax.length;i++) 
 		x = x.replace(Language.syntax[i].input,Language.syntax[i].output);
 
-	var temp;
-	var temp2;
-	var temp3;
-	var evalstring = "";		
-	var temp3;
-	var test2;
+	var words1;
+	var words2;
+	var evalstring = "";
+	var words3;
 
 	for(j=0;j<lines.length; j++) {
 		lines[j] = lines[j].replace(/\s+$/,"");
-		temp = lines[j].split(' ');
+		words1 = lines[j].split(' ');
 
-		temp2 = temp.join( "(\\s+|(?:&nbsp;)*\\s*\\|.*?\\|\\s*)" );
+		words2 = words1.join( "(\\s+|(?:&nbsp;)*\\s*\\|.*?\\|\\s*)" );
 
-		temp3 = temp.join(" ");		
+		words3 = "";
+		for (var i = 0; i<words1.length; i++) {
 
-		test2 = "";
-		for (var i = 0; i<temp.length; i++) {
+			words3 += "<s>"+words1[i]+"</s>";
 
-			test2 += "<s>"+temp[i]+"</s>";
-
-			if (i != temp.length-1)
-				test2 += "$"+(i+1);
+			if (i != words1.length-1)
+				words3 += "$"+(i+1);
 		}		
 
-		eval('x = x.replace(/'+temp2+'/g, \"'+ test2 + '\")');
+		eval('x = x.replace(/'+words2+'/g, \"'+ words3 + '\")');
 	}
 
 	editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.replace(z,x);
@@ -174,7 +168,10 @@ syntaxHighlight : function(flag, methods2) {
 },
 
 getLastWord : function() {
-
+	var rangeAndCaret = CodePress.getRangeAndCaret();
+	words = rangeAndCaret[0].substring(rangeAndCaret[1]-40,rangeAndCaret[1]);
+	words = words.replace(/[\s\n\r\);\W]/g,'\n').split('\n');
+	return words[words.length-1].replace(/[\W]/gi,'').toLowerCase();
 },
 
 align : function()
@@ -189,32 +186,31 @@ align : function()
 	var div = document.createElement('div');
 	div.appendChild(range.cloneContents());
 
-	var linjearray = div.innerHTML.split("<br>");
+	var linearray = div.innerHTML.split("<br>");
 
-	for( var i = 0; i < linjearray.length; i++ )
+	for( var i = 0; i < linearray.length; i++ )
 	{
-		linjearray[i] = this.removeTags( linjearray[i] );
+		linearray[i] = this.removeTags( linearray[i] );
 	}
 
 	range.collapse( false );
 
 
-	if( linjearray.length <= 1 || linjearray[linjearray.length-2] == 0 || linjearray[linjearray.length-2].search(/span/) > 0 )
+	if( linearray.length <= 1 || linearray[linearray.length-2] == 0 || linearray[linearray.length-2].search(/span/) > 0 )
 	{		
 		this.createTextnode();
 		return;
 	}
 
-	var currentline = linjearray[linjearray.length-1].split("|");
+	var currentline = linearray[linearray.length-1].split("|");
 
-	if (linjearray.length > 0 && linjearray.length-2 > 0 ) 
-		var previousline = linjearray[linjearray.length-2].split("|");
+	if (linearray.length > 0 && linearray.length-2 > 0 ) 
+		var previousline = linearray[linearray.length-2].split("|");
 
 	var nbspstring = "";
 
 	if( previousline[currentline.length-1] != null)
 	{
-
 		for (var i = 0; i < (previousline[currentline.length-1].replace(/&nbsp;/gi,' ').length)-(currentline[currentline.length-1].length); i++)
 		{	
 			var node = window.document.createTextNode( "\u00a0" );
@@ -250,9 +246,6 @@ align : function()
 	range2.collapse(false);
 	selct.removeAllRanges();
 	selct.addRange(range2);
-
-
-
 },
 
 createTextnode : function()
@@ -523,7 +516,7 @@ state_Change : function() {
 
 alignStart : function( code ) {	
 	var tekst = code.split("\n");	
-	var linjearray = new Array();
+	var linearray = new Array();
 	var template = new Array();
 	var utskrift;
 	firstline = tekst[0];
@@ -533,92 +526,90 @@ alignStart : function( code ) {
 
 	for( var i = 0; i < tekst.length; i++ )
 	{	
-		linjearray[i] = tekst[i].split("|");
+		linearray[i] = tekst[i].split("|");
 
 	} 
 	var utskrift = "";
-	for( var i=0; i < linjearray.length-1; i++ ){ // Går igjennom hver linje
+	for( var i=0; i < linearray.length-1; i++ ){ // Går igjennom hver line
 
 
-		if( linjearray[i][0].search(/\!/) != -1  ) //det er et utropstegn
+		if( linearray[i][0].search(/\!/) != -1  ) //det er et utropstegn
 		{
 			template = new Array();
 
-			for( var j = 0; j < linjearray[i].length-1; j++ )
+			for( var j = 0; j < linearray[i].length-1; j++ )
 			{
-				template[j] = linjearray[i][j].length;
+				template[j] = linearray[i][j].length;
 			}		
 			tablestart = i;
 		}
 
 
-		if( linjearray[i].length > 1 ) //linjen er ikke tom
+		if( linearray[i].length > 1 ) //linen er ikke tom
 		{ 
-			for( var k = 0; k < linjearray[i].length; k++ )
+			for( var k = 0; k < linearray[i].length; k++ )
 			{			 
-				if( linjearray[i][k].length > template[k] && linjearray[i][k].search(/\!\d/) == -1 )
+				if( linearray[i][k].length > template[k] && linearray[i][k].search(/\!\d/) == -1 )
 				{
-					template[k] = linjearray[i][k].length;
+					template[k] = linearray[i][k].length;
 				}
 			}
 
-			if( i > 0 && linjearray[i-1].length == 1 ) //det er ikke første linje og forrige linje er tom
+			if( i > 0 && linearray[i-1].length == 1 ) //det er ikke første line og forrige line er tom
 			{
 				tablestart = i;
-				for( var k = 0; k < linjearray[i].length; k++ )
+				for( var k = 0; k < linearray[i].length; k++ )
 				{			 
-					if( linjearray[i][k].length > template[k] && linjearray[i][k].search(/\!\d/) == -1 )
+					if( linearray[i][k].length > template[k] && linearray[i][k].search(/\!\d/) == -1 )
 					{
-						template[k] = linjearray[i][k].length;
+						template[k] = linearray[i][k].length;
 					}
 				}
 			}
 
-			if( i > 0 && linjearray[i-1][0].search(/\!/) != -1 ) //det er ikke første linje og det står en pipe på forrige linje
+			if( i > 0 && linearray[i-1][0].search(/\!/) != -1 ) //det er ikke første line og det står en pipe på forrige line
 			{				
-				for( var k = 1; k < linjearray[i].length-1; k++ )
+				for( var k = 1; k < linearray[i].length-1; k++ )
 				{			 
-					if( linjearray[i][k].search(/\!\d/) == -1 )
+					if( linearray[i][k].search(/\!\d/) == -1 )
 					{
-						template[k] = linjearray[i][k].length;
+						template[k] = linearray[i][k].length;
 					}
 				}
 			}
 
-			if( linjearray[i+1].length == 1  || linjearray[i+1][0].search(/\!/) != -1 )
+			if( linearray[i+1].length == 1  || linearray[i+1][0].search(/\!/) != -1 )
 			{
 				for( var l = tablestart; l <= i; l++ )
 				{
-					for( var m = 0; m < linjearray[l].length-1; m++ )
+					for( var m = 0; m < linearray[l].length-1; m++ )
 					{		
 						var nbspstring = "";
-						if( linjearray[l][0].search(/\!/) == -1 )
+						if( linearray[l][0].search(/\!/) == -1 )
 						{
-							for( var n = linjearray[l][m].length; n < template[m]; n++)
+							for( var n = linearray[l][m].length; n < template[m]; n++)
 							{
 								nbspstring += "&nbsp;";					 
 							}
 						}
-						linjearray[l][m] += nbspstring + "|";
+						linearray[l][m] += nbspstring + "|";
 					}
 				}				
 			}
 		}
 	}
 
-	for( var i = 0; i < linjearray.length; i++ )
+	for( var i = 0; i < linearray.length; i++ )
 	{
-		for( var j = 0; j < linjearray[i].length; j++ )
-			utskrift += linjearray[i][j];
+		for( var j = 0; j < linearray[i].length; j++ )
+			utskrift += linearray[i][j];
 
-		if( i < linjearray.length-1)
+		if( i < linearray.length-1)
 			utskrift += "\n";
 	}
 
 	editor.innerHTML = utskrift;
 },
-
-
 
 //undo and redo methods
 actions : {
