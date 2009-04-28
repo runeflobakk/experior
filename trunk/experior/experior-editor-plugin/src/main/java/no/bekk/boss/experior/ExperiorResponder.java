@@ -102,9 +102,24 @@ public class ExperiorResponder implements SecureResponder
 		html.header.use(breadCrumbs);
 		html.main.use(makeEditForm(resource));
 		
-		html.body.addAttribute("onload", "setInterval('checkFirstLine()', 3000)" );
+		
+		
+		html.body.addAttribute("onload", "setInterval('checkFirstLine()', 1000)" );
 
 		return html.html();
+	}
+	
+	private HtmlTag makeSidebarDiv()
+	{
+		HtmlTag div = new HtmlTag("div");
+		div.addAttribute("left", "3px" );
+		div.addAttribute("id", "methodsDiv" );
+		div.addAttribute("width", "115px" ); 
+		div.addAttribute("left", "3px" );
+		div.addAttribute("top", "120px" );
+		div.addAttribute("position", "fixed" );
+		div.addAttribute("background", "#d9dfc9" );
+		return div;
 	}
 
 
@@ -249,7 +264,7 @@ public class ExperiorResponder implements SecureResponder
 		return wikiCommands.toString();
 	}
 
-	private String toWikiCommand(String className)
+	public String toWikiCommand(String className)
 	{
 		StringBuilder builder = new StringBuilder();
 		for(Character character : className.toCharArray())
