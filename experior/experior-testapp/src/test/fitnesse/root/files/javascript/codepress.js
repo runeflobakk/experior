@@ -10,7 +10,6 @@
  */
 var self;
 var hidden;
-
 CodePress = function(obj, obj2) {
 	self = document.createElement('iframe');
 	self.textarea = obj;	
@@ -39,32 +38,8 @@ CodePress = function(obj, obj2) {
 		self.style.visibility = 'visible';
 		self.style.display = 'inline';		
 
-		var newdiv = document.createElement('div'); 
-		var divIdName = 'methodsDiv'; 
-
 		var methods = hidden.value.split("\n");
-		var metodestring = "";
-
-		document.body.appendChild(newdiv);
-		newdiv.innerHTML = "<b>Methods:</b><br/><br/>";
-		newdiv.setAttribute('id',divIdName); 
-		newdiv.style.width = "115px"; 
-
-		newdiv.style.left = "3px";
-
-		newdiv.style.top = "120px"; 
-		newdiv.style.position = "fixed"; 
-		newdiv.style.background = "#d9dfc9";
-
-		for( var i = 0; i < methods.length; i++ )
-		{	
-			methods[i].trim;
-
-			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methods[i] + "</a><br/><br/>";		
-		}
-		newdiv.innerHTML += metodestring;
-
-
+		self.editor.createMethodsDiv( methods);
 	}
 
 	// obj can by a textarea id or a string (code)
@@ -216,7 +191,7 @@ function moveTextUp()
 function insertMethod(method)
 {
 	var methods = hidden.value.split("\n");
-	self.editor.insertMethod(methods[method]);
+	self.editor.insertMethod(method);
 	self.contentWindow.focus();
 }
 

@@ -1,0 +1,64 @@
+<html>
+<head>
+<script>
+
+function loadXMLString() 
+{
+    var url = "http://localhost:8080/FrontPage?responder=Commands";
+   
+    httpRequest=null;
+    if(window.XMLHttpRequest)
+    {
+        //code for IE7, Firefox, Opera, etc.
+           httpRequest=new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+        //code for IE6, IE5
+          httpRequest=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    if(httpRequest!=null)
+    {
+        httpRequest.onreadystatechange=state_Change;
+        httpRequest.open("GET",url,true);
+        httpRequest.overrideMimeType('text/xml');
+        httpRequest.send(null);
+    }
+    else
+    {
+          alert("Your browser does not support XMLHTTP.");
+    }
+}
+
+
+function state_Change()
+{
+        //4 = "loaded"
+        if (httpRequest.readyState==4)
+        {
+            if (httpRequest.status == 404)
+            {
+                alert('Requestet URL is not found');
+            }
+            else if (httpRequest.status == 403)
+            {
+                alert('Access Denied');
+            }
+            //200 = "OK"
+            else if (httpRequest.status==200)
+            {
+                
+                alert(httpRequest.status);
+                
+            }
+            else
+            {
+                alert("Problem retrieving XML data:" + httpRequest.statusText);
+            }
+        }
+}
+</script>
+<body>
+
+</body>
+</html>

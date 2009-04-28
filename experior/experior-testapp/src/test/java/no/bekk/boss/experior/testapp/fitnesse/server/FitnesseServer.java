@@ -41,7 +41,6 @@ public class FitnesseServer {
             shutdownbutton.setTitle("FitNesse");
             shutdownbutton.setVisible(true);
         }
-
     }
 
     private void printDebug(FitNesseContext context) {

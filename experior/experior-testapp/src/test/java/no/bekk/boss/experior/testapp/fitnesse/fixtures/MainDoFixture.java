@@ -32,6 +32,11 @@ public class MainDoFixture extends DoFixture {
     	return null;
     }
     
+    public Fixture testMetode() {
+        // return some fixture to interpret the table from row 2
+    	return null;
+    }
+    
    
     
     

@@ -16,11 +16,11 @@
  */
 var methods;
 var firstLine;
-
+var lines;
 CodePress = {
 		scrolling : false,
 		autocomplete : true,
-
+		
 		// set initial vars and start sh
 		initialize : function() {
 	if(typeof(editor)=='undefined' && !arguments[0]) return;
@@ -36,6 +36,7 @@ CodePress = {
 	completeEndingChars =  this.getCompleteEndingChars();
 	firstline = CodePress.getCode().split("\n");
 	firstline = firstline[0];
+	
 },
 
 //treat key bindings
@@ -55,8 +56,12 @@ keyHandler : function(evt) {
 	else if(chars.indexOf('|'+charCode+'|')!=-1||keyCode==13) { // syntax highlighting
 		top.setTimeout(function(){CodePress.syntaxHighlight('generic');},100);
 	}
-	else if(keyCode==9 || evt.tabKey) {  // snippets activation (tab)
-		CodePress.snippets(evt);
+	else if(keyCode==9 || evt.tabKey) { 
+		testAlert();// snippets activation (tab)
+		evt.preventDefault();
+		evt.stopPropagation();
+		CodePress.tab();
+		//CodePress.snippets(evt);
 	}
 	else if( charCode==124)
 	{	
@@ -78,6 +83,7 @@ keyHandler : function(evt) {
 		top.setTimeout(function(){CodePress.syntaxHighlight('generic');},100);
 	}
 	else if(charCode==99 && evt.ctrlKey)  { // handle cut
+		
 		//alert(window.getSelection().getRangeAt(0).toString().replace(/\t/g,'FFF'));
 	}
 
@@ -88,6 +94,52 @@ findString : function() {
 	if(self.find(cc))
 		window.getSelection().getRangeAt(0).deleteContents();
 },
+
+
+createMethodsDiv : function( methodsInDiv ) {
+	
+	    var newdiv = document.createElement('div'); 
+		var divIdName = 'methodsDiv'; 
+
+		
+		var metodestring = "";
+
+		parent.document.body.appendChild(newdiv);
+		newdiv.innerHTML = "<b>Methods</b><br/><br/>";
+		newdiv.setAttribute('id',divIdName); 
+		newdiv.style.width = "115px"; 
+
+		newdiv.style.left = "3px";
+
+		newdiv.style.top = "120px"; 
+		newdiv.style.position = "fixed"; 
+		newdiv.style.background = "#d9dfc9";
+
+		for( var i = 0; i < methodsInDiv.length; i++ )
+		{	
+			methodsInDiv[i].trim;
+
+			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a><br/><br/>";		
+		}
+		
+		newdiv.innerHTML += metodestring;	
+},
+
+updateMethodsDiv : function() {
+	var metodestring = "";	
+	
+		for( var i = 0; i < lines.length; i++ )
+	{
+		lines[i].trim;
+
+		metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a><br/><br/>";
+	}
+	parent.document.getElementById("methodsDiv").innerHTML = "";
+	parent.document.getElementById("methodsDiv").innerHTML = "<b>Methods</b><br/><br/>" + metodestring;
+	
+},
+
+
 
 //split big files, highlighting parts of it
 split : function(code,flag) {
@@ -118,9 +170,15 @@ getEditor : function() {
 
 //syntax highlighting parser
 syntaxHighlight : function(flag, methods2) {
+	
 	if( methods2 != null )
+	{
+		
 		methods = methods2;
+		
+	}
 
+	
 	lines = methods.split('\n');
 	lines.pop();
 
@@ -165,6 +223,7 @@ syntaxHighlight : function(flag, methods2) {
 
 	editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.replace(z,x);
 	if(flag!='init') this.findString();
+	
 },
 
 getLastWord : function() {
@@ -264,9 +323,9 @@ createTextnode : function()
 	selct.addRange(range2);
 },
 
-insertMethod : function( name )
+insertMethod : function( id )
 {
-	var node = window.document.createTextNode( "!|" + name + "|" );
+	var node = window.document.createTextNode( "!|" + lines[id] + "|" );
 	var range = window.getSelection().getRangeAt(0);
 
 	var selct = window.getSelection();
@@ -432,6 +491,37 @@ setCode : function() {
 
 },
 
+tab : function() {
+
+	var range = window.getSelection().getRangeAt(0);
+	var startNode = document.getElementsByTagName("pre").item(0);
+	
+	var startOffset = 0;
+	
+	//range.setStartAfter( startNode ); 
+	range.setEndAfter( startNode );
+	
+	
+	/*
+	var nodes = startNode.childNodes;
+	
+	for( var i = 0; i < nodes.length; i++ )
+	{
+		alert( nodes[i].nodeValue );
+	}*/
+	
+	//alert( startNode.childNodes );
+	
+	var div = document.createElement('div');
+	div.appendChild(range.cloneContents());
+
+	var pos = div.innerHTML.indexOf("|");
+	
+	//alert( div.innerHTML );
+	alert( pos );
+	alert( div.innerHTML.substring(0, pos ));	
+},
+
 checkFirstLine : function( url ) {	
 	var tekst = CodePress.getCode().split("\n");
 
@@ -459,11 +549,8 @@ checkFirstLine : function( url ) {
 
 loadXMLString : function( url) {
 
-	var pos = url.indexOf("?");
-	var url = url.substring(0, pos );
-	url += "?save"
-		alert( url );
-
+	var firstline = CodePress.getCode().split("\n");
+	var url = "http://localhost:8080/FrontPage?responder=Commands&var=" + firstline[0];
 
 	httpRequest=null;
 	if(window.XMLHttpRequest)
@@ -471,16 +558,45 @@ loadXMLString : function( url) {
 		//code for IE7, Firefox, Opera, etc.
 		httpRequest=new XMLHttpRequest();
 	}
-	else if (window.ActiveXObject)
+	else if(window.ActiveXObject)
 	{
 		//code for IE6, IE5
 		httpRequest=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	if(httpRequest!=null)
 	{
-
+		httpRequest.onreadystatechange= function()
+		{			
+			if (httpRequest.readyState==4)
+			{
+				if (httpRequest.status == 404)
+				{
+					alert('Requestet URL is not found');
+				}
+				else if (httpRequest.status == 403)
+				{
+					alert('Access Denied');
+				}
+				else if (httpRequest.status==200)
+				{   
+					//methods = new Array();
+					methods = httpRequest.getResponseHeader("json");
+					
+					var methodsarray = eval('('+ methods +')');
+					
+					methods = methodsarray.join("\n") + "\n";
+										
+					CodePress.syntaxHighlight();
+					CodePress.updateMethodsDiv();
+				}
+				else
+				{
+					alert("Problem retrieving XML data:" + httpRequest.statusText);
+				}
+			}			
+		}
 		httpRequest.open("GET",url,true);
-		httpRequest.onreadystatechange=CodePress.state_Change();
+		
 		httpRequest.overrideMimeType('text/xml');
 		httpRequest.send(null);
 	}
@@ -489,7 +605,6 @@ loadXMLString : function( url) {
 		alert("Your browser does not support XMLHTTP.");
 	}
 },
-
 
 state_Change : function() {
 	if (httpRequest.readyState==4)
@@ -510,7 +625,9 @@ state_Change : function() {
 		{
 			alert("Problem retrieving XML data:" + httpRequest.statusText);
 		}
-	}       
+	}
+	else
+		alert( httpRequest.readyState);
 },
 
 
@@ -645,9 +762,11 @@ next : function() { // get next vector position and clean old ones
 }
 }
 
-Language={};
-window.addEventListener('load', function() { CodePress.initialize('new'); }, true);
 
+
+Language={};
+
+window.addEventListener('load', function() { CodePress.initialize('new'); }, true);
 Language.syntax = [
                    { input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
                    { input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
