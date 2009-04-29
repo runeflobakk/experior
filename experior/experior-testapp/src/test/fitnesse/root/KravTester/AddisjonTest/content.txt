@@ -1,41 +1,31 @@
 !|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
-
-!|metoden hei du|
-!|metoden hei du|
-
-!|metoden hei du|
-
-!|en metodetil|
-
-
-
+{{{
 !1 Krav 1
 !|tallene|10|plus|1|skal bli|1|
 |tallene|1|plus|1|skal bli|100|
-
-!|min nye metode|
-
-!3 Krav 3
-
-!|test metode|
+}}}
 
 !|formidlet postering|
 |oppdragsdato|postert belop|produktkode|produktelement|
 |11.03.2008|3900|682|34|
-|12.03.2008|50000|730|34 |
-
-!|min nye metode|
+|11.03.2008|350|682|34|
+|12.03.2008|50000|730|34|
 
 !|tallene plus skal bli|
 
 !|tallene|10|plus|1|skal bli|10|
 |tallene|1|plus|1|skal bli|2 |
-|tallene|50|plus|5|skal bli|1sdfgsdfg0|
+|tallene|50|plus|5|skal bli|10|
 
 !|formidlet postering|
-|oppdragsdato|postert belop |produktkode|produktelement|
-|665|kjlk|kjllk|
-|11.03.2008|39 |682|34|
+|oppdragsdato|postert belop|produktkode|produktelement|
+|11.03.2008|3900|682|34|
+|11.03.2008|350|682|34|
+|12.03.2008|50000|730|34|
+|11.03.2008|3900|682|34|
+|11.03.2008|350|682|34|
+|12.03.2008|50000|730|34|
+|11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
 |12.03.2008|50000|730|34|
 |11.03.2008|3900|682|34|
@@ -43,18 +33,12 @@
 |12.03.2008|50000|730|34|
 |11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
-|12.03.2008|50000  sgrddfgsdfgsdfgdf |730|34|
+|12.03.2008|50000|730|34|
 |11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
 |12.03.2008|50000|730|34|
 |11.03.2008|3900|682|34|
-|11.03.2008|350  |682|34|
-|12.03.2008|50000|730|34|
-|11.03.2008|3900|682|34|
-|11.03.2008|350 |682|34|
-|12.03.2008|50000|730|34|
-|11.03.2008|3900|682|34|
-|11.03.2008|350 |682|34|
+|11.03.2008|350|682|34|
 |12.03.2008|50000|730|34|
 |11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
@@ -120,3 +104,5 @@
 !|tallene|4|plus|5|skal bli|9|
 
 !|en metodew|
+
+!|metoden hei du|
