@@ -105,21 +105,23 @@ createMethodsDiv : function( methodsInDiv ) {
 		var metodestring = "";
 
 		parent.document.body.appendChild(newdiv);
-		newdiv.innerHTML = "<b>Methods</b><br/><br/>";
+		newdiv.innerHTML = "<h3>Methods</h3>";
 		newdiv.setAttribute('id',divIdName); 
-		newdiv.style.width = "115px"; 
-
-		newdiv.style.left = "3px";
-
+		newdiv.style.width = "135px";
+		newdiv.style.overflow = "auto";
+		newdiv.style.left = "5px";
+		newdiv.style.height = screen.height - 310 + 'px';
 		newdiv.style.top = "120px"; 
-		newdiv.style.position = "fixed"; 
-		newdiv.style.background = "#d9dfc9";
+		newdiv.style.position = "fixed";
+		
+		
+		newdiv.style.textDecoration = "none";		
 
 		for( var i = 0; i < methodsInDiv.length; i++ )
 		{	
 			methodsInDiv[i].trim;
 
-			metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a><br/><br/>";		
+			metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a>";		
 		}
 		
 		newdiv.innerHTML += metodestring;	
@@ -132,10 +134,10 @@ updateMethodsDiv : function() {
 	{
 		lines[i].trim;
 
-		metodestring += "<a href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a><br/><br/>";
+		metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a>";
 	}
 	parent.document.getElementById("methodsDiv").innerHTML = "";
-	parent.document.getElementById("methodsDiv").innerHTML = "<b>Methods</b><br/><br/>" + metodestring;
+	parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + metodestring;
 	
 },
 
