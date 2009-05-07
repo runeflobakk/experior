@@ -95,7 +95,7 @@ public class ExperiorResponder implements SecureResponder
 	{
 		HtmlPage html = context.htmlPageFactory.newPage();
 		html.title.use("Edit with Experior " + resource);//vises i tittellinjen
-		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/codepress.js" ) );		
+		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/experior.js" ) );		
 
 		HtmlTag breadCrumbs = HtmlUtil.makeBreadCrumbsWithPageType(resource, "Edit Page with Experior:");
 
@@ -168,12 +168,15 @@ public class ExperiorResponder implements SecureResponder
 	private HtmlTag createTextarea() 
 	{
 		HtmlTag textarea = new HtmlTag( "textarea" );
-		textarea.addAttribute("id", "codepress");
+		textarea.addAttribute("id", "experior");
 		textarea.addAttribute("rows", "50");
 		textarea.addAttribute("cols", "130");
-		textarea.addAttribute("class", "codepress javascript linenumbers-off");
+		textarea.addAttribute("class", "experior javascript linenumbers-off");
 		textarea.addAttribute("tabindex", "1");
-		textarea.add( content );
+		if( content.isEmpty() )
+			textarea.add(" " );
+		else
+			textarea.add( content );
 		return textarea;
 	}
 
@@ -205,7 +208,7 @@ public class ExperiorResponder implements SecureResponder
 		HtmlTag textarea = new HtmlTag("textarea");
 		textarea.addAttribute("class", CONTENT_INPUT_NAME);
 		textarea.addAttribute("name", CONTENT_INPUT_NAME);
-		textarea.addAttribute("id", "skjult");
+		textarea.addAttribute("id", "hiddenfield");
 		textarea.addAttribute("rows", "30");
 		textarea.addAttribute("cols", "70");
 		textarea.addAttribute("tabindex", "1");
