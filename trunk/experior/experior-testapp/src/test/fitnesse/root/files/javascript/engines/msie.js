@@ -16,6 +16,8 @@
  */
 
 var methods;
+var firstLine;
+var lines;
 
 CodePress = {
 		scrolling : false,
@@ -36,6 +38,8 @@ CodePress = {
 	completeChars = this.getCompleteChars();
 
 	completeEndingChars =  this.getCompleteEndingChars();
+	firstline = CodePress.getCode().split("\n");
+	firstline = firstline[0];
 	setTimeout(function() { window.scroll(0,0) },50); // scroll IE to top
 },
 
@@ -45,13 +49,6 @@ keyHandler : function( evt )
 	charCode = evt.keyCode;
 	fromChar = String.fromCharCode(charCode);
 
-	/*
-	if( (completeEndingChars.indexOf('|'+fromChar+'|')!= -1 || completeChars.indexOf('|'+fromChar+'|')!=-1  )&& CodePress.autocomplete)
-	{ // auto complete
-		if( !CodePress.completeEnding( fromChar ) )
-			CodePress.complete(fromChar);
-	}
-	 */
 	if(chars.indexOf('|'+charCode+'|')!=-1||charCode==13)
 	{ // syntax highlighting
 		CodePress.syntaxHighlight( 'generic', methods );
@@ -68,9 +65,7 @@ metaHandler : function(evt)
 	}
 
 	else if( keyCode==220)
-	{
-		evt.preventDefault();
-		evt.stopPropagation();
+	{			
 		CodePress.align();		
 	}
 
@@ -140,7 +135,7 @@ syntaxHighlight : function(flag, methods2) {
 
 	if( methods2 != null )
 		methods = methods2;
-	
+
 	lines = methods.split('\n');
 	lines.pop();
 
@@ -154,7 +149,6 @@ syntaxHighlight : function(flag, methods2) {
 	o = o.replace(/<P>/g,'\n');
 	o = o.replace(/<\/P>/g,'\r');
 	o = o.replace(/<.*?>/g,'');
-	//o = o.replace(/&nbsp;/g,'');			
 	o = '<PRE><P>'+o+'</P></PRE>';
 	o = o.replace(/\n\r/g,'<P></P>');
 	o = o.replace(/\n/g,'<P>');
@@ -163,8 +157,8 @@ syntaxHighlight : function(flag, methods2) {
 	o = o.replace(/<\/P>(<\/P>)+/,'</P>');
 	o = o.replace(/<P><\/P>/g,'<P><BR/></P>');
 	x = z = this.split(o,flag);
-
-	x = x.replace(/nbsp;/g, '&nbsp;');
+	x = x.replace(/\n/g,'<br>');
+	x = x.replace(/&nbsp;/g, '&nbsp;');
 
 	if(arguments[1]&&arguments[2]) x = x.replace(arguments[1],arguments[2]);
 	var sRegExInput;
@@ -198,6 +192,167 @@ syntaxHighlight : function(flag, methods2) {
 
 	editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.replace(z,x);
 	if(flag!='init') this.findString();
+},
+
+createMethodsDiv : function( methodsInDiv ) {
+
+	var newdiv = document.createElement('div'); 
+	var divIdName = 'methodsDiv'; 
+
+
+	var metodestring = "";
+
+	parent.document.body.appendChild(newdiv);
+	newdiv.innerHTML = "<h3>Methods</h3>";
+	newdiv.setAttribute('id',divIdName); 
+	newdiv.style.width = "135px";
+	newdiv.style.overflow = "auto";
+	newdiv.style.left = "5px";
+	newdiv.style.height = screen.height - 310 + 'px';
+	newdiv.style.top = "120px"; 
+	newdiv.style.position = "fixed";
+
+
+	newdiv.style.textDecoration = "none";		
+
+	for( var i = 0; i < methodsInDiv.length; i++ )
+	{	
+		methodsInDiv[i].trim;
+
+		metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a>";		
+	}
+
+	newdiv.innerHTML += metodestring;	
+},
+
+updateMethodsDiv : function() {
+	var metodestring = "";	
+
+	for( var i = 0; i < lines.length; i++ )
+	{
+		lines[i].trim;
+
+		metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a>";
+	}
+	parent.document.getElementById("methodsDiv").innerHTML = "";
+	parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + metodestring;
+
+},
+
+insertMethod : function( id )
+{	
+	document.selection.clear();
+	var range = document.selection.createRange();
+	
+	range.pasteHTML( "!|" + lines[id] + "|"  );
+	this.syntaxHighlight();
+},
+
+checkFirstLine : function( url ) {	
+
+
+	var tekst = CodePress.getCode().split("\n");
+
+	if( tekst[0] != firstline )
+	{	
+		var caret = document.selection.createRange();	
+		caret.moveStart( 'character', -this.getCode().length );	
+		var selectedCode = CodePress.getCodeFromCaret( caret.htmlText );		
+
+		if( firstline.length < selectedCode.length )
+		{
+			firstline = tekst[0];
+			CodePress.loadXMLString( url );
+		}	
+	}
+
+},
+
+loadXMLString : function( url) {
+
+	var firstline = CodePress.getCode().split("\n");
+	
+	var url = "http://localhost:8080/FrontPage?responder=Commands&var=" + firstline[0];
+	
+	httpRequest=null;
+	if(window.XMLHttpRequest)
+	{
+		//code for IE7, Firefox, Opera, etc.
+		httpRequest=new XMLHttpRequest();
+	}
+	else if(window.ActiveXObject)
+	{
+		//code for IE6, IE5
+		httpRequest=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	if(httpRequest!=null)
+	{
+		
+		httpRequest.onreadystatechange= function()
+		{	
+			
+			if (httpRequest.readyState==4)
+			{				
+				if (httpRequest.status == 404)
+				{
+					alert('Requestet URL is not found');
+				}
+				else if (httpRequest.status == 403)
+				{
+					alert('Access Denied');
+				}
+				else if (httpRequest.status==200)
+				{   
+					//methods = new Array();
+					
+					methods = httpRequest.getResponseHeader("json");
+
+					var methodsarray = eval('('+ methods +')');
+
+					methods = methodsarray.join("\n") + "\n";
+
+					CodePress.syntaxHighlight();
+					CodePress.updateMethodsDiv();
+				}
+				else
+				{
+					alert("Problem retrieving XML data:" + httpRequest.statusText);
+				}
+			}			
+		}
+		
+		httpRequest.open("GET",url,true);
+		
+		httpRequest.send(null);
+	}
+	else
+	{
+		alert("Your browser does not support XMLHTTP.");
+	}
+},
+
+state_Change : function() {
+	if (httpRequest.readyState==4)
+	{
+		if (httpRequest.status == 404)
+		{
+			alert('Requestet URL is not found');
+		}
+		else if (httpRequest.status == 403)
+		{
+			alert('Access Denied');
+		}
+		else if (httpRequest.status==200)
+		{                
+			alert(httpRequest.status);                
+		}
+		else
+		{
+			alert("Problem retrieving XML data:" + httpRequest.statusText);
+		}
+	}
+	else
+		alert( httpRequest.readyState);
 },
 
 snippets : function(evt) {
@@ -279,55 +434,33 @@ shortcuts : function() {
 getLastWord : function()
 {
 	var rangeAndCaret = CodePress.align();
-	//alert( rangeAndCaret );
-	
-	//alert( this.getCode().substring( 0, rangeAndCaret ) );
-	
-	var i = rangeAndCaret;
-	//alert( this.getCode().substring( 0, i ) );
-	
 
-	/*
-	for( var i = 0; i < rangeAndCaret; i++ )
-	{
-		alert( "NEI");
-	}
-	*/
-	//alert( rangeAndCaret[0]);
-	//alert( rangeAndCaret[1]);
-	
-/*
-	words = rangeAndCaret[0].substring(0,rangeAndCaret[1]);
-	
-	
-	words = words.split('\n');
-	
-	return words[words.length-1].replace(/[\W]/gi,'').toLowerCase();
-	*/
+	var i = rangeAndCaret;
+
 },
 
 align : function()
 {	
 	var range = document.selection.createRange();
-	
+
 	var caret = document.selection.createRange();
 	var range = document.selection.createRange();
-	
+
 	caret.moveStart( 'character', -this.getCode().length );
-	
+
 	var tekst = CodePress.getCodeFromCaret( caret.htmlText );
-		
+
 	var linjearray = tekst.split("\n");
-	
+
 	var currentline = linjearray[linjearray.length-1].split("|");
 	if (linjearray.length > 0) 
 		var previousline = linjearray[linjearray.length-2].split("|");
-	
+
 	var nbspstring = "";
-	
+
 	for (var i = 0; i < (previousline[currentline.length-1].replace(/&nbsp;/gi,' ').length)-(currentline[currentline.length-1].length); i++)
 		nbspstring += "&nbsp;";
-	
+
 	range.pasteHTML( nbspstring  );
 },
 
@@ -348,7 +481,7 @@ insertCode : function(code,replaceCursorBefore) {
 },
 
 getCodeFromCaret : function( code ) {
-	
+
 	code = code.replace(/<br>/g,'\n');
 	code = code.replace(/<p>/i,' '); // IE first line fix
 	code = code.replace(/<p>/gi,'\n');
@@ -380,7 +513,7 @@ getCode : function() {
 setCode : function() {
 	var code = arguments[0];
 	code = code.replace(/\u2009/gi,'');
-	//code = code.replace(/&nbsp;/gi, ' ');
+	code = code.replace(/&nbsp;/gi, ' ');
 	code = code.replace(/&/gi,'&amp;');		
 	code = code.replace(/</g,'&lt;');
 	code = code.replace(/>/g,'&gt;');
@@ -388,81 +521,99 @@ setCode : function() {
 },
 
 alignStart : function( code ) {	
-	var tekst = code.split("\n");
-	var linjearray = new Array();
+
+	var tekst = code.split("\n");	
+	var linearray = new Array();
 	var template = new Array();
 	var utskrift;
+	firstline = tekst[0];
 
 	var tablestart = 0;
 
 	for( var i = 0; i < tekst.length; i++ )
 	{	
-		linjearray[i] = tekst[i].split("|");
+		linearray[i] = tekst[i].split("|");
 
 	} 
 	var utskrift = "";
-	for( var i=0; i < linjearray.length-1; i++ ){ // Går igjennom hver linje
+	for( var i=0; i < linearray.length-1; i++ ){ // Går igjennom hver line
 
 
-		if( linjearray[i][0].search(/\!/) != -1 ) //det er et utropstegn
+		if( linearray[i][0].search(/\!/) != -1  ) //det er et utropstegn
 		{
 			template = new Array();
 
-			for( var j = 0; j < linjearray[i].length-1; j++ )
+			for( var j = 0; j < linearray[i].length-1; j++ )
 			{
-				template[j] = linjearray[i][j].length;
+				template[j] = linearray[i][j].length;
 			}		
 			tablestart = i;
 		}
 
-		if( linjearray[i].length > 1 )
+
+		if( linearray[i].length > 1 ) //linen er ikke tom
 		{ 
-			for( var k = 0; k < linjearray[i].length; k++ )
+			for( var k = 0; k < linearray[i].length; k++ )
 			{			 
-				if( linjearray[i][k].length > template[k] )
+				if( linearray[i][k].length > template[k] && linearray[i][k].search(/\!\d/) == -1 )
 				{
-					template[k] = linjearray[i][k].length;
+					template[k] = linearray[i][k].length;
 				}
 			}
 
-			if( i > 0 && linjearray[i-1].length == 1 ) {
+			if( i > 0 && linearray[i-1].length == 1 ) //det er ikke første line og forrige line er tom
+			{
 				tablestart = i;
-				for( var k = 0; k < linjearray[i].length; k++ )
+				for( var k = 0; k < linearray[i].length; k++ )
 				{			 
-					if( linjearray[i][k].length > template[k] )
+					if( linearray[i][k].length > template[k] && linearray[i][k].search(/\!\d/) == -1 )
 					{
-						template[k] = linjearray[i][k].length;
+						template[k] = linearray[i][k].length;
 					}
 				}
 			}
 
-			if( linjearray[i+1].length == 1  || linjearray[i+1][0].search(/\!/) != -1)
+			if( i > 0 && linearray[i-1][0].search(/\!/) != -1 ) //det er ikke første line og det står en pipe på forrige line
+			{				
+				for( var k = 1; k < linearray[i].length-1; k++ )
+				{			 
+					if( linearray[i][k].search(/\!\d/) == -1 )
+					{
+						template[k] = linearray[i][k].length;
+					}
+				}
+			}
+
+			if( linearray[i+1].length == 1  || linearray[i+1][0].search(/\!/) != -1 )
 			{
 				for( var l = tablestart; l <= i; l++ )
 				{
-					for( var m = 0; m < linjearray[l].length-1; m++ )
+					for( var m = 0; m < linearray[l].length-1; m++ )
 					{		
-						var nbspstring = "";	
-						for( var n = linjearray[l][m].length; n < template[m]; n++)
+						var nbspstring = "";
+						if( linearray[l][0].search(/\!/) == -1 )
 						{
-							nbspstring += "nbsp;";					 
+							for( var n = linearray[l][m].length; n < template[m]; n++)
+							{
+								nbspstring += "&nbsp;";					 
+							}
 						}
-						linjearray[l][m] += nbspstring + "|";
-
+						linearray[l][m] += nbspstring + "|";
 					}
 				}				
 			}
 		}
 	}
-	for( var i = 0; i < linjearray.length-1; i++ )
+
+	for( var i = 0; i < linearray.length; i++ )
 	{
-		for( var j = 0; j < linjearray[i].length; j++ )
-			utskrift += linjearray[i][j];
+		for( var j = 0; j < linearray[i].length; j++ )
+			utskrift += linearray[i][j];
 
-		utskrift += "\n";
+		if( i < linearray.length-1)
+			utskrift += "\n";
 	}
-
-	this.setCode(utskrift);
+	this.setCode( utskrift );
 },
 
 //undo and redo methods
@@ -503,11 +654,13 @@ Language.syntax = [
 
                    { input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
                    { input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
-                   { input : /\b(abstract|for|new|switch|default|goto|boolean|do|if|private|this|break|double|protected|throw|byte|else|import|public|throws|case|return|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|const|float|while|function|label)\b/g, output : '<b>$1</b>' }, // reserved words
+                   { input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // reserved words
                    { input : /([\(\){}])/g, output : '<em>$1</em>' }, // special chars;
-                   { input : /([^:]|^)\/\/(.*?)(<br|<\/P)/g, output : '$1<i>//$2</i>$3' }, // comments //
-                   //	{ input : /test/g, output : 'testere' }, // comments //
-                   { input : /\/\*(.*?)\*\//g, output : '<i>/*$1*/</i>' } // comments /* */
+                   { input : /([^:]|^)\!3(.*?)(<br|<\/P)/g, output : '$1<span class=comment3>!3$2</span>$3' },
+               	{ input : /([^:]|^)\!2(.*?)(<br|<\/P)/g, output : '$1<span class=comment2>!2$2</span>$3' },
+               	{ input : /([^:]|^)\!1(.*?)(<br|<\/P)/g, output : '$1<span class=comment1>!1$2</span>$3' },
+               	{ input : /\{{3}(.*?)\}{3}/gim, output : '<span class=disabled>{{{$1}}}</span>' } // comments /* */
+               	//{ input : /\{{{(.*?)\}}}\//g, output : '<i>/*$1*/</i>' } // comments /* */
                 	   ]
 
 //              	   Language.syntax.push("input : /test/g, output : 'testere'");

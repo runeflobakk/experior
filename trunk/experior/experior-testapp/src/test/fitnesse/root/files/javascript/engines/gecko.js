@@ -17,7 +17,7 @@
 var methods;
 var firstLine;
 var lines;
-CodePress = {
+Experior = {
 		scrolling : false,
 		autocomplete : true,
 		
@@ -31,10 +31,10 @@ CodePress = {
 	editor = document.getElementsByTagName('pre')[0];
 	document.designMode = 'on';
 	document.addEventListener('keypress', this.keyHandler, false);
-	window.addEventListener('scroll', function() { if(!CodePress.scrolling) CodePress.syntaxHighlight('scroll') }, false);
+	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.syntaxHighlight('scroll') }, false);
 	completeChars = this.getCompleteChars();
 	completeEndingChars =  this.getCompleteEndingChars();
-	firstline = CodePress.getCode().split("\n");
+	firstline = Experior.getCode().split("\n");
 	firstline = firstline[0];
 	
 },
@@ -45,46 +45,54 @@ keyHandler : function(evt) {
 	charCode = evt.charCode;
 
 	fromChar = String.fromCharCode(charCode);
+	
 
 	if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
-		CodePress.shortcuts(charCode?charCode:keyCode);
-	}
-	else if( (completeEndingChars.indexOf('|'+fromChar+'|')!= -1 || completeChars.indexOf('|'+fromChar+'|')!=-1) && CodePress.autocomplete) { // auto complete
-		if(!CodePress.completeEnding(fromChar))
-			CodePress.complete(fromChar);
+		
+		Experior.shortcuts(charCode?charCode:keyCode);
 	}
 	else if(chars.indexOf('|'+charCode+'|')!=-1||keyCode==13) { // syntax highlighting
-		top.setTimeout(function(){CodePress.syntaxHighlight('generic');},100);
+		
+		top.setTimeout(function(){Experior.syntaxHighlight('generic');},100);
+		
 	}
-	else if(keyCode==9 || evt.tabKey) { 
+	
+	else if(keyCode==9 || evt.tabKey) {
+		
 		testAlert();// snippets activation (tab)
 		evt.preventDefault();
 		evt.stopPropagation();
-		CodePress.tab();
-		//CodePress.snippets(evt);
+		Experior.tab();
+		//Experior.snippets(evt);
 	}
 	else if( charCode==124)
 	{	
 		evt.preventDefault();
 		evt.stopPropagation();
-		CodePress.align();	
+		Experior.align();	
 	}
 	else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
-		CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
+	
+	
+		Experior.actions.history[Experior.actions.next()] = editor.innerHTML;
+	
 	}
 
 	else if((charCode==122||charCode==121||charCode==90) && evt.ctrlKey) { 
 		// undo and redo
-		(charCode==121||evt.shiftKey) ? CodePress.actions.redo() :  CodePress.actions.undo(); 
+	
+		(charCode==121||evt.shiftKey) ? Experior.actions.redo() :  Experior.actions.undo(); 
 		evt.preventDefault();
 	}
 	else if(charCode==118 && evt.ctrlKey)  { // handle paste
-		CodePress.getRangeAndCaret();
-		top.setTimeout(function(){CodePress.syntaxHighlight('generic');},100);
+	
+		Experior.getRangeAndCaret();
+		top.setTimeout(function(){Experior.syntaxHighlight('generic');},100);
+		
 	}
 	else if(charCode==99 && evt.ctrlKey)  { // handle cut
 		
-		//alert(window.getSelection().getRangeAt(0).toString().replace(/\t/g,'FFF'));
+	
 	}
 
 },
@@ -92,7 +100,10 @@ keyHandler : function(evt) {
 //put cursor back to its original position after every parsing
 findString : function() {
 	if(self.find(cc))
+	{
 		window.getSelection().getRangeAt(0).deleteContents();
+		
+	}
 },
 
 
@@ -174,19 +185,15 @@ getEditor : function() {
 syntaxHighlight : function(flag, methods2) {
 	
 	if( methods2 != null )
-	{
-		
-		methods = methods2;
-		
+	{		
+		methods = methods2;		
 	}
-
-	
 	lines = methods.split('\n');
 	lines.pop();
 
 	if(flag != 'init') { window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc)); }
 
-	editor = CodePress.getEditor();
+	editor = Experior.getEditor();
 	o = editor.innerHTML;
 
 	o = o.replace(/<br>/g,'\n');
@@ -229,7 +236,7 @@ syntaxHighlight : function(flag, methods2) {
 },
 
 getLastWord : function() {
-	var rangeAndCaret = CodePress.getRangeAndCaret();
+	var rangeAndCaret = Experior.getRangeAndCaret();
 	words = rangeAndCaret[0].substring(rangeAndCaret[1]-40,rangeAndCaret[1]);
 	words = words.replace(/[\s\n\r\);\W]/g,'\n').split('\n');
 	return words[words.length-1].replace(/[\W]/gi,'').toLowerCase();
@@ -290,7 +297,7 @@ align : function()
 	}
 	else
 	{
-		CodePress.createTextnode();
+		Experior.createTextnode();
 		return;
 	}
 
@@ -378,17 +385,7 @@ readOnly : function() {
 	document.designMode = (arguments[0]) ? 'off' : 'on';
 },
 
-complete : function(trigger) {
-	window.getSelection().getRangeAt(0).deleteContents();
-	var complete = Language.complete;
-	for (var i=0; i<complete.length; i++) {
-		if(complete[i].input == trigger) {
-			var pattern = new RegExp('\\'+trigger+cc);
-			var content = complete[i].output.replace(/\$0/g,cc);
-			parent.setTimeout(function () { CodePress.syntaxHighlight('complete',pattern,content)},0); // wait for char to appear on screen
-		}
-	}
-},
+
 
 getCompleteChars : function() {
 	var cChars = '';
@@ -463,10 +460,11 @@ insertCode : function(code,replaceCursorBefore) {
 getCode : function() {
 	if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '')
 	{
-		editor = CodePress.getEditor();	
+		editor = Experior.getEditor();	
 	}
 	var code = editor.innerHTML;
 
+	
 	code = code.replace(/<p>/g,'\n');
 	code = code.replace(/<br>/g,'\n');
 	code = code.replace(/&nbsp;/gi,'');
@@ -480,17 +478,19 @@ getCode : function() {
 
 //put code inside editor
 setCode : function() {
+	/*
 	var code = arguments[0];
 	code = code.replace(/\u2009/gi,'');
 
 	code = code.replace(/&/gi,'&amp;');
 	code = code.replace(/</g,'&lt;');
 	code = code.replace(/>/g,'&gt;');
-	editor.innerHTML = code;
+	
 
 	if (code == '')
 		document.getElementsByTagName('body')[0].innerHTML = '';
-
+*/
+	alert( editor.innerHTML );
 },
 
 tab : function() {
@@ -525,7 +525,7 @@ tab : function() {
 },
 
 checkFirstLine : function( url ) {	
-	var tekst = CodePress.getCode().split("\n");
+	var tekst = Experior.getCode().split("\n");
 
 
 	if( tekst[0] != firstline )
@@ -538,20 +538,20 @@ checkFirstLine : function( url ) {
 		var div = document.createElement('div');
 		div.appendChild(range.cloneContents());		
 
-		var selectedCode = CodePress.removeTags( div.innerHTML );
+		var selectedCode = Experior.removeTags( div.innerHTML );
 		range.collapse( false );
 
 		if( firstline.length < selectedCode.length )
 		{
 			firstline = tekst[0];
-			CodePress.loadXMLString( url );
+			Experior.loadXMLString( url );
 		}	
 	}
 },
 
 loadXMLString : function( url) {
 
-	var firstline = CodePress.getCode().split("\n");
+	var firstline = Experior.getCode().split("\n");
 	var url = "http://localhost:8080/FrontPage?responder=Commands&var=" + firstline[0];
 
 	httpRequest=null;
@@ -588,8 +588,8 @@ loadXMLString : function( url) {
 					
 					methods = methodsarray.join("\n") + "\n";
 										
-					CodePress.syntaxHighlight();
-					CodePress.updateMethodsDiv();
+					Experior.syntaxHighlight();
+					Experior.updateMethodsDiv();
 				}
 				else
 				{
@@ -736,7 +736,7 @@ actions : {
 	history : [], // history vector
 
 	undo : function() {
-	editor = CodePress.getEditor();
+	editor = Experior.getEditor();
 	if(editor.innerHTML.indexOf(cc)==-1){
 		if(editor.innerHTML != " ")
 			window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc));
@@ -746,15 +746,15 @@ actions : {
 	if(typeof(this.history[this.pos])=='undefined') this.pos ++;
 	editor.innerHTML = this.history[this.pos];
 	if(editor.innerHTML.indexOf(cc)>-1) editor.innerHTML+=cc;
-	CodePress.findString();
+	Experior.findString();
 },
 
 redo : function() {
-	// editor = CodePress.getEditor();
+	// editor = Experior.getEditor();
 	this.pos++;
 	if(typeof(this.history[this.pos])=='undefined') this.pos--;
 	editor.innerHTML = this.history[this.pos];
-	CodePress.findString();
+	Experior.findString();
 },
 
 next : function() { // get next vector position and clean old ones
@@ -768,10 +768,8 @@ next : function() { // get next vector position and clean old ones
 
 Language={};
 
-window.addEventListener('load', function() { CodePress.initialize('new'); }, true);
+window.addEventListener('load', function() { Experior.initialize('new'); }, true);
 Language.syntax = [
-                   { input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
-                   { input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
                    { input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // reserved words
                    { input : /([\(\){}])/g, output : '<em>$1</em>' }, // special chars;
                    { input : /([^:]|^)\/\/(.*?)(<br|<\/P)/g, output : '$1<i>//$2</i>$3' }, // comments //
@@ -780,12 +778,6 @@ Language.syntax = [
 
                 	   Language.snippets = []
 
-                	                        Language.complete = [
-                	                                             { input : '\'', output : '\'$0\'' },
-                	                                             { input : '"', output : '"$0"' },
-                	                                             { input : '(', output : '\($0\)' },
-                	                                             { input : '[', output : '\[$0\]' },
-                	                                             { input : '{', output : '{\n\t$0\n}' }		
-                	                                             ]
+                	                       
 
                 	                                             Language.shortcuts = []

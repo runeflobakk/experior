@@ -5,8 +5,6 @@
 // generic languages
 
 Language.syntax = [
-	{ input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
-	{ input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
 	{ input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // reserved words
 	{ input : /([\(\)])/g, output : '<em>$1</em>' }, // special chars;
 	{ input : /([^:]|^)\!3(.*?)(<br|<\/P)/g, output : '$1<span class=comment3>!3$2</span>$3' },
@@ -17,13 +15,11 @@ Language.syntax = [
 ]
 
 Language.snippets = []
-
-Language.complete = [
-	{ input : '\'', output : '\'$0\'' },
-	{ input : '"', output : '"$0"' },
-	{ input : '(', output : '\($0\)' },
-	{ input : '[', output : '\[$0\]' },
-//	{ input : '{', output : '{\n\t$0\n}' }		
-]
-
+                     Language.complete = [
+                                      	{ input : '\'', output : '\'$0\'' },
+                                      	{ input : '"', output : '"$0"' },
+                                      	{ input : '(', output : '\($0\)' },
+                                      	{ input : '[', output : '\[$0\]' },
+//                                      	{ input : '{', output : '{\n\t$0\n}' }		
+                                      ]
 Language.shortcuts = []
