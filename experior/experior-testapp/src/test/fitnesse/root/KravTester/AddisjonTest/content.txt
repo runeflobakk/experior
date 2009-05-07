@@ -1,15 +1,19 @@
-!|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
-{{{
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.TestFixture|
+
 !1 Krav 1
 !|tallene|10|plus|1|skal bli|1|
 |tallene|1|plus|1|skal bli|100|
-}}}
+!|test4|
 
+!|tallene plus skal bli|
+
+{{{
 !|formidlet postering|
 |oppdragsdato|postert belop|produktkode|produktelement|
 |11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
 |12.03.2008|50000|730|34|
+}}}
 
 !|tallene plus skal bli|
 
