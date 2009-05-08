@@ -19,11 +19,12 @@ var methods;
 var firstLine;
 var lines;
 
-CodePress = {
+Experior = {
 		scrolling : false,
 		autocomplete : true,
 
 		initialize : function() {
+	
 	if(typeof(editor)=='undefined' && !arguments[0]) return;
 	chars = '|32|46|62|'; // charcodes that trigger syntax highlighting
 	cc = '\u2009'; // carret char
@@ -33,12 +34,12 @@ CodePress = {
 	document.attachEvent('onkeydown', this.metaHandler);
 	document.attachEvent('onkeypress', this.keyHandler);
 
-	window.attachEvent('onscroll', function() { if(!CodePress.scrolling) setTimeout(function(){CodePress.syntaxHighlight('scroll')},1)});
+	window.attachEvent('onscroll', function() { if(!Experior.scrolling) setTimeout(function(){Experior.syntaxHighlight('scroll')},1)});
 
 	completeChars = this.getCompleteChars();
 
 	completeEndingChars =  this.getCompleteEndingChars();
-	firstline = CodePress.getCode().split("\n");
+	firstline = Experior.getCode().split("\n");
 	firstline = firstline[0];
 	setTimeout(function() { window.scroll(0,0) },50); // scroll IE to top
 },
@@ -51,7 +52,7 @@ keyHandler : function( evt )
 
 	if(chars.indexOf('|'+charCode+'|')!=-1||charCode==13)
 	{ // syntax highlighting
-		CodePress.syntaxHighlight( 'generic', methods );
+		Experior.syntaxHighlight( 'generic', methods );
 	}
 },
 
@@ -61,17 +62,17 @@ metaHandler : function(evt)
 
 	if(keyCode==9 || evt.tabKey)
 	{ 
-		CodePress.snippets();
+		Experior.snippets();
 	}
 
 	else if( keyCode==220)
 	{			
-		CodePress.align();		
+		Experior.align();		
 	}
 
 	else if((keyCode==122||keyCode==121||keyCode==90) && evt.ctrlKey)
 	{ // undo and redo
-		(keyCode==121||evt.shiftKey) ? CodePress.actions.redo() :  CodePress.actions.undo(); 
+		(keyCode==121||evt.shiftKey) ? Experior.actions.redo() :  Experior.actions.undo(); 
 		evt.returnValue = false;
 	}
 	else if(keyCode==34||keyCode==33)
@@ -81,17 +82,17 @@ metaHandler : function(evt)
 	}
 	else if(keyCode==46||keyCode==8)
 	{ // save to history when delete or backspace pressed
-		CodePress.actions.history[CodePress.actions.next()] = editor.innerHTML;
+		Experior.actions.history[Experior.actions.next()] = editor.innerHTML;
 	}
 	else if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && keyCode!=90)
 	{ // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
-		CodePress.shortcuts(keyCode);
+		Experior.shortcuts(keyCode);
 		evt.returnValue = false;
 	}		
 	else if(keyCode==86 && evt.ctrlKey)
 	{ // handle paste
 
-		top.setTimeout( function(){ CodePress.syntaxHighlight('paste');} );
+		top.setTimeout( function(){ Experior.syntaxHighlight('paste');} );
 	}		
 	else if(keyCode==67 && evt.ctrlKey)
 	{
@@ -250,19 +251,18 @@ insertMethod : function( id )
 
 checkFirstLine : function( url ) {	
 
-
-	var tekst = CodePress.getCode().split("\n");
+	var tekst = Experior.getCode().split("\n");
 
 	if( tekst[0] != firstline )
 	{	
 		var caret = document.selection.createRange();	
 		caret.moveStart( 'character', -this.getCode().length );	
-		var selectedCode = CodePress.getCodeFromCaret( caret.htmlText );		
+		var selectedCode = Experior.getCodeFromCaret( caret.htmlText );		
 
 		if( firstline.length < selectedCode.length )
 		{
 			firstline = tekst[0];
-			CodePress.loadXMLString( url );
+			Experior.loadXMLString( url );
 		}	
 	}
 
@@ -270,7 +270,7 @@ checkFirstLine : function( url ) {
 
 loadXMLString : function( url) {
 
-	var firstline = CodePress.getCode().split("\n");
+	var firstline = Experior.getCode().split("\n");
 	
 	var url = "http://localhost:8080/FrontPage?responder=Commands&var=" + firstline[0];
 	
@@ -311,8 +311,8 @@ loadXMLString : function( url) {
 
 					methods = methodsarray.join("\n") + "\n";
 
-					CodePress.syntaxHighlight();
-					CodePress.updateMethodsDiv();
+					Experior.syntaxHighlight();
+					Experior.updateMethodsDiv();
 				}
 				else
 				{
@@ -383,7 +383,7 @@ complete : function(trigger) {
 			var pattern = new RegExp('\\'+trigger+cc);
 			//alert( pattern );
 			var content = complete[i].output.replace(/\$0/g,cc);
-			setTimeout(function () { CodePress.syntaxHighlight('complete',pattern,content)},0); // wait for char to appear on screen
+			setTimeout(function () { Experior.syntaxHighlight('complete',pattern,content)},0); // wait for char to appear on screen
 		}
 	}
 },
@@ -433,7 +433,7 @@ shortcuts : function() {
 
 getLastWord : function()
 {
-	var rangeAndCaret = CodePress.align();
+	var rangeAndCaret = Experior.align();
 
 	var i = rangeAndCaret;
 
@@ -448,7 +448,7 @@ align : function()
 
 	caret.moveStart( 'character', -this.getCode().length );
 
-	var tekst = CodePress.getCodeFromCaret( caret.htmlText );
+	var tekst = Experior.getCodeFromCaret( caret.htmlText );
 
 	var linjearray = tekst.split("\n");
 
@@ -629,14 +629,14 @@ actions : {
 	this.pos--;
 	if(typeof(this.history[this.pos])=='undefined') this.pos++;
 	editor.innerHTML = this.history[this.pos];
-	CodePress.findString();
+	Experior.findString();
 },
 
 redo : function() {
 	this.pos++;
 	if(typeof(this.history[this.pos])=='undefined') this.pos--;
 	editor.innerHTML = this.history[this.pos];
-	CodePress.findString();
+	Experior.findString();
 },
 
 next : function() { // get next vector position and clean old ones
@@ -646,7 +646,7 @@ next : function() { // get next vector position and clean old ones
 }
 }
 Language={};
-window.attachEvent('onload', function() { CodePress.initialize('new');});
+window.attachEvent('onload', function() { Experior.initialize('new');});
 
 
 

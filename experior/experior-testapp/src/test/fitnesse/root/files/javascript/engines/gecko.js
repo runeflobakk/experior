@@ -59,7 +59,7 @@ keyHandler : function(evt) {
 	
 	else if(keyCode==9 || evt.tabKey) {
 		
-		testAlert();// snippets activation (tab)
+		
 		evt.preventDefault();
 		evt.stopPropagation();
 		Experior.tab();
@@ -101,8 +101,7 @@ keyHandler : function(evt) {
 findString : function() {
 	if(self.find(cc))
 	{
-		window.getSelection().getRangeAt(0).deleteContents();
-		
+		window.getSelection().getRangeAt(0).deleteContents();		
 	}
 },
 
@@ -478,7 +477,7 @@ getCode : function() {
 
 //put code inside editor
 setCode : function() {
-	/*
+	
 	var code = arguments[0];
 	code = code.replace(/\u2009/gi,'');
 
@@ -489,40 +488,55 @@ setCode : function() {
 
 	if (code == '')
 		document.getElementsByTagName('body')[0].innerHTML = '';
-*/
-	alert( editor.innerHTML );
+	
 },
 
 tab : function() {
+	
+	
+	var selection = window.getSelection();
 
-	var range = window.getSelection().getRangeAt(0);
-	var startNode = document.getElementsByTagName("pre").item(0);
-	
-	var startOffset = 0;
-	
-	//range.setStartAfter( startNode ); 
-	range.setEndAfter( startNode );
+	var range = selection.getRangeAt(0);
+
+	var nodevalue = range.endContainer.nodeValue; 
 	
 	
+	if( nodevalue.search(/\|/) > -1  )
+		range.setEnd( range.startContainer, range.startContainer.length );
+	else if( range.endContainer.nextSibling != null ){
+		alert(" ELSE !");
+		range.setEnd( range.startContainer, range.nextSibling.length );
+	}
+	else if( range.endContainer.firstChild != null ) {
+		alert( "ELSE !! " );
+		range.setEnd( range.startContainer, range.firstChild.length );
+	}
+	
+	
+	range.collapse(false);
+	//alert( range.commonAncestorContainer );
+	
+	//var selct = window.getSelection();
 	/*
-	var nodes = startNode.childNodes;
+	var treeWalker = document.createTreeWalker(
+			
+		    document.body,
+		    NodeFilter.SHOW_ELEMENT,
+		    
+		    { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } },
+		    false
+		);
 	
-	for( var i = 0; i < nodes.length; i++ )
-	{
-		alert( nodes[i].nodeValue );
-	}*/
-	
-	//alert( startNode.childNodes );
-	
-	var div = document.createElement('div');
-	div.appendChild(range.cloneContents());
+		var nodeList = new Array();
+		while(treeWalker.nextNode()) 
+			nodeList.push(treeWalker.currentNode);
+		
+		//alert( treeWalker.currentNode );
+		
 
-	var pos = div.innerHTML.indexOf("|");
 	
-	//alert( div.innerHTML );
-	alert( pos );
-	alert( div.innerHTML.substring(0, pos ));	
-},
+	*/
+	},
 
 checkFirstLine : function( url ) {	
 	var tekst = Experior.getCode().split("\n");
