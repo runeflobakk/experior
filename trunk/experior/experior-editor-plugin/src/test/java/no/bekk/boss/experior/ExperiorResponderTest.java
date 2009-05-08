@@ -24,7 +24,6 @@ class SubTestDoFixture extends TestDoFixture
 public class ExperiorResponderTest
 {
 
-
 	private ExperiorResponder responder;
 	
 	@Before
