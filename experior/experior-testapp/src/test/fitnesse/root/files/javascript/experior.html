@@ -15,12 +15,10 @@
 	else if(ua.match('Opera')) browser = 'opera'; 
 	else if(ua.match('Gecko')) browser = 'gecko';
 	
-	if(lh.match('language=')) language = lh.replace(/.*language=(.*?)(&.*)?$/,'$1');
-		
 	document.write("<link type='text/css' href='experior.css' rel='stylesheet'/>");
-	document.write("<link type='text/css' href='languages/" + language + ".css' rel='stylesheet' id='cp-lang-style' />");
+	document.write("<link type='text/css' href='highlight.css' rel='stylesheet' id='cp-lang-style' />");
 	document.write("<script type='text/javascript' src='browsers/" + browser + ".js'<\/script>");
-	document.write("<script type='text/javascript' src='languages/" + language + ".js'<\/script>");
+	document.write("<script type='text/javascript' src='highlight.js'<\/script>");
 		
 	</script>
 
