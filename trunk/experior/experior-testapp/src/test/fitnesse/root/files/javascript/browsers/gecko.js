@@ -20,7 +20,7 @@ var lines;
 Experior = {
 		scrolling : false,
 		autocomplete : true,
-		
+
 		// set initial vars and start sh
 		initialize : function() {
 	if(typeof(editor)=='undefined' && !arguments[0]) return;
@@ -36,7 +36,7 @@ Experior = {
 	completeEndingChars =  this.getCompleteEndingChars();
 	firstline = Experior.getCode().split("\n");
 	firstline = firstline[0];
-	
+
 },
 
 //treat key bindings
@@ -45,21 +45,21 @@ keyHandler : function(evt) {
 	charCode = evt.charCode;
 
 	fromChar = String.fromCharCode(charCode);
-	
+
 
 	if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
-		
+
 		Experior.shortcuts(charCode?charCode:keyCode);
 	}
 	else if(chars.indexOf('|'+charCode+'|')!=-1||keyCode==13) { // syntax highlighting
-		
+
 		top.setTimeout(function(){Experior.syntaxHighlight('generic');},100);
-		
+
 	}
-	
+
 	else if(keyCode==9 || evt.tabKey) {
-		
-		
+
+
 		evt.preventDefault();
 		evt.stopPropagation();
 		Experior.tab();
@@ -72,27 +72,27 @@ keyHandler : function(evt) {
 		Experior.align();	
 	}
 	else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
-	
-	
+
+
 		Experior.actions.history[Experior.actions.next()] = editor.innerHTML;
-	
+
 	}
 
 	else if((charCode==122||charCode==121||charCode==90) && evt.ctrlKey) { 
 		// undo and redo
-	
+
 		(charCode==121||evt.shiftKey) ? Experior.actions.redo() :  Experior.actions.undo(); 
 		evt.preventDefault();
 	}
 	else if(charCode==118 && evt.ctrlKey)  { // handle paste
-	
+
 		Experior.getRangeAndCaret();
 		top.setTimeout(function(){Experior.syntaxHighlight('generic');},100);
-		
+
 	}
 	else if(charCode==99 && evt.ctrlKey)  { // handle cut
-		
-	
+
+
 	}
 
 },
@@ -107,48 +107,58 @@ findString : function() {
 
 
 createMethodsDiv : function( methodsInDiv ) {
-	
-	    var newdiv = document.createElement('div'); 
-		var divIdName = 'methodsDiv'; 
 
-		
-		var metodestring = "";
+	var newdiv = document.createElement('div'); 
+	var divIdName = 'methodsDiv'; 
 
-		parent.document.body.appendChild(newdiv);
+
+	var metodestring = "";
+
+	parent.document.body.appendChild(newdiv);
+	newdiv.setAttribute('id',divIdName); 
+	newdiv.style.width = "135px";
+	newdiv.style.overflow = "auto";
+	newdiv.style.left = "5px";
+	newdiv.style.height = screen.height - 310 + 'px';
+	newdiv.style.top = "120px"; 
+	newdiv.style.position = "fixed";		
+
+	newdiv.style.textDecoration = "none";		
+
+	if( methodsInDiv.length > 1 )
+	{
 		newdiv.innerHTML = "<h3>Methods</h3>";
-		newdiv.setAttribute('id',divIdName); 
-		newdiv.style.width = "135px";
-		newdiv.style.overflow = "auto";
-		newdiv.style.left = "5px";
-		newdiv.style.height = screen.height - 310 + 'px';
-		newdiv.style.top = "120px"; 
-		newdiv.style.position = "fixed";
-		
-		
-		newdiv.style.textDecoration = "none";		
-
 		for( var i = 0; i < methodsInDiv.length; i++ )
 		{	
 			methodsInDiv[i].trim;
 
 			metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a>";		
 		}
-		
 		newdiv.innerHTML += metodestring;	
+	}
+	else
+		newdiv.innerHTML = "";
+
+
 },
 
 updateMethodsDiv : function() {
 	var metodestring = "";	
-	
-		for( var i = 0; i < lines.length; i++ )
-	{
-		lines[i].trim;
 
-		metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a>";
-	}
 	parent.document.getElementById("methodsDiv").innerHTML = "";
-	parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + metodestring;
-	
+
+	if( lines.length > 0 )
+	{
+
+		for( var i = 0; i < lines.length; i++ )
+		{
+			lines[i].trim;
+
+			metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a>";
+		}
+		parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + metodestring;
+	}
+
 },
 
 
@@ -182,13 +192,19 @@ getEditor : function() {
 
 //syntax highlighting parser
 syntaxHighlight : function(flag, methods2) {
-	
+
 	if( methods2 != null )
 	{		
 		methods = methods2;		
 	}
-	lines = methods.split('\n');
-	lines.pop();
+
+	if( methods.length == 0 )
+		lines = new Array();
+	else
+	{
+		lines = methods.split('\n');
+		lines.pop();
+	}
 
 	if(flag != 'init') { window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc)); }
 
@@ -231,7 +247,7 @@ syntaxHighlight : function(flag, methods2) {
 
 	editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.replace(z,x);
 	if(flag!='init') this.findString();
-	
+
 },
 
 getLastWord : function() {
@@ -463,7 +479,7 @@ getCode : function() {
 	}
 	var code = editor.innerHTML;
 
-	
+
 	code = code.replace(/<p>/g,'\n');
 	code = code.replace(/<br>/g,'\n');
 	code = code.replace(/&nbsp;/gi,'');
@@ -477,30 +493,30 @@ getCode : function() {
 
 //put code inside editor
 setCode : function() {
-	
+
 	var code = arguments[0];
 	code = code.replace(/\u2009/gi,'');
 
 	code = code.replace(/&/gi,'&amp;');
 	code = code.replace(/</g,'&lt;');
 	code = code.replace(/>/g,'&gt;');
-	
+
 
 	if (code == '')
 		document.getElementsByTagName('body')[0].innerHTML = '';
-	
+
 },
 
 tab : function() {
-	
-	
+
+
 	var selection = window.getSelection();
 
 	var range = selection.getRangeAt(0);
 
 	var nodevalue = range.endContainer.nodeValue; 
-	
-	
+
+
 	if( nodevalue.search(/\|/) > -1  )
 		range.setEnd( range.startContainer, range.startContainer.length );
 	else if( range.endContainer.nextSibling != null ){
@@ -511,32 +527,32 @@ tab : function() {
 		alert( "ELSE !! " );
 		range.setEnd( range.startContainer, range.firstChild.length );
 	}
-	
-	
+
+
 	range.collapse(false);
 	//alert( range.commonAncestorContainer );
-	
+
 	//var selct = window.getSelection();
 	/*
 	var treeWalker = document.createTreeWalker(
-			
+
 		    document.body,
 		    NodeFilter.SHOW_ELEMENT,
-		    
+
 		    { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } },
 		    false
 		);
-	
+
 		var nodeList = new Array();
 		while(treeWalker.nextNode()) 
 			nodeList.push(treeWalker.currentNode);
-		
-		//alert( treeWalker.currentNode );
-		
 
-	
-	*/
-	},
+		//alert( treeWalker.currentNode );
+
+
+
+	 */
+},
 
 checkFirstLine : function( url ) {	
 	var tekst = Experior.getCode().split("\n");
@@ -594,14 +610,18 @@ loadXMLString : function( url) {
 					alert('Access Denied');
 				}
 				else if (httpRequest.status==200)
-				{   
-					//methods = new Array();
+				{   					
 					methods = httpRequest.getResponseHeader("json");
-					
-					var methodsarray = eval('('+ methods +')');
-					
-					methods = methodsarray.join("\n") + "\n";
-										
+
+					var methodsarray;
+					if( methods.length == 4 )
+						methods = new Array();
+					else
+					{
+						methodsarray = eval('('+ methods +')');
+						methods = methodsarray.join("\n") + "\n";
+					}
+
 					Experior.syntaxHighlight();
 					Experior.updateMethodsDiv();
 				}
@@ -612,7 +632,7 @@ loadXMLString : function( url) {
 			}			
 		}
 		httpRequest.open("GET",url,true);
-		
+
 		httpRequest.overrideMimeType('text/xml');
 		httpRequest.send(null);
 	}
@@ -792,6 +812,6 @@ Language.syntax = [
 
                 	   Language.snippets = []
 
-                	                       
 
-                	                                             Language.shortcuts = []
+
+                	                        Language.shortcuts = []

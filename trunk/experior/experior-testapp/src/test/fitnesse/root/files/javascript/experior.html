@@ -5,21 +5,21 @@
 
 	<script type="text/javascript">
 	var language = 'generic';
-	var engine = 'older';
+	var browser = 'older';
 	var ua = navigator.userAgent;
 	var ts = (new Date).getTime(); // timestamp to avoid cache
 	var lh = location.href;
 	
-	if(ua.match('MSIE')) engine = 'msie';
-	else if(ua.match('KHTML')) engine = 'khtml'; 
-	else if(ua.match('Opera')) engine = 'opera'; 
-	else if(ua.match('Gecko')) engine = 'gecko';
+	if(ua.match('MSIE')) browser = 'msie';
+	else if(ua.match('KHTML')) browser = 'khtml'; 
+	else if(ua.match('Opera')) browser = 'opera'; 
+	else if(ua.match('Gecko')) browser = 'gecko';
 	
 	if(lh.match('language=')) language = lh.replace(/.*language=(.*?)(&.*)?$/,'$1');
 		
 	document.write("<link type='text/css' href='experior.css' rel='stylesheet'/>");
 	document.write("<link type='text/css' href='languages/" + language + ".css' rel='stylesheet' id='cp-lang-style' />");
-	document.write("<script type='text/javascript' src='engines/" + engine + ".js'<\/script>");
+	document.write("<script type='text/javascript' src='browsers/" + browser + ".js'<\/script>");
 	document.write("<script type='text/javascript' src='languages/" + language + ".js'<\/script>");
 		
 	</script>
@@ -27,7 +27,7 @@
 </head>
 
 <script type="text/javascript">
-if(engine == "msie" || engine == "gecko") 
+if(browser == "msie" || browser == "gecko") 
 {
 	document.write('<body><pre></pre></body>')
 };
