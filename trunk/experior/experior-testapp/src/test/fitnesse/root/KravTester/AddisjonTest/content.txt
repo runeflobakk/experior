@@ -1,11 +1,9 @@
-!|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.TestFixture|
 
 !1 Krav 1
 !|tallene|10|plus|1|skal bli|1|
 |tallene|1|plus|1|skal bli|100|
 !|test4|
-
-!|tallene plus skal bli|
 
 {{{
 !|formidlet postering|
@@ -87,12 +85,10 @@
 |11.03.2008|350|682|34|
 |12.03.2008|50000|730|34|
 
-
 {{{
 !|hei|du|der|
 |hei|på|deg|
 }}}
-
 
 !2 Krav 2
 !|tallene|10|plus|1|skal bli|101|
