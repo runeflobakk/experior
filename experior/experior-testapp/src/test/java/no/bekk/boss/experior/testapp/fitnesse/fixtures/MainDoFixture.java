@@ -12,6 +12,8 @@ public class MainDoFixture extends DoFixture {
         return calculator.sum(a, b) == expected;
     }
     
+    
+    
     public boolean minNyeMetode()
     {
     	return true;
