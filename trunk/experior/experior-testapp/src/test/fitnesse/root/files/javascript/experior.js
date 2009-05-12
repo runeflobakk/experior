@@ -10,7 +10,8 @@
  */
 var experior;
 var hidden;
-Experior = function(textarea, obj2) {
+Experior = function(textarea, obj2)
+{
 	experior = document.createElement('iframe');
 	experior.textarea = textarea;
 	

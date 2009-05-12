@@ -105,5 +105,5 @@
 
 !|en metodew|
 
-!|metoden hei du|
-
+!metoden hei du
+!tallene plus skal bli

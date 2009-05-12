@@ -6,13 +6,3 @@ Language.syntax = [
 	{ input : /([^:]|^)\!1(.*?)(<br|<\/P)/g, output : '$1<span class=comment1>!1$2</span>$3' }, // !1
 	{ input : /\{{3}(.*?)\}{3}/gim, output : '<span class=disabled>{{{$1}}}</span>' } // outcommented {{{ }}}
 ]
-
-Language.snippets = []
-                     Language.complete = [
-                                      	{ input : '\'', output : '\'$0\'' },
-                                      	{ input : '"', output : '"$0"' },
-                                      	{ input : '(', output : '\($0\)' },
-                                      	{ input : '[', output : '\[$0\]' },
-//                                      	{ input : '{', output : '{\n\t$0\n}' }		
-                                      ]
-Language.shortcuts = []
