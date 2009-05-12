@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+
+
+	<script type="text/javascript">
+	var language = 'generic';
+	var browser = 'older';
+	var ua = navigator.userAgent;
+	var ts = (new Date).getTime(); // timestamp to avoid cache
+	var lh = location.href;
+	
+	if(ua.match('MSIE')) browser = 'msie';
+	else if(ua.match('KHTML')) browser = 'khtml'; 
+	else if(ua.match('Opera')) browser = 'opera'; 
+	else if(ua.match('Gecko')) browser = 'gecko';
+	
+	document.write("<link type='text/css' href='experior.css' rel='stylesheet'/>");
+	document.write("<link type='text/css' href='highlight.css' rel='stylesheet' id='cp-lang-style' />");
+	document.write("<script type='text/javascript' src='browsers/" + browser + ".js'<\/script>");
+	document.write("<script type='text/javascript' src='highlight.js'<\/script>");
+		
+	</script>
+
+</head>
+
+<script type="text/javascript">
+if(browser == "msie" || browser == "gecko") 
+{
+	document.write('<body><pre></pre></body>')
+};
+
+
+</script>
+
+</html>
