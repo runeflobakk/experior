@@ -3,7 +3,7 @@
     <groupId>no.bekk.boss.experior</groupId>
     <artifactId>experior</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-alpha</version>
+    <version>1.0-SNAPSHOT</version>
     <name>Experior</name>
     <url>http://code.google.com/p/experior/</url>
     <modules>
@@ -31,8 +31,8 @@
 
     </dependencies>
     <scm>
-        <connection>scm:svn:http://experior.googlecode.com/svn/tags/experior-0.1-alpha</connection>
-        <developerConnection>scm:svn:https://experior.googlecode.com/svn/tags/experior-0.1-alpha</developerConnection>
-        <url>http://experior.googlecode.com/svn/tags/experior-0.1-alpha</url>
+        <connection>scm:svn:http://experior.googlecode.com/svn/trunk/experior</connection>
+        <developerConnection>scm:svn:https://experior.googlecode.com/svn/trunk/experior</developerConnection>
+        <url>http://experior.googlecode.com/svn/trunk/experior</url>
     </scm>
 </project>
