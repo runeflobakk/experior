@@ -3,11 +3,11 @@
     <parent>
         <groupId>no.bekk.boss.experior</groupId>
         <artifactId>experior</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1-alpha</version>
     </parent>
     <artifactId>experior-testapp</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-alpha</version>
     <name>Experior Test Application</name>
     <url>http://code.google.com/p/experior/</url>
     <dependencies>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>no.bekk.boss.experior</groupId>
             <artifactId>experior-editor-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1-alpha</version>
             <scope>test</scope>
         </dependency>
         <dependency>
