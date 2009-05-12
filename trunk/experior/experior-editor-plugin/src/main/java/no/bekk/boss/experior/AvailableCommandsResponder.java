@@ -62,7 +62,7 @@ public class AvailableCommandsResponder implements Responder
 		}
 		catch (ClassNotFoundException e)
 		{
-			return "feil";
+			return "";
 			//throw new RuntimeException(e);
 		}
 
