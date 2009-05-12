@@ -17,100 +17,65 @@
 var methods;
 var firstLine;
 var lines;
-Experior = {
-		scrolling : false,
-		autocomplete : true,
 
-		// set initial vars and start sh
-		initialize : function() {
-	if(typeof(editor)=='undefined' && !arguments[0]) return;
+Experior = {
+
+initialize : function() {
+	
 	body = document.getElementsByTagName('body')[0];
-	body.innerHTML = body.innerHTML.replace(/\n/g,"");
-	chars = '|32|46|62|8|'; // charcodes that trigger syntax highlighting
-	cc = '\u2009'; // carret char
+	body.innerHTML = body.innerHTML.replace(/\n/g,"");	
+	
 	editor = document.getElementsByTagName('pre')[0];
 	document.designMode = 'on';
-	document.addEventListener('keypress', this.keyHandler, false);
+	document.addEventListener('keypress', this.keyListener, false);
 	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.syntaxHighlight('scroll') }, false);
-	completeChars = this.getCompleteChars();
-	completeEndingChars =  this.getCompleteEndingChars();
+	
 	firstline = Experior.getCode().split("\n");
 	firstline = firstline[0];
-
+	caret = '\u2009';
 },
 
-//treat key bindings
-keyHandler : function(evt) {	
+keyListener : function(evt) {
+	
 	keyCode = evt.keyCode;	
 	charCode = evt.charCode;
 
-	fromChar = String.fromCharCode(charCode);
-
-
-	if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
-
-		Experior.shortcuts(charCode?charCode:keyCode);
+	// Space or enter pressed
+	if(charCode == 32 ||keyCode==13) {
+		Experior.syntaxHighlight();
 	}
-	else if(chars.indexOf('|'+charCode+'|')!=-1||keyCode==13) { // syntax highlighting
-
-		top.setTimeout(function(){Experior.syntaxHighlight('generic');},100);
-
-	}
-
-	else if(keyCode==9 || evt.tabKey) {
-
-
-		evt.preventDefault();
-		evt.stopPropagation();
-		Experior.tab();
-		//Experior.snippets(evt);
-	}
-	else if( charCode==124)
-	{	
+	// Pipe (|)
+	else if( charCode==124) {	
 		evt.preventDefault();
 		evt.stopPropagation();
 		Experior.align();	
 	}
-	else if(keyCode==46||keyCode==8) { // save to history when delete or backspace pressed
-
-
-		Experior.actions.history[Experior.actions.next()] = editor.innerHTML;
-
+	// Tab
+	else if(keyCode==9 || evt.tabKey) {
+		evt.preventDefault();
+		evt.stopPropagation();
+		Experior.tab();
 	}
-
+	// Delete or backspace
+	else if(keyCode==46||keyCode==8) {		
+		Experior.actions.history[Experior.actions.next()] = editor.innerHTML;
+	}
+	// Undo or redo
 	else if((charCode==122||charCode==121||charCode==90) && evt.ctrlKey) { 
-		// undo and redo
-
 		(charCode==121||evt.shiftKey) ? Experior.actions.redo() :  Experior.actions.undo(); 
 		evt.preventDefault();
 	}
-	else if(charCode==118 && evt.ctrlKey)  { // handle paste
-
+	// Paste
+	else if(charCode==118 && evt.ctrlKey) {
 		Experior.getRangeAndCaret();
-		top.setTimeout(function(){Experior.syntaxHighlight('generic');},100);
-
-	}
-	else if(charCode==99 && evt.ctrlKey)  { // handle cut
-
-
-	}
-
-},
-
-//put cursor back to its original position after every parsing
-findString : function() {
-	if(self.find(cc))
-	{
-		window.getSelection().getRangeAt(0).deleteContents();		
+		Experior.syntaxHighlight();
 	}
 },
-
 
 createMethodsDiv : function( methodsInDiv ) {
 
 	var newdiv = document.createElement('div'); 
 	var divIdName = 'methodsDiv'; 
-
 
 	var metodestring = "";
 
@@ -139,7 +104,6 @@ createMethodsDiv : function( methodsInDiv ) {
 	else
 		newdiv.innerHTML = "";
 
-
 },
 
 updateMethodsDiv : function() {
@@ -158,20 +122,16 @@ updateMethodsDiv : function() {
 		}
 		parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + metodestring;
 	}
-
 },
 
-
-
-//split big files, highlighting parts of it
-split : function(code,flag) {
+splitLargeTests : function(code,flag) {
 	if(flag=='scroll') {
 		this.scrolling = true;
 		return code;
 	}
 	else {
 		this.scrolling = false;
-		mid = code.indexOf(cc);
+		mid = code.indexOf(caret);
 		if(mid-2000<0) {ini=0;end=4000;}
 		else if(mid+2000>code.length) {ini=code.length-4000;end=code.length;}
 		else {ini=mid-2000;end=mid+2000;}
@@ -206,14 +166,14 @@ syntaxHighlight : function(flag, methods2) {
 		lines.pop();
 	}
 
-	if(flag != 'init') { window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc)); }
+	if(flag != 'init') { window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret)); }
 
 	editor = Experior.getEditor();
 	o = editor.innerHTML;
 
 	o = o.replace(/<br>/g,'\n');
 	o = o.replace(/<.*?>/g,'');
-	x = z = this.split(o,flag);
+	x = z = this.splitLargeTests(o,flag);
 	x = x.replace(/\n/g,'<br>');
 	x = x.replace(/&nbsp;/g, '&nbsp;');
 
@@ -255,6 +215,13 @@ getLastWord : function() {
 	words = rangeAndCaret[0].substring(rangeAndCaret[1]-40,rangeAndCaret[1]);
 	words = words.replace(/[\s\n\r\);\W]/g,'\n').split('\n');
 	return words[words.length-1].replace(/[\W]/gi,'').toLowerCase();
+},
+
+findString : function() {
+	if(self.find(caret))
+	{
+		window.getSelection().getRangeAt(0).deleteContents();		
+	}
 },
 
 align : function()
@@ -386,10 +353,10 @@ snippets : function(evt) {
 			var content = snippets[i].output.replace(/</g,'&lt;');
 			content = content.replace(/>/g,'&gt;');
 			if(content.indexOf('$0'
-			)<0) content += cc;
-			else content = content.replace(/\$0/,cc);
+			)<0) content += caret;
+			else content = content.replace(/\$0/,caret);
 			content = content.replace(/\n/g,'<br>');
-			var pattern = new RegExp(trigger+cc,'gi');
+			var pattern = new RegExp(trigger+caret,'gi');
 			evt.preventDefault(); // prevent the tab key from being added
 			this.syntaxHighlight('snippets',pattern,content);
 		}
@@ -402,19 +369,8 @@ readOnly : function() {
 
 
 
-getCompleteChars : function() {
-	var cChars = '';
-	for(var i=0;i<Language.complete.length;i++)
-		cChars += '|'+Language.complete[i].input;
-	return cChars+'|';
-},
 
-getCompleteEndingChars : function() {
-	var cChars = '';
-	for(var i=0;i<Language.complete.length;i++)
-		cChars += '|'+Language.complete[i].output.charAt(Language.complete[i].output.length-1);
-	return cChars+'|';
-},
+
 
 completeEnding : function(trigger) {
 	var range = window.getSelection().getRangeAt(0);
@@ -771,15 +727,15 @@ actions : {
 
 	undo : function() {
 	editor = Experior.getEditor();
-	if(editor.innerHTML.indexOf(cc)==-1){
+	if(editor.innerHTML.indexOf(caret)==-1){
 		if(editor.innerHTML != " ")
-			window.getSelection().getRangeAt(0).insertNode(document.createTextNode(cc));
+			window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret));
 		this.history[this.pos] = editor.innerHTML;
 	}
 	this.pos --;
 	if(typeof(this.history[this.pos])=='undefined') this.pos ++;
 	editor.innerHTML = this.history[this.pos];
-	if(editor.innerHTML.indexOf(cc)>-1) editor.innerHTML+=cc;
+	if(editor.innerHTML.indexOf(caret)>-1) editor.innerHTML+=caret;
 	Experior.findString();
 },
 
@@ -803,15 +759,3 @@ next : function() { // get next vector position and clean old ones
 Language={};
 
 window.addEventListener('load', function() { Experior.initialize('new'); }, true);
-Language.syntax = [
-                   { input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // reserved words
-                   { input : /([\(\){}])/g, output : '<em>$1</em>' }, // special chars;
-                   { input : /([^:]|^)\/\/(.*?)(<br|<\/P)/g, output : '$1<i>//$2</i>$3' }, // comments //
-                   { input : /\/\*(.*?)\*\//g, output : '<i>/*$1*/</i>' } // comments /* */
-                	   ]
-
-                	   Language.snippets = []
-
-
-
-                	                        Language.shortcuts = []
