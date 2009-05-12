@@ -48,8 +48,9 @@ function AddExperiorLink(){
 			pathname += "FrontPage";
 		
 		link.href = pathname + "?Experior";
-		div.insertBefore( link,editLink );
-	
+		link.style.marginBottom = "5px";			
+				
+		div.insertBefore( link,editLink );	
 }
 
 AddExperiorLink();

@@ -1,12 +1,11 @@
 /*
- * CodePress - Real Time Syntax Highlighting Editor written in JavaScript - http://codepress.org/
+ * This code is inspired and modeled on CodePress, http://sourceforge.net/projects/codepress
  * 
- * Copyright (C) 2006 Fernando M.A.d.S. <fermads@gmail.com>
- *
+ * CodePress is released under LGPL. Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
+ * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
  * GNU Lesser General Public License as published by the Free Software Foundation.
- * 
- * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
+ *  
  */
 var experior;
 var hidden;
@@ -18,11 +17,11 @@ Experior = function(textarea, obj2)
 	hidden = obj2;		
 	experior.textarea.disabled = true;
 	experior.textarea.style.overflow = 'hidden';
-	experior.style.height = screen.height - 330 + 'px';//experior.textarea.clientHeight +'px';
-	experior.style.width = screen.width - 170 + 'px';//experior.textarea.clientWidth +'px';
+	experior.style.height = screen.height - 330 + 'px';
+	experior.style.width = screen.width - 170 + 'px';
 	experior.textarea.style.overflow = 'auto';
 	experior.style.border = '1px solid gray';
-	experior.frameBorder = 0; // remove IE internal iframe border
+	experior.frameBorder = 0;
 	experior.style.visibility = 'hidden';
 	experior.style.position = 'absolute';
 	experior.options = experior.textarea.className;
@@ -35,7 +34,7 @@ Experior = function(textarea, obj2)
 
 		experior.editor.alignStart( experior.textarea.value);
 		experior.setOptions();
-		experior.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field
+		experior.editor.highlightTest('init', hidden.value); //hidden.value henter metodenavn fra hidden field
 		experior.textarea.style.display = 'none';
 		experior.style.position = 'static';
 		experior.style.visibility = 'visible';
@@ -110,7 +109,7 @@ Experior = function(textarea, obj2)
 		else {
 			experior.textarea.disabled = true;
 			experior.setCode(experior.textarea.value);
-			experior.editor.syntaxHighlight('init');
+			experior.editor.highlightTest('init');
 			experior.style.display = 'inline';
 			experior.textarea.style.display = 'none';
 		}
@@ -161,7 +160,7 @@ function alignClick()
 {	
 	experior.editor.alignStart( experior.getCode() );
 	experior.setOptions();
-	experior.editor.syntaxHighlight('init', hidden.value); //hidden.value henter metodenavn fra hidden field
+	experior.editor.highlightTest('init', hidden.value); //hidden.value henter metodenavn fra hidden field
 }
 
 //Gets the text from the hidden field 
