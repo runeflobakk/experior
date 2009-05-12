@@ -1,6 +1,0 @@
-!1 Innhold
-
-!contents -R2 -g -p -f -h
-Dette er en test
-
-!1 Classpath

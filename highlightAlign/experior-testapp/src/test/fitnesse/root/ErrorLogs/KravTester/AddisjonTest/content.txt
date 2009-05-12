@@ -1,4 +1,0 @@
-|'''Date: '''|!-4:25:36 PM (CET) on fredag, mars 13, 2009-!|
-|'''Command: '''|!-java -cp defaultPath;"C:\Users\Robert\Documents\SKOLE\HOVEDPROSJEKT\experior\experior-testapp\target\test-classes";"C:\Users\Robert\Documents\SKOLE\HOVEDPROSJEKT\experior\experior-testapp\target\classes";"C:\Users\Robert\.m2\repository\org\fitnesse\fitlibrary\20080702\fitlibrary-20080702.jar";"C:\Users\Robert\.m2\repository\org\fitnesse\fitnesse\20080702\fitnesse-20080702.jar";"C:\Users\Robert\.m2\repository\junit\junit\4.4\junit-4.4.jar";"C:\Users\Robert\Documents\SKOLE\HOVEDPROSJEKT\experior\experior-editor-plugin\target\test-classes";"C:\Users\Robert\Documents\SKOLE\HOVEDPROSJEKT\experior\experior-editor-plugin\target\classes";"C:\Users\Robert\.m2\repository\org\mockito\mockito-all\1.6\mockito-all-1.6.jar" fit.FitServer Robert-PC-SKOLE 8080 9-!|
-|'''Exit code: '''|!-4-!|
-|'''Time elapsed: '''|!-0.353 seconds-!|
