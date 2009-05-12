@@ -9,12 +9,12 @@ import org.junit.Test;
 import fitlibrary.DoFixture;
 
 
-class TestDoFixture extends DoFixture 
+class ParentDoFixture extends DoFixture 
 {
 	public void doThis() {}
 }
 
-class SubTestDoFixture extends TestDoFixture 
+class SubTestDoFixture extends ParentDoFixture 
 {
 	public void doThat() {}
 }
@@ -48,7 +48,7 @@ public class ExperiorResponderTest
     @Test
     public void newExperiorResponderShouldCreateCorrectWikiSyntax()
     {
-    	responder.content = "!|" + TestDoFixture.class.getCanonicalName() + "|";
+    	responder.content = "!|" + ParentDoFixture.class.getCanonicalName() + "|";
     	assertEquals( "do this\n", responder.getWikiCommands() );
     }
     

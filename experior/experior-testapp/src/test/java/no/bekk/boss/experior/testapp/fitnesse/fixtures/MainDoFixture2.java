@@ -1,6 +1,6 @@
 package no.bekk.boss.experior.testapp.fitnesse.fixtures;
 
-public class TestFixture extends MainDoFixture {
+public class MainDoFixture2 extends MainDoFixture {
 	
 	 public boolean test1(int a, int b, int expected) {
 	        return false;//calculator.sum(a, b) == expected;
