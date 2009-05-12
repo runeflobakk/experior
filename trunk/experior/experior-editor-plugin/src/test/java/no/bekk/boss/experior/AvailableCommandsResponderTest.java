@@ -25,7 +25,7 @@ public class AvailableCommandsResponderTest {
 	@Test
 	public void newExperiorResponderShouldCreateCorrectWikiSyntax()
 	{
-		assertEquals( "do this\n", responder.getWikiCommands( "!|" + TestDoFixture.class.getCanonicalName() + "|") );
+		assertEquals( "do this\n", responder.getWikiCommands( "!|" + ParentDoFixture.class.getCanonicalName() + "|") );
 	}
 	
 	@Test
