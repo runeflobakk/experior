@@ -29,5 +29,11 @@
             <version>2.2.3</version>
             <classifier>jdk15</classifier>
         </dependency>
+        
     </dependencies>
+    <scm>
+        <connection>scm:svn:http://experior.googlecode.com/svn/trunk/experior</connection>
+        <developerConnection>scm:svn:https://experior.googlecode.com/svn/trunk/experior</developerConnection>
+        <url>http://experior.googlecode.com/svn/</url>
+    </scm>
 </project>
