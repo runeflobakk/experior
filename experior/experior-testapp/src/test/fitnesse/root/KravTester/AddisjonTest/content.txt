@@ -1,4 +1,9 @@
-!|no.bekk.boss.experior.testapp.fitnesse.fixtures.TestFixture|
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
+!*****> Oppsett
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
+
+*****!
+
 
 !1 Krav 1
 !|tallene|10|plus|1|skal bli|1|
@@ -89,6 +94,8 @@
 !|hei|du|der|
 |hei|på|deg|
 }}}
+
+
 
 !2 Krav 2
 !|tallene|10|plus|1|skal bli|101|

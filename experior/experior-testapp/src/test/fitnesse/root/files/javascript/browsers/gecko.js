@@ -28,7 +28,7 @@ initialize : function() {
 	editor = document.getElementsByTagName('pre')[0];
 	document.designMode = 'on';
 	document.addEventListener('keypress', this.keyListener, false);
-	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.syntaxHighlight('scroll') }, false);
+	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.highlightTest('scroll') }, false);
 	
 	firstline = Experior.getCode().split("\n");
 	firstline = firstline[0];
@@ -42,7 +42,7 @@ keyListener : function(evt) {
 
 	// Space or enter pressed
 	if(charCode == 32 ||keyCode==13) {
-		Experior.syntaxHighlight();
+		Experior.highlightTest();
 	}
 	// Pipe (|)
 	else if( charCode==124) {	
@@ -68,7 +68,7 @@ keyListener : function(evt) {
 	// Paste
 	else if(charCode==118 && evt.ctrlKey) {
 		Experior.getRangeAndCaret();
-		Experior.syntaxHighlight();
+		Experior.highlightTest();
 	}
 },
 
@@ -131,33 +131,33 @@ splitLargeTests : function(code,flag) {
 	}
 	else {
 		this.scrolling = false;
-		mid = code.indexOf(caret);
-		if(mid-2000<0) {ini=0;end=4000;}
-		else if(mid+2000>code.length) {ini=code.length-4000;end=code.length;}
-		else {ini=mid-2000;end=mid+2000;}
-		code = code.substring(ini,end);
+		var cursor = code.indexOf(caret);
+		
+		if(cursor-3000<0){
+			var start=0;
+			var end=4000;
+		}
+		else if(cursor+2000>code.length) {
+			var start=code.length-4000;
+			var end=code.length;
+		}
+		else {
+			var start=cursor-2000;
+			var end=cursor+2000;
+		}
+		
+		code = code.substring(start,end);
 		return code;
 	}
 },
 
-getEditor : function() {
-	if(!document.getElementsByTagName('pre')[0]) {
-		body = document.getElementsByTagName('body')[0];
-		if(!body.innerHTML) return body;
-		if(body.innerHTML=="<br>") body.innerHTML = "<pre> </pre>";
-		else body.innerHTML = "<pre>"+body.innerHTML+"</pre>";
-	}
-	return document.getElementsByTagName('pre')[0];
-},
-
-//syntax highlighting parser
-syntaxHighlight : function(flag, methods2) {
+highlightTest : function(flag, methods2) {
 
 	if( methods2 != null )
 	{		
 		methods = methods2;		
 	}
-
+	
 	if( methods.length == 0 )
 		lines = new Array();
 	else
@@ -200,14 +200,23 @@ syntaxHighlight : function(flag, methods2) {
 
 			if (i != words1.length-1)
 				words3 += "$"+(i+1);
-		}		
-
+		}
 		eval('x = x.replace(/'+words2+'/g, \"'+ words3 + '\")');
 	}
 
 	editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.replace(z,x);
 	if(flag!='init') this.findString();
 
+},
+
+getEditor : function() {
+	if(!document.getElementsByTagName('pre')[0]) {
+		body = document.getElementsByTagName('body')[0];
+		if(!body.innerHTML) return body;
+		if(body.innerHTML=="<br>") body.innerHTML = "<pre> </pre>";
+		else body.innerHTML = "<pre>"+body.innerHTML+"</pre>";
+	}
+	return document.getElementsByTagName('pre')[0];
 },
 
 getLastWord : function() {
@@ -329,7 +338,7 @@ insertMethod : function( id )
 	selct.removeAllRanges();
 	selct.addRange(range2);
 
-	this.syntaxHighlight();
+	this.highlightTest();
 },
 
 
@@ -358,7 +367,7 @@ snippets : function(evt) {
 			content = content.replace(/\n/g,'<br>');
 			var pattern = new RegExp(trigger+caret,'gi');
 			evt.preventDefault(); // prevent the tab key from being added
-			this.syntaxHighlight('snippets',pattern,content);
+			this.highlightTest('snippets',pattern,content);
 		}
 	}
 },
@@ -446,6 +455,7 @@ getCode : function() {
 	code = code.replace(/&amp;/gi,'&');		
 	return code;
 },
+
 
 //put code inside editor
 setCode : function() {
@@ -578,7 +588,7 @@ loadXMLString : function( url) {
 						methods = methodsarray.join("\n") + "\n";
 					}
 
-					Experior.syntaxHighlight();
+					Experior.highlightTest();
 					Experior.updateMethodsDiv();
 				}
 				else
