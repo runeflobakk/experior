@@ -72,6 +72,29 @@ keyListener : function(evt) {
 	}
 },
 
+updateDivWidth : function( width ) {
+
+	var div = parent.document.getElementById("methodsDiv");
+	
+	if( width == "over" )
+	{
+		div.style.width = "auto";
+		div.style.overflow = "auto";
+		
+		div.style.overflow = "-moz-scrollbars-vertical";
+		div.style.minWidth = "135px";
+		
+		
+	}
+	else
+	{
+		div.style.width="135px";
+		div.style.overflow = "hidden";
+	}
+},
+
+
+
 createMethodsDiv : function( methodsInDiv ) {
 
 	var newdiv = document.createElement('div'); 
@@ -80,13 +103,19 @@ createMethodsDiv : function( methodsInDiv ) {
 	var metodestring = "";
 
 	parent.document.body.appendChild(newdiv);
-	newdiv.setAttribute('id',divIdName); 
+	newdiv.setAttribute('id',divIdName);
+	newdiv.onmouseover = new Function("Experior.updateDivWidth('over');");
+	newdiv.onmouseout = new Function("Experior.updateDivWidth('out');");
 	newdiv.style.width = "135px";
-	newdiv.style.overflow = "auto";
+	newdiv.style.backgroundImage = "url(/files/javascript/divbackground.png)";
+	newdiv.style.backgroundRepeat = "repeat";
+	newdiv.style.whiteSpace = "nowrap";
+	newdiv.style.overflow = "hidden";
+	
 	newdiv.style.left = "5px";
 	newdiv.style.height = screen.height - 310 + 'px';
 	newdiv.style.top = "120px"; 
-	newdiv.style.position = "fixed";		
+	newdiv.style.position = "fixed";
 
 	newdiv.style.textDecoration = "none";		
 
@@ -99,7 +128,7 @@ createMethodsDiv : function( methodsInDiv ) {
 
 			metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a>";		
 		}
-		newdiv.innerHTML += metodestring;	
+		newdiv.innerHTML += metodestring;
 	}
 	else
 		newdiv.innerHTML = "";
