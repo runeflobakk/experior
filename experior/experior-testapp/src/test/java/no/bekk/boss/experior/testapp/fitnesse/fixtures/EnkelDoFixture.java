@@ -5,7 +5,7 @@ import fitlibrary.DoFixture;
 
 public class EnkelDoFixture extends DoFixture {
 	
-public void metodenHeiDu()
+public void metodenHeiDuuuiu()
 {
 	
 }

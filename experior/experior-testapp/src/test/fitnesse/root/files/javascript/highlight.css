@@ -15,5 +15,5 @@ s, s b, s em {font-family:Courier New; color:#2A00FF;font-weight:bold;} /* strin
 .comment1 { color: darkblue; font-weight:bold; font-family:Verdana; font-size:18px; }
 
 /* Outcommented text between {{{ and }}} */
-.disabled, .disabled > * { color: #BBBBBB !IMPORTANT; }
+.disabled, .disabled > * { color: green !IMPORTANT; }
 
