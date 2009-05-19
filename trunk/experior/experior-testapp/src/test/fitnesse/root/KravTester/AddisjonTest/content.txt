@@ -1,11 +1,11 @@
 !|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
+
 !*****> Oppsett
 !|no.bekk.boss.experior.testapp.fitnesse.fixtures.MainDoFixture|
 
 *****!
 
- hei sann
-
+!2 Heisan
 
 !1 Krav 1
 !|tallene|10|plus|1|skal bli|1|
