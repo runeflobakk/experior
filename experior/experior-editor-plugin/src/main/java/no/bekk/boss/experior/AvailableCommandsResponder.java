@@ -1,6 +1,9 @@
 //KLASSEN SOM TAR MOT RESPONSEN
 package no.bekk.boss.experior;
 
+import static java.lang.Character.isUpperCase;
+import static java.lang.Character.toLowerCase;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +18,8 @@ import fitnesse.http.SimpleResponse;
 
 public class AvailableCommandsResponder implements Responder
 {
-	private ExperiorResponder responder = new ExperiorResponder();
-
-
 	@Override
-	public Response makeResponse(FitNesseContext context, Request request)throws Exception
+	public Response makeResponse(FitNesseContext context, Request request) throws Exception
 	{
 		try
 		{            
@@ -39,7 +39,6 @@ public class AvailableCommandsResponder implements Responder
 		} 
 		catch(Throwable t)
 		{	
-			t.printStackTrace();
 			throw new RuntimeException(t);
 		}
 	}
@@ -72,10 +71,27 @@ public class AvailableCommandsResponder implements Responder
 			{
 				for(Method method : type.getDeclaredMethods())
 				{
-					wikiCommands.append(responder.toWikiCommand(method.getName()) + "\n" );
+					wikiCommands.append(toWikiCommand(method.getName()) + "\n" );
 				}
 			}
 		}
 		return wikiCommands.toString();
+	}
+	
+	public String toWikiCommand(String methodName)
+	{
+		StringBuilder builder = new StringBuilder();
+		for(Character character : methodName.toCharArray())
+		{
+			if (isUpperCase(character))
+			{
+				builder.append(" " + toLowerCase(character));
+			}
+			else
+			{
+				builder.append(character);
+			}
+		}
+		return builder.toString();
 	}
 }
