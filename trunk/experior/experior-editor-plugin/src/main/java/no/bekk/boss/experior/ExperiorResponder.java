@@ -132,7 +132,7 @@ public class ExperiorResponder implements SecureResponder
 		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer")) {
 			handleRedirect(form);
 		}
-
+		
 		form.add( createTextarea() );	
 
 		return form;
@@ -249,10 +249,10 @@ public class ExperiorResponder implements SecureResponder
 		return wikiCommands.toString();
 	}
 
-	public String toWikiCommand(String className)
+	public String toWikiCommand(String methodName)
 	{
 		StringBuilder builder = new StringBuilder();
-		for(Character character : className.toCharArray())
+		for(Character character : methodName.toCharArray())
 		{
 			if (isUpperCase(character))
 			{
