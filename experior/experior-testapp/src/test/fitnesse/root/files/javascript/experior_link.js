@@ -1,11 +1,7 @@
 
-var LINK_TEXT = "Experior";
-
-var MAX_ADD_LINK_TRIES = 3;
-var MILLISECOND_SLEEP = 200;
 var tries = 0;
 
-
+AddExperiorLink();
 
 function GetAttributeValue( node, attribute ) {
 	for( var i=0;i<node.attributes.length;i++ ) {
@@ -16,7 +12,7 @@ function GetAttributeValue( node, attribute ) {
 }
 
 function getDiv( tagName,attributeName,attributeValue,retryCall ) {
-	tries++;
+	//tries++;
 	var elements = document.getElementsByTagName( tagName ); 
 	
 	for( var i=0; i<elements.length; i++ ) {
@@ -25,10 +21,11 @@ function getDiv( tagName,attributeName,attributeValue,retryCall ) {
 			return elements[i];
 		}
 	}
-	//still here, not found, try again.
-	if( tries<MAX_ADD_LINK_TRIES ) {
-		setTimeout( retryCall,MILLISECOND_SLEEP );
+	
+	if( tries<3 ) {
+		setTimeout( retryCall,200 );
 	}
+	
 }
 
 function AddExperiorLink(){
@@ -40,7 +37,7 @@ function AddExperiorLink(){
 		var div = getDiv("div","class","actions", AddExperiorLink);
 		
 		var link = document.createElement( 'A' );
-		link.innerHTML = LINK_TEXT;
+		link.innerHTML = "Experior";
 		
 		var pathname = location.pathname;
 		
@@ -52,5 +49,3 @@ function AddExperiorLink(){
 				
 		div.insertBefore( link,editLink );	
 }
-
-AddExperiorLink();

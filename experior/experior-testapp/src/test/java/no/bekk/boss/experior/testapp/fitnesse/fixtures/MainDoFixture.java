@@ -14,7 +14,7 @@ public class MainDoFixture extends DoFixture {
     
     
     
-    public boolean minNyeMetodeMetodenVirkerIkkeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee()
+    public boolean minNyeMetodeMetodenVirkerIkkee()
     {
     	return true;
     }

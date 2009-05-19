@@ -1,19 +1,3 @@
-/*
- * CodePress - Real Time Syntax Highlighting Editor written in JavaScript - http://codepress.org/
- * 
- * Copyright (C) 2007 Fernando M.A.d.S. <fermads@gmail.com>
- *
- * Developers:
- *		Fernando M.A.d.S. <fermads@gmail.com>
- *		Michael Hurni <michael.hurni@gmail.com>
- * Contributors: 	
- *		Martin D. Kirk
- *
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
- * GNU Lesser General Public License as published by the Free Software Foundation.
- * 
- * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
- */
 var methods;
 var firstLine;
 var lines;
@@ -28,9 +12,9 @@ initialize : function() {
 	editor = document.getElementsByTagName('pre')[0];
 	document.designMode = 'on';
 	document.addEventListener('keypress', this.keyListener, false);
-	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.highlightTest('scroll') }, false);
+	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.highlightDocument('scroll') }, false);
 	
-	firstline = Experior.getCode().split("\n");
+	firstline = Experior.getText().split("\n");
 	firstline = firstline[0];
 	caret = '\u2009';
 },
@@ -42,7 +26,7 @@ keyListener : function(evt) {
 
 	// Space or enter pressed
 	if(charCode == 32 ||keyCode==13) {
-		Experior.highlightTest();
+		Experior.highlightDocument();
 	}
 	// Pipe (|)
 	else if( charCode==124) {	
@@ -68,7 +52,7 @@ keyListener : function(evt) {
 	// Paste
 	else if(charCode==118 && evt.ctrlKey) {
 		Experior.getRangeAndCaret();
-		Experior.highlightTest();
+		Experior.highlightDocument();
 	}
 },
 
@@ -180,7 +164,7 @@ splitLargeTests : function(code,flag) {
 	}
 },
 
-highlightTest : function(flag, methods2) {
+highlightDocument : function(flag, methods2) {
 
 	if( methods2 != null )
 	{		
@@ -367,7 +351,7 @@ insertMethod : function( id )
 	selct.removeAllRanges();
 	selct.addRange(range2);
 
-	this.highlightTest();
+	this.highlightDocument();
 },
 
 
@@ -396,19 +380,10 @@ snippets : function(evt) {
 			content = content.replace(/\n/g,'<br>');
 			var pattern = new RegExp(trigger+caret,'gi');
 			evt.preventDefault(); // prevent the tab key from being added
-			this.highlightTest('snippets',pattern,content);
+			this.highlightDocument('snippets',pattern,content);
 		}
 	}
 },
-
-readOnly : function() {
-	document.designMode = (arguments[0]) ? 'off' : 'on';
-},
-
-
-
-
-
 
 completeEnding : function(trigger) {
 	var range = window.getSelection().getRangeAt(0);
@@ -466,7 +441,7 @@ insertCode : function(code,replaceCursorBefore) {
 },
 
 //get code from editor
-getCode : function() {
+getText : function() {
 	if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '')
 	{
 		editor = Experior.getEditor();	
@@ -487,7 +462,7 @@ getCode : function() {
 
 
 //put code inside editor
-setCode : function() {
+setText : function() {
 
 	var code = arguments[0];
 	code = code.replace(/\u2009/gi,'');
@@ -550,7 +525,7 @@ tab : function() {
 },
 
 checkFirstLine : function( url ) {	
-	var tekst = Experior.getCode().split("\n");
+	var tekst = Experior.getText().split("\n");
 
 
 	if( tekst[0] != firstline )
@@ -576,7 +551,7 @@ checkFirstLine : function( url ) {
 
 loadXMLString : function( url) {
 
-	var firstline = Experior.getCode().split("\n");
+	var firstline = Experior.getText().split("\n");
 	var url = "http://localhost:8080/FrontPage?responder=Commands&var=" + firstline[0];
 
 	httpRequest=null;
@@ -617,7 +592,7 @@ loadXMLString : function( url) {
 						methods = methodsarray.join("\n") + "\n";
 					}
 
-					Experior.highlightTest();
+					Experior.highlightDocument();
 					Experior.updateMethodsDiv();
 				}
 				else
@@ -662,7 +637,7 @@ state_Change : function() {
 },
 
 
-alignStart : function( code ) {	
+alignAllPipesOnPageLoad : function( code ) {	
 	var tekst = code.split("\n");	
 	var linearray = new Array();
 	var template = new Array();
