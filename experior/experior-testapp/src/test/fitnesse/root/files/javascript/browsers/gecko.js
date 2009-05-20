@@ -126,7 +126,6 @@ updateMethodsDiv : function() {
 
 	if( lines.length > 0 )
 	{
-
 		for( var i = 0; i < lines.length; i++ )
 		{
 			lines[i].trim;
@@ -429,25 +428,21 @@ insertCode : function(code,replaceCursorBefore) {
 	var node = window.document.createTextNode(code);
 	var selct = window.getSelection();
 	var range2 = range.cloneRange();
-	// Insert text at cursor position
 	selct.removeAllRanges();
 	range.deleteContents();
 	range.insertNode(node);
-	// Move the cursor to the end of text
 	range2.selectNode(node);		
 	range2.collapse(replaceCursorBefore);
 	selct.removeAllRanges();
 	selct.addRange(range2);
 },
 
-//get code from editor
 getText : function() {
 	if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '')
 	{
 		editor = Experior.getEditor();	
 	}
 	var code = editor.innerHTML;
-
 
 	code = code.replace(/<p>/g,'\n');
 	code = code.replace(/<br>/g,'\n');
@@ -471,14 +466,12 @@ setText : function() {
 	code = code.replace(/</g,'&lt;');
 	code = code.replace(/>/g,'&gt;');
 
-
 	if (code == '')
 		document.getElementsByTagName('body')[0].innerHTML = '';
 
 },
 
 tab : function() {
-
 
 	var selection = window.getSelection();
 
@@ -549,10 +542,13 @@ checkFirstLine : function( url ) {
 	}
 },
 
-loadXMLString : function( url) {
+loadXMLString : function( url ) {
 
 	var firstline = Experior.getText().split("\n");
-	var url = "http://localhost:8080/FrontPage?responder=Commands&var=" + firstline[0];
+	var host = window.location.hostname;
+	var port = window.location.port;
+	
+	var url = "http://" + host + ":" + port + "/FrontPage?responder=Commands&var=" + firstline[0];
 
 	httpRequest=null;
 	if(window.XMLHttpRequest)
@@ -643,7 +639,6 @@ alignAllPipesOnPageLoad : function( code ) {
 	var template = new Array();
 	var utskrift;
 	firstline = tekst[0];
-
 
 	var tablestart = 0;
 
@@ -767,8 +762,6 @@ next : function() { // get next vector position and clean old ones
 }
 }
 }
-
-
 
 Language={};
 
