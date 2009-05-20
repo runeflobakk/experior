@@ -12,6 +12,7 @@
 |tallene|1|plus|1|skal bli|100|
 !|test4|
 
+heisann
 
 !|formidlet postering|
 |oppdragsdato|postert belop|produktkode|produktelement|
