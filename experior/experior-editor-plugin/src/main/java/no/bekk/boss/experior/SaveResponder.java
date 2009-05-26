@@ -22,6 +22,7 @@ import fitnesse.responders.editing.MergeResponder;
 import fitnesse.wiki.*;
 
 public class SaveResponder implements SecureResponder {
+	
 	public static ContentFilter contentFilter;
 
 	private String user;
