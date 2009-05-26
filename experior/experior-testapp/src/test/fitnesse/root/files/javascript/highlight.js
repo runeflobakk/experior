@@ -1,5 +1,5 @@
 
-Language.syntax = [
+FitNesse.syntax = [
 	{ input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // FitNesse keywords
 	{ input : /([^:]|^)\#(.*?)(<br|<\/P)/g, output : '$1<span class=disabled>#$2</span>$3' }, // !3
 	{ input : /([^:]|^)\!3(.*?)(<br|<\/P)/g, output : '$1!3<span class=comment3>$2</span>$3' }, // !3

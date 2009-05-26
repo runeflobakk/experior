@@ -9,6 +9,7 @@
  */
 var experior;
 var hidden;
+
 Experior = function(textarea, hiddenField) {
 
 	experior = document.createElement('iframe');
@@ -27,7 +28,11 @@ Experior = function(textarea, hiddenField) {
 
 	experior.frameBorder = 0;
 	experior.options = experior.textarea.className;
-
+	
+	/*
+	 * Initializes the editor. Makes the textarea invisible and call relevant methods
+	 * inside the editor.
+	 */
 	experior.initialize = function() {
 
 		experior.editor = experior.contentWindow.Experior;
@@ -46,6 +51,7 @@ Experior = function(textarea, hiddenField) {
 		experior.editor.createMethodsDiv( methods);
 	}
 
+	// Puts the editor in edit-mode.
 	experior.edit = function( textarea,language ) {
 
 		if( !experior.textarea.disabled )
@@ -59,7 +65,8 @@ Experior = function(textarea, hiddenField) {
 			experior.addEventListener( 'load',experior.initialize, false );
 		
 	}
-
+	
+	// Puts the text in the variable code inside the editor
 	experior.setText = function( code ) {
 
 		if( experior.textarea.disabled )
@@ -67,7 +74,8 @@ Experior = function(textarea, hiddenField) {
 		else
 			experior.textarea.value = code;
 	}
-
+	
+	// Gets the text from inside the editor
 	experior.getText = function() {
 
 		if( experior.textarea.disabled )
@@ -76,8 +84,8 @@ Experior = function(textarea, hiddenField) {
 			return experior.textarea.value;
 	}
 
-	experior.setUpEditor = function() {
-		
+	// 
+	experior.setUpEditor = function() {		
 		if(experior.textarea.disabled) {
 			experior.textarea.value = getText();
 			experior.textarea.disabled = false;

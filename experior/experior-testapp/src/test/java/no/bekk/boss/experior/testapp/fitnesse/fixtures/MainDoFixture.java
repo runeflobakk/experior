@@ -19,22 +19,22 @@ public class MainDoFixture extends DoFixture {
     	return true;
     }
     
-    public void enMetodew()
+    public void enMetodewminNyeMetodeMetodenVirkerIkkee()
     {
     	
     }
     
-    public void enMetodetil()
+    public void enMetodetilminNyeMetodeMetodenVirkerIkkee()
     {
     	
     }
     
-    public Fixture formidletPostering() {
+    public Fixture formidletPosteringminNyeMetodeMetodenVirkerIkkee() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode1() {
+    public Fixture testMetode1minNyeMetodeMetodenVirkerIkkee() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
