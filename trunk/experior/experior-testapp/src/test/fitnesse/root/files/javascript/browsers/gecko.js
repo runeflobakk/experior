@@ -4,23 +4,32 @@ var lines;
 
 Experior = {
 
+/*
+ * Initializes the editor. Adds keylistener.
+ * Adds the first line in the text to variable firstline.
+ */
 initialize : function() {
-	
+
 	body = document.getElementsByTagName('body')[0];
 	body.innerHTML = body.innerHTML.replace(/\n/g,"");	
-	
+
 	editor = document.getElementsByTagName('pre')[0];
 	document.designMode = 'on';
 	document.addEventListener('keypress', this.keyListener, false);
-	window.addEventListener('scroll', function() { if(!Experior.scrolling) Experior.highlightDocument('scroll') }, false);
-	
+	window.addEventListener('scroll', function() {
+		if(!Experior.scrolling)
+			Experior.highlightDocument('scroll') 
+	},
+	false);
+
 	firstline = Experior.getText().split("\n");
 	firstline = firstline[0];
 	caret = '\u2009';
 },
 
+//Keylistener for keys pressed.
 keyListener : function(evt) {
-	
+
 	keyCode = evt.keyCode;	
 	charCode = evt.charCode;
 
@@ -34,19 +43,13 @@ keyListener : function(evt) {
 		evt.stopPropagation();
 		Experior.align();	
 	}
-	// Tab
-	else if(keyCode==9 || evt.tabKey) {
-		evt.preventDefault();
-		evt.stopPropagation();
-		Experior.tab();
-	}
 	// Delete or backspace
 	else if(keyCode==46||keyCode==8) {		
-		Experior.actions.history[Experior.actions.next()] = editor.innerHTML;
+		Experior.editEvents.lastPositions[Experior.editEvents.next()] = editor.innerHTML;
 	}
 	// Undo or redo
 	else if((charCode==122||charCode==121||charCode==90) && evt.ctrlKey) { 
-		(charCode==121||evt.shiftKey) ? Experior.actions.redo() :  Experior.actions.undo(); 
+		(charCode==121||evt.shiftKey) ? Experior.editEvents.redo() :  Experior.editEvents.undo(); 
 		evt.preventDefault();
 	}
 	// Paste
@@ -56,29 +59,31 @@ keyListener : function(evt) {
 	}
 },
 
+/*
+ * Function which updates the width of the div with methods to fit the
+ * longest method-name. Is called from the events onMouseOver and onMouseOut.
+ */
 updateDivWidth : function( width ) {
 
 	var div = parent.document.getElementById("methodsDiv");
-	
-	if( width == "over" )
-	{
+
+	if( width == "over" ) 	{
 		div.style.width = "auto";
 		div.style.overflow = "auto";
-		
+
 		div.style.overflow = "-moz-scrollbars-vertical";
-		div.style.minWidth = "135px";
-		
-		
+		div.style.minWidth = "135px";		
 	}
-	else
-	{
+	else {
 		div.style.width="135px";
 		div.style.overflow = "hidden";
 	}
 },
 
-
-
+/*
+ * Creates the div on the left side with the list of available methods.
+ * The methods is contained in the array methodsInDiv.
+ */
 createMethodsDiv : function( methodsInDiv ) {
 
 	var newdiv = document.createElement('div'); 
@@ -95,7 +100,7 @@ createMethodsDiv : function( methodsInDiv ) {
 	newdiv.style.backgroundRepeat = "repeat";
 	newdiv.style.whiteSpace = "nowrap";
 	newdiv.style.overflow = "hidden";
-	
+
 	newdiv.style.left = "5px";
 	newdiv.style.height = screen.height - 310 + 'px';
 	newdiv.style.top = "120px"; 
@@ -103,14 +108,14 @@ createMethodsDiv : function( methodsInDiv ) {
 
 	newdiv.style.textDecoration = "none";		
 
-	if( methodsInDiv.length > 1 )
-	{
+	if( methodsInDiv.length > 1 ) {
 		newdiv.innerHTML = "<h3>Methods</h3>";
-		for( var i = 0; i < methodsInDiv.length; i++ )
-		{	
+		for( var i = 0; i < methodsInDiv.length; i++ ) {	
 			methodsInDiv[i].trim;
 
-			metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a>";		
+			metodestring += "<a style='margin-bottom:5px; display:block; " +
+			"text-decoration: none;' href=javascript:void(0) " +
+			"onclick=insertMethod(" + i + ")>" + methodsInDiv[i] + "</a>";		
 		}
 		newdiv.innerHTML += metodestring;
 	}
@@ -119,23 +124,32 @@ createMethodsDiv : function( methodsInDiv ) {
 
 },
 
+/*
+ * Updates the div with available methods if there has been a change on the first
+ * line in the test.
+ */
 updateMethodsDiv : function() {
 	var metodestring = "";	
 
 	parent.document.getElementById("methodsDiv").innerHTML = "";
 
-	if( lines.length > 0 )
-	{
-		for( var i = 0; i < lines.length; i++ )
-		{
+	if( lines.length > 0 ) 	{
+		for( var i = 0; i < lines.length; i++ )	{
 			lines[i].trim;
 
-			metodestring += "<a style='margin-bottom:5px; display:block; text-decoration: none;' href=javascript:void(0) onclick=insertMethod(" + i + ")>" + lines[i] + "</a>";
+			metodestring += "<a style='margin-bottom:5px; display:block;" +
+			"text-decoration: none;' href=javascript:void(0) " +
+			"onclick=insertMethod(" + i + ")>" + lines[i] + "</a>";
 		}
-		parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + metodestring;
+		parent.document.getElementById("methodsDiv").innerHTML = "<h3>Methods</h3>" + 
+		metodestring;
 	}
 },
 
+/*
+ * Split large tests, if it is necessary with scrollbar. Causes that only parts of the
+ * text is highlighted at the same time, which leads to better perfomance.
+ */
 splitLargeTests : function(code,flag) {
 	if(flag=='scroll') {
 		this.scrolling = true;
@@ -144,8 +158,8 @@ splitLargeTests : function(code,flag) {
 	else {
 		this.scrolling = false;
 		var cursor = code.indexOf(caret);
-		
-		if(cursor-3000<0){
+
+		if(cursor-3000<0) {
 			var start=0;
 			var end=4000;
 		}
@@ -157,28 +171,33 @@ splitLargeTests : function(code,flag) {
 			var start=cursor-2000;
 			var end=cursor+2000;
 		}
-		
+
 		code = code.substring(start,end);
 		return code;
 	}
 },
 
+/*
+ * Highlights the correct text; methodnames (if the name is contained in methods2),
+ * comments and keywords.
+ */
 highlightDocument : function(flag, methods2) {
 
-	if( methods2 != null )
-	{		
+	if(methods2 != null) {		
 		methods = methods2;		
-	}
-	
-	if( methods.length == 0 )
+	} 
+
+	if(methods.length == 0) {
 		lines = new Array();
-	else
-	{
+	}
+	else {
 		lines = methods.split('\n');
 		lines.pop();
 	}
 
-	if(flag != 'init') { window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret)); }
+	if(flag != 'init') {
+		window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret));
+	}
 
 	editor = Experior.getEditor();
 	o = editor.innerHTML;
@@ -189,15 +208,17 @@ highlightDocument : function(flag, methods2) {
 	x = x.replace(/\n/g,'<br>');
 	x = x.replace(/&nbsp;/g, '&nbsp;');
 
-	if(arguments[1]&&arguments[2]) x = x.replace(arguments[1],arguments[2]);
-	var sRegExInput;
-	for(i=0;i<Language.syntax.length;i++) 
-		x = x.replace(Language.syntax[i].input,Language.syntax[i].output);
+	if(arguments[1] && arguments[2])
+		x = x.replace(arguments[1],arguments[2]);
 
-	var words1;
-	var words2;
-	var evalstring = "";
-	var words3;
+	var InputToRegex;
+
+	for(i=0;i<FitNesse.syntax.length;i++) 
+		x = x.replace(FitNesse.syntax[i].input,FitNesse.syntax[i].output);
+
+	var words1; //array with words between whitespaces
+	var words2; //string joined from words1 with matching regex
+	var words3; //string with highlighted method name
 
 	for(j=0;j<lines.length; j++) {
 		lines[j] = lines[j].replace(/\s+$/,"");
@@ -216,21 +237,29 @@ highlightDocument : function(flag, methods2) {
 		eval('x = x.replace(/'+words2+'/g, \"'+ words3 + '\")');
 	}
 
-	editor.innerHTML = this.actions.history[this.actions.next()] = (flag=='scroll') ? x : o.replace(z,x);
-	if(flag!='init') this.findString();
+	editor.innerHTML = this.editEvents.lastPositions[this.editEvents.next()] = (flag=='scroll') ? 
+			x : o.replace(z,x);
+	if(flag!='init') 
+		this.findString();
 
 },
 
+//Gets and returns the pre-element which contains the editor. 
 getEditor : function() {
 	if(!document.getElementsByTagName('pre')[0]) {
 		body = document.getElementsByTagName('body')[0];
-		if(!body.innerHTML) return body;
-		if(body.innerHTML=="<br>") body.innerHTML = "<pre> </pre>";
-		else body.innerHTML = "<pre>"+body.innerHTML+"</pre>";
+
+		if(!body.innerHTML)
+			return body;
+		if(body.innerHTML=="<br>")
+			body.innerHTML = "<pre> </pre>";
+		else 
+			body.innerHTML = "<pre>"+body.innerHTML+"</pre>";
 	}
 	return document.getElementsByTagName('pre')[0];
 },
 
+//Gets the last word from the caret position
 getLastWord : function() {
 	var rangeAndCaret = Experior.getRangeAndCaret();
 	words = rangeAndCaret[0].substring(rangeAndCaret[1]-40,rangeAndCaret[1]);
@@ -238,15 +267,17 @@ getLastWord : function() {
 	return words[words.length-1].replace(/[\W]/gi,'').toLowerCase();
 },
 
+//Finds the string at caret position
 findString : function() {
 	if(self.find(caret))
-	{
 		window.getSelection().getRangeAt(0).deleteContents();		
-	}
 },
 
-align : function()
-{
+/*
+ * Aligns the pipe automaticly to the pipes position on the previous line. Is called
+ * when the key | is pressed.
+ */
+align : function() {
 	var range = window.getSelection().getRangeAt(0);
 	var startNode = document.getElementsByTagName("pre").item(0);
 
@@ -259,15 +290,14 @@ align : function()
 
 	var linearray = div.innerHTML.split("<br>");
 
-	for( var i = 0; i < linearray.length; i++ )
-	{
+	for( var i = 0; i < linearray.length; i++ ) {
 		linearray[i] = this.removeTags( linearray[i] );
 	}
 
 	range.collapse( false );
 
-
-	if( linearray.length <= 1 || linearray[linearray.length-2] == 0 || linearray[linearray.length-2].search(/span/) > 0 )
+	if( linearray.length <= 1 || linearray[linearray.length-2] == 0 || 
+			linearray[linearray.length-2].search(/span/) > 0 )
 	{		
 		this.createTextnode();
 		return;
@@ -280,9 +310,10 @@ align : function()
 
 	var nbspstring = "";
 
-	if( previousline[currentline.length-1] != null)
-	{
-		for (var i = 0; i < (previousline[currentline.length-1].replace(/&nbsp;/gi,' ').length)-(currentline[currentline.length-1].length); i++)
+	if( previousline[currentline.length-1] != null)	{
+		for (var i = 0; i < 
+		(previousline[currentline.length-1].replace(/&nbsp;/gi,' ').length)-
+		(currentline[currentline.length-1].length); i++)
 		{	
 			var node = window.document.createTextNode( "\u00a0" );
 			var range = window.getSelection().getRangeAt(0);
@@ -298,13 +329,11 @@ align : function()
 			selct.addRange(range2);
 		}
 	}
-	else
-	{
+	else {
 		Experior.createTextnode();
 		return;
 	}
 
-
 	var node = window.document.createTextNode( "|" );
 	var range = window.getSelection().getRangeAt(0);
 
@@ -319,8 +348,8 @@ align : function()
 	selct.addRange(range2);
 },
 
-createTextnode : function()
-{
+//Creates a text node with "|" at the caret position.
+createTextnode : function() {
 	var node = window.document.createTextNode( "|" );
 	var range = window.getSelection().getRangeAt(0);
 
@@ -335,8 +364,11 @@ createTextnode : function()
 	selct.addRange(range2);
 },
 
-insertMethod : function( id )
-{
+/*
+ * Inserts the method with the index as specified id in the array lines, at the
+ * caret position.
+ */
+insertMethod : function( id ) {
 	var node = window.document.createTextNode( "!|" + lines[id] + "|" );
 	var range = window.getSelection().getRangeAt(0);
 
@@ -353,9 +385,8 @@ insertMethod : function( id )
 	this.highlightDocument();
 },
 
-
-removeTags : function( code )
-{
+//Removes the tags specified in the replace-functions from the string which is parameter
+removeTags : function( code ) {
 	code = code.replace(/<pre>/g,'');
 	code = code.replace(/<\/pre>/g,'');
 	code = code.replace(/<s>/g,'');
@@ -366,19 +397,20 @@ removeTags : function( code )
 	return code;
 },
 
+
 snippets : function(evt) {
-	var snippets = Language.snippets;	
+	var snippets = FitNesse.snippets;	
 	var trigger = this.getLastWord();
 	for (var i=0; i<snippets.length; i++) {
 		if(snippets[i].input == trigger) {
 			var content = snippets[i].output.replace(/</g,'&lt;');
 			content = content.replace(/>/g,'&gt;');
-			if(content.indexOf('$0'
-			)<0) content += caret;
+			if(content.indexOf('$0')<0)
+				content += caret;
 			else content = content.replace(/\$0/,caret);
 			content = content.replace(/\n/g,'<br>');
 			var pattern = new RegExp(trigger+caret,'gi');
-			evt.preventDefault(); // prevent the tab key from being added
+			evt.preventDefault();
 			this.highlightDocument('snippets',pattern,content);
 		}
 	}
@@ -402,16 +434,7 @@ completeEnding : function(trigger) {
 	}
 },
 
-shortcuts : function() {
-	var cCode = arguments[0];
-	if(cCode==13) cCode = '[enter]';
-	else if(cCode==32) cCode = '[space]';
-	else cCode = '['+String.fromCharCode(charCode).toLowerCase()+']';
-	for(var i=0;i<Language.shortcuts.length;i++)
-		if(Language.shortcuts[i].input == cCode)
-			this.insertCode(Language.shortcuts[i].output,false);
-},
-
+//Gets and returns the range and caret position in an array
 getRangeAndCaret : function() {	
 	var range = window.getSelection().getRangeAt(0);
 
@@ -423,6 +446,7 @@ getRangeAndCaret : function() {
 	return [range2.toString(),caret];
 },
 
+//Insert the text in the parameter code at the caret position.
 insertCode : function(code,replaceCursorBefore) {
 	var range = window.getSelection().getRangeAt(0);
 	var node = window.document.createTextNode(code);
@@ -437,9 +461,12 @@ insertCode : function(code,replaceCursorBefore) {
 	selct.addRange(range2);
 },
 
+/*
+ * Gets and returns all text from the editor. Removes the specified HTML-tags from
+ * the text before it is returned
+ */
 getText : function() {
-	if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '')
-	{
+	if(!document.getElementsByTagName('pre')[0] || editor.innerHTML == '') {
 		editor = Experior.getEditor();	
 	}
 	var code = editor.innerHTML;
@@ -455,10 +482,10 @@ getText : function() {
 	return code;
 },
 
-
-//put code inside editor
+/*
+ * Sets the text in arguments[0] into the editor
+ */
 setText : function() {
-
 	var code = arguments[0];
 	code = code.replace(/\u2009/gi,'');
 
@@ -471,58 +498,14 @@ setText : function() {
 
 },
 
-tab : function() {
-
-	var selection = window.getSelection();
-
-	var range = selection.getRangeAt(0);
-
-	var nodevalue = range.endContainer.nodeValue; 
-
-
-	if( nodevalue.search(/\|/) > -1  )
-		range.setEnd( range.startContainer, range.startContainer.length );
-	else if( range.endContainer.nextSibling != null ){
-		alert(" ELSE !");
-		range.setEnd( range.startContainer, range.nextSibling.length );
-	}
-	else if( range.endContainer.firstChild != null ) {
-		alert( "ELSE !! " );
-		range.setEnd( range.startContainer, range.firstChild.length );
-	}
-
-
-	range.collapse(false);
-	//alert( range.commonAncestorContainer );
-
-	//var selct = window.getSelection();
-	/*
-	var treeWalker = document.createTreeWalker(
-
-		    document.body,
-		    NodeFilter.SHOW_ELEMENT,
-
-		    { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } },
-		    false
-		);
-
-		var nodeList = new Array();
-		while(treeWalker.nextNode()) 
-			nodeList.push(treeWalker.currentNode);
-
-		//alert( treeWalker.currentNode );
-
-
-
-	 */
-},
-
+/*
+ * Checks if the first line is changed. If so, it checks if the caret is still at the
+ * first line. If it's not, the method loadXMLString is called.
+ */
 checkFirstLine : function( url ) {	
 	var tekst = Experior.getText().split("\n");
 
-
-	if( tekst[0] != firstline )
-	{		
+	if( tekst[0] != firstline ) {		
 		var range = window.getSelection().getRangeAt(0);
 		var startNode = document.getElementsByTagName("pre").item(0);
 		var startOffset = 0;	
@@ -534,56 +517,51 @@ checkFirstLine : function( url ) {
 		var selectedCode = Experior.removeTags( div.innerHTML );
 		range.collapse( false );
 
-		if( firstline.length < selectedCode.length )
-		{
+		if( firstline.length < selectedCode.length ) {
 			firstline = tekst[0];
 			Experior.loadXMLString( url );
 		}	
 	}
 },
 
+/*
+ * Gets the hostname and portnumber, and performs and XMLHttpRequest to the server.
+ * Parses the returned JSON-object and puts the content into the global array methods.
+ */
 loadXMLString : function( url ) {
 
 	var firstline = Experior.getText().split("\n");
 	var host = window.location.hostname;
 	var port = window.location.port;
-	
+
 	var url = "http://" + host + ":" + port + "/FrontPage?responder=Commands&var=" + firstline[0];
 
 	httpRequest=null;
-	if(window.XMLHttpRequest)
-	{
-		//code for IE7, Firefox, Opera, etc.
+	if(window.XMLHttpRequest) {
+
 		httpRequest=new XMLHttpRequest();
 	}
-	else if(window.ActiveXObject)
-	{
-		//code for IE6, IE5
+	else if(window.ActiveXObject) {
+		// older browsers
 		httpRequest=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	if(httpRequest!=null)
-	{
-		httpRequest.onreadystatechange= function()
-		{			
+	if(httpRequest!=null) {
+		httpRequest.onreadystatechange= function() {			
 			if (httpRequest.readyState==4)
 			{
-				if (httpRequest.status == 404)
-				{
-					alert('Requestet URL is not found');
+				if (httpRequest.status == 404) {
+					alert('Requested URL is not found');
 				}
-				else if (httpRequest.status == 403)
-				{
+				else if (httpRequest.status == 403) {
 					alert('Access Denied');
 				}
-				else if (httpRequest.status==200)
-				{   					
+				else if (httpRequest.status==200) {   					
 					methods = httpRequest.getResponseHeader("json");
 
 					var methodsarray;
 					if( methods.length == 4 )
 						methods = new Array();
-					else
-					{
+					else {
 						methodsarray = eval('('+ methods +')');
 						methods = methodsarray.join("\n") + "\n";
 					}
@@ -591,8 +569,7 @@ loadXMLString : function( url ) {
 					Experior.highlightDocument();
 					Experior.updateMethodsDiv();
 				}
-				else
-				{
+				else {
 					alert("Problem retrieving XML data:" + httpRequest.statusText);
 				}
 			}			
@@ -602,37 +579,15 @@ loadXMLString : function( url ) {
 		httpRequest.overrideMimeType('text/xml');
 		httpRequest.send(null);
 	}
-	else
-	{
+	else {
 		alert("Your browser does not support XMLHTTP.");
 	}
 },
 
-state_Change : function() {
-	if (httpRequest.readyState==4)
-	{
-		if (httpRequest.status == 404)
-		{
-			alert('Requestet URL is not found');
-		}
-		else if (httpRequest.status == 403)
-		{
-			alert('Access Denied');
-		}
-		else if (httpRequest.status==200)
-		{                
-			alert(httpRequest.status);                
-		}
-		else
-		{
-			alert("Problem retrieving XML data:" + httpRequest.statusText);
-		}
-	}
-	else
-		alert( httpRequest.readyState);
-},
-
-
+/*
+ * Method is run on page load. Receives all text in the parameter code.
+ * Aligns all pipes oin the document.
+ */
 alignAllPipesOnPageLoad : function( code ) {	
 	var tekst = code.split("\n");	
 	var linearray = new Array();
@@ -642,71 +597,63 @@ alignAllPipesOnPageLoad : function( code ) {
 
 	var tablestart = 0;
 
-	for( var i = 0; i < tekst.length; i++ )
-	{	
+	for( var i = 0; i < tekst.length; i++ ) {	
 		linearray[i] = tekst[i].split("|");
 
 	} 
 	var utskrift = "";
-	for( var i=0; i < linearray.length-1; i++ ){ // Går igjennom hver line
+	for( var i=0; i < linearray.length-1; i++ ){ // Iterates through each line
 
-
-		if( linearray[i][0].search(/\!/) != -1  ) //det er et utropstegn
-		{
+		// ! in the line
+		if( linearray[i][0].search(/\!/) != -1  ) { 
 			template = new Array();
 
-			for( var j = 0; j < linearray[i].length-1; j++ )
-			{
+			for( var j = 0; j < linearray[i].length-1; j++ ) {
 				template[j] = linearray[i][j].length;
 			}		
 			tablestart = i;
 		}
 
-
-		if( linearray[i].length > 1 ) //linen er ikke tom
-		{ 
-			for( var k = 0; k < linearray[i].length; k++ )
-			{			 
-				if( linearray[i][k].length > template[k] && linearray[i][k].search(/\!\d/) == -1 )
+		// the line is not empty 
+		if( linearray[i].length > 1 ) {
+			for( var k = 0; k < linearray[i].length; k++ ) {			 
+				if( linearray[i][k].length > template[k] && 
+						linearray[i][k].search(/\!\d/) == -1 )
 				{
 					template[k] = linearray[i][k].length;
 				}
 			}
 
-			if( i > 0 && linearray[i-1].length == 1 ) //det er ikke første line og forrige line er tom
-			{
+			// not first line and previous line not empty
+			if( i > 0 && linearray[i-1].length == 1 ) {
 				tablestart = i;
-				for( var k = 0; k < linearray[i].length; k++ )
-				{			 
-					if( linearray[i][k].length > template[k] && linearray[i][k].search(/\!\d/) == -1 )
+				for( var k = 0; k < linearray[i].length; k++ ) {			 
+					if( linearray[i][k].length > template[k] && 
+							linearray[i][k].search(/\!\d/) == -1 )
 					{
 						template[k] = linearray[i][k].length;
 					}
 				}
 			}
 
-			if( i > 0 && linearray[i-1][0].search(/\!/) != -1 ) //det er ikke første line og det står en pipe på forrige line
-			{				
-				for( var k = 1; k < linearray[i].length-1; k++ )
-				{			 
-					if( linearray[i][k].search(/\!\d/) == -1 )
-					{
+			// not first line and previous line contains a pipe
+			if( i > 0 && linearray[i-1][0].search(/\!/) != -1 )	{
+
+				for( var k = 1; k < linearray[i].length-1; k++ ) {			 
+					if( linearray[i][k].search(/\!\d/) == -1 ) {
 						template[k] = linearray[i][k].length;
 					}
 				}
 			}
 
-			if( linearray[i+1].length == 1  || linearray[i+1][0].search(/\!/) != -1 )
-			{
-				for( var l = tablestart; l <= i; l++ )
-				{
-					for( var m = 0; m < linearray[l].length-1; m++ )
-					{		
+			// next line is empty or next line contains a pipe
+			if( linearray[i+1].length == 1  || linearray[i+1][0].search(/\!/) != -1 ) {
+				for( var l = tablestart; l <= i; l++ ) {
+					for( var m = 0; m < linearray[l].length-1; m++ ) {		
+
 						var nbspstring = "";
-						if( linearray[l][0].search(/\!/) == -1 )
-						{
-							for( var n = linearray[l][m].length; n < template[m]; n++)
-							{
+						if( linearray[l][0].search(/\!/) == -1 ) {
+							for( var n = linearray[l][m].length; n < template[m]; n++) 	{
 								nbspstring += "&nbsp;";					 
 							}
 						}
@@ -717,8 +664,7 @@ alignAllPipesOnPageLoad : function( code ) {
 		}
 	}
 
-	for( var i = 0; i < linearray.length; i++ )
-	{
+	for( var i = 0; i < linearray.length; i++ ) {
 		for( var j = 0; j < linearray[i].length; j++ )
 			utskrift += linearray[i][j];
 
@@ -729,40 +675,49 @@ alignAllPipesOnPageLoad : function( code ) {
 	editor.innerHTML = utskrift;
 },
 
-//undo and redo methods
-actions : {
-	pos : -1, // actual history position
-	history : [], // history vector
+// Redo the last action
+redo : function() {
+	this.position++;
+	if(typeof(this.lastPositions[this.position])=='undefined')
+		this.position--;
+	
+	editor.innerHTML = this.lastPositions[this.position];
+	Experior.findString();
+},
+
+// Undo the last action
+editEvents : {
+	position : -1,
+	lastPositions : [],
 
 	undo : function() {
 	editor = Experior.getEditor();
-	if(editor.innerHTML.indexOf(caret)==-1){
+	
+	if(editor.innerHTML.indexOf(caret)==-1) {
 		if(editor.innerHTML != " ")
 			window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret));
-		this.history[this.pos] = editor.innerHTML;
+
+		this.lastPositions[this.position] = editor.innerHTML;
 	}
-	this.pos --;
-	if(typeof(this.history[this.pos])=='undefined') this.pos ++;
-	editor.innerHTML = this.history[this.pos];
-	if(editor.innerHTML.indexOf(caret)>-1) editor.innerHTML+=caret;
+
+	this.position --;
+	if(typeof(this.lastPositions[this.position])=='undefined')
+		this.position ++;
+
+	editor.innerHTML = this.lastPositions[this.position];
+	if(editor.innerHTML.indexOf(caret)>-1)
+		editor.innerHTML+=caret;
 	Experior.findString();
 },
 
-redo : function() {
-	// editor = Experior.getEditor();
-	this.pos++;
-	if(typeof(this.history[this.pos])=='undefined') this.pos--;
-	editor.innerHTML = this.history[this.pos];
-	Experior.findString();
-},
-
-next : function() { // get next vector position and clean old ones
-	if(this.pos>20) this.history[this.pos-21] = undefined;
-	return ++this.pos;
+// Delete or backspace pressed
+next : function() {
+	if(this.position>20) this.lastPositions[this.position-21] = undefined;
+	return ++this.position;
 }
 }
 }
 
-Language={};
+FitNesse={};
 
 window.addEventListener('load', function() { Experior.initialize('new'); }, true);
