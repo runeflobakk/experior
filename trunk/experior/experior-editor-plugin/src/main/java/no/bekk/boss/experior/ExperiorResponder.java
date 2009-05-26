@@ -217,7 +217,21 @@ public class ExperiorResponder implements SecureResponder
 
 	public String getWikiCommands()
 	{
-		String fixtureClassName = new Scanner(content).findInLine("(?<=\\!\\|\\-?)[\\w|\\.]+(?=\\-?\\|)");
+		
+		Scanner s = new Scanner(content);
+		String fixtureClassName = null;
+		
+		while( s.hasNextLine() )
+		{
+			String line = s.nextLine();
+			if( line.matches("(?<=\\!\\|\\-?)[\\w|\\.]+(?=\\-?\\|)") )
+				fixtureClassName = line;
+		}
+				
+		
+		
+		//String fixtureClassName = new Scanner(content).findInLine("(?<=\\!\\|\\-?)[\\w|\\.]+(?=\\-?\\|)");
+		
 		if( fixtureClassName == null )
 			return "";
 
