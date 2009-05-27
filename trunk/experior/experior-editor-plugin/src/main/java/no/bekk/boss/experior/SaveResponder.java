@@ -1,9 +1,5 @@
 package no.bekk.boss.experior;
 
-//Copyright (C) 2003,2004,2005 by Object Mentor, Inc. All rights reserved.
-//Released under the terms of the GNU General Public License version 2 or later.
-
-
 import fitnesse.FitNesseContext;
 import fitnesse.authentication.SecureOperation;
 import fitnesse.authentication.SecureWriteOperation;
@@ -21,6 +17,11 @@ import fitnesse.responders.editing.EditResponder;
 import fitnesse.responders.editing.MergeResponder;
 import fitnesse.wiki.*;
 
+/**
+ * Class with Responder which responds to requests with URL that ends on ?save.
+ * Performs saving of the test.
+ * The comments used in this class is not intended to follow the JavaDoc-standard. 
+ */
 public class SaveResponder implements SecureResponder {
 	
 	public static ContentFilter contentFilter;
@@ -30,11 +31,17 @@ public class SaveResponder implements SecureResponder {
 	private String savedContent;
 	private PageData data;
 
-	public SaveResponder()
-	{
+	public SaveResponder() {
 
 	}
 
+	/**
+	 * Make a standard response to a request.
+	 * 
+	 * @param FitNesseContext context
+	 * @param Request request
+	 * @see fitnesse.Responder#makeResponse(fitnesse.FitNesseContext, fitnesse.http.Request)
+	 */
 	public Response makeResponse(FitNesseContext context, Request request) throws Exception {
 		String resource = request.getResource();
 		WikiPage page = getPage(resource, context);
@@ -54,6 +61,12 @@ public class SaveResponder implements SecureResponder {
 		}
 	}
 
+	/**
+	 * Make response if the content to be saved is banned.
+	 * 
+	 * @param context
+	 * @param resource
+	 */
 	private Response makeBannedContentResponse(FitNesseContext context, String resource) throws Exception {
 		SimpleResponse response = new SimpleResponse();
 		HtmlPage html = context.htmlPageFactory.newPage();
@@ -65,6 +78,12 @@ public class SaveResponder implements SecureResponder {
 		return response;
 	}
 
+	/**
+	 * Redirects the user to the previous page if the Save&Exit-button was clicked.
+	 * 
+	 * @param request
+	 * @param page
+	 */
 	private Response saveEdits(Request request, WikiPage page) throws Exception {
 		Response response = new SimpleResponse();
 		setData();
@@ -72,22 +91,25 @@ public class SaveResponder implements SecureResponder {
 		response.addHeader("Previous-Version", commitRecord.getName());
 		RecentChanges.updateRecentChanges(data);
 
-		if (request.hasInput("redirect"))
-		{	 
+		if (request.hasInput("redirect")) {	 
 			response.redirect(request.getInput("redirect").toString());   
 		}
-		else if( request.hasInput("saveexit") )
-		{
+		else if( request.hasInput("saveexit") ) {
 			response.redirect( request.getResource() );
 		}
-		else
-		{	
+		else {	
 			response.redirect(request.getResource() + "?Experior");
 		}
 
 		return response;
 	}
 
+	/**
+	 * Merge changes if the version to be saved is older than the existing. This can
+	 * occur if two users edit a test at the same time.
+	 *  
+	 * @param request
+	 */
 	private boolean editsNeedMerge(Request request) throws Exception {
 		String saveIdString = (String) request.getInput(EditResponder.SAVE_ID);
 		long saveId = Long.parseLong(saveIdString);
@@ -98,6 +120,12 @@ public class SaveResponder implements SecureResponder {
 		return SaveRecorder.changesShouldBeMerged(saveId, ticketId, data);
 	}
 
+	/**
+	 * Gets the current page.
+	 * 
+	 * @param resource
+	 * @param context
+	 */
 	private WikiPage getPage(String resource, FitNesseContext context) throws Exception {
 		WikiPagePath path = PathParser.parse(resource);
 		PageCrawler pageCrawler = context.root.getPageCrawler();
@@ -107,6 +135,10 @@ public class SaveResponder implements SecureResponder {
 		return page;
 	}
 
+	/**
+	 * Saves the current changes.
+	 * 
+	 */
 	private void setData() throws Exception {
 		data.setContent(savedContent);
 		data.setAttribute(EditResponder.TICKET_ID, ticketId + "");
@@ -117,6 +149,9 @@ public class SaveResponder implements SecureResponder {
 			data.removeAttribute(WikiPage.LAST_MODIFYING_USER);
 	}
 
+	/**
+	 * Implemented method from the interface SecureResponder.
+	 */
 	public SecureOperation getSecureOperation() {
 		return new SecureWriteOperation();
 	}
