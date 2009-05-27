@@ -10,10 +10,8 @@
 	var ts = (new Date).getTime(); // timestamp to avoid cache
 	var lh = location.href;
 	
-	if(ua.match('MSIE')) browser = 'msie';
-	else if(ua.match('KHTML')) browser = 'khtml'; 
-	else if(ua.match('Opera')) browser = 'opera'; 
-	else if(ua.match('Gecko')) browser = 'gecko';
+	if(ua.match('MSIE')) browser = 'explorer';
+	else if(ua.match('Gecko')) browser = 'firefox';
 	
 	document.write("<link type='text/css' href='experior.css' rel='stylesheet'/>");
 	document.write("<link type='text/css' href='highlight.css' rel='stylesheet' id='cp-lang-style' />");

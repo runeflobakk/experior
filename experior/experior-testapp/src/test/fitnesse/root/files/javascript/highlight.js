@@ -1,4 +1,5 @@
 
+// Array which defines which words to be highlighted, except for method-names.
 FitNesse.syntax = [
 	{ input : /\b(reject|show|check)\b/g, output : '<b>$1</b>' }, // FitNesse keywords
 	{ input : /([^:]|^)\#(.*?)(<br|<\/P)/g, output : '$1<span class=disabled>#$2</span>$3' }, // !3
