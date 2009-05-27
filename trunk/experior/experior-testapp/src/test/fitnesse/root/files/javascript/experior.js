@@ -84,7 +84,7 @@ Experior = function(textarea, hiddenField) {
 			return experior.textarea.value;
 	}
 
-	// 
+	// Set the text inside the editor if it is not disabled.
 	experior.setUpEditor = function() {		
 		if(experior.textarea.disabled) {
 			experior.textarea.value = getText();
@@ -106,6 +106,7 @@ Experior = function(textarea, hiddenField) {
 	return experior;
 }
 
+// Adds necessary scriptfiles and creates a new Experior object.
 Experior.run = function() {
 	s = document.getElementsByTagName('script');
 	
@@ -113,7 +114,7 @@ Experior.run = function() {
 		if(s[i].src.match('experior.js')) {
 			Experior.path = s[i].src.replace('experior.js','');
 		}
-	}	
+	}
 
 	var textarea = document.getElementById('experior');
 	var hidden = document.getElementById('hiddenfield');
@@ -128,29 +129,34 @@ if(window.attachEvent) {
 }
 else window.addEventListener('DOMContentLoaded',Experior.run,false);
 
-
+// Moves text from Experiors textarea to the hidden field.
 function moveText()
 {
 	hidden.value = experior.getText();
 }
 
+// Moves text from Experiors textarea to the hidden field.
 function saveAndExit()
 {
-	hidden.value = experior.getText();
 	var form = document.getElementById( "hiddenfieldform" );
+	hidden.value = experior.getText(form);
+	
 }
 
+// Align all pipes in the document if the button Align is clicked.
 function alignClick()
 {	
 	experior.editor.alignAllPipesOnPageLoad( experior.getText() );
 	experior.editor.highlightDocument('init', hidden.value);
 }
 
+// Moves text from the hidden field to Experiors textarea.
 function moveTextUp()
 {	
 	experior.setText( hidden.value );
 }
 
+// Gets all the methods names in the class, and insert the chosen method.
 function insertMethod(method)
 {
 	var methods = hidden.value.split("\n");
@@ -158,6 +164,7 @@ function insertMethod(method)
 	experior.contentWindow.focus();
 }
 
+// Checks if there has been a change on the first line in the test.
 function checkFirstLine()
 {
 	var url = window.location.href;

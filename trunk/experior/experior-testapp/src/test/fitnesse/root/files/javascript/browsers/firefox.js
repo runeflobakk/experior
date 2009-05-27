@@ -1,12 +1,13 @@
 var methods;
 var firstLine;
 var lines;
+var className;
 
 Experior = {
 
 /*
  * Initializes the editor. Adds keylistener.
- * Adds the first line in the text to variable firstline.
+ * Adds the first line in the text to the global variable firstline.
  */
 initialize : function() {
 
@@ -182,7 +183,10 @@ splitLargeTests : function(code,flag) {
  * comments and keywords.
  */
 highlightDocument : function(flag, methods2) {
-
+	
+	var newclassName = Experior.getText().match( "(\\!\\|\\-?)[\\w|\\.]+(\\-?\\|)");
+	className = newclassName[0];
+	
 	if(methods2 != null) {		
 		methods = methods2;		
 	} 
@@ -503,29 +507,21 @@ setText : function() {
  * first line. If it's not, the method loadXMLString is called.
  */
 checkFirstLine : function( url ) {	
-	var tekst = Experior.getText().split("\n");
+	
+	var tekst = Experior.getText();
+		
+	var newclassName = tekst.match( "(\\!\\|\\-?)[\\w|\\.]+(\\-?\\|)");
 
-	if( tekst[0] != firstline ) {		
-		var range = window.getSelection().getRangeAt(0);
-		var startNode = document.getElementsByTagName("pre").item(0);
-		var startOffset = 0;	
-		range.setStartBefore( startNode );
-
-		var div = document.createElement('div');
-		div.appendChild(range.cloneContents());		
-
-		var selectedCode = Experior.removeTags( div.innerHTML );
-		range.collapse( false );
-
-		if( firstline.length < selectedCode.length ) {
-			firstline = tekst[0];
-			Experior.loadXMLString( url );
-		}	
-	}
+	if( className != newclassName[0] )
+	{		
+		className = newclassName[0];
+		firstline = className;
+		Experior.loadXMLString( url );
+	}	
 },
 
 /*
- * Gets the hostname and portnumber, and performs and XMLHttpRequest to the server.
+ * Gets the hostname and portnumber, and performs a XMLHttpRequest to the server.
  * Parses the returned JSON-object and puts the content into the global array methods.
  */
 loadXMLString : function( url ) {
@@ -533,9 +529,8 @@ loadXMLString : function( url ) {
 	var firstline = Experior.getText().split("\n");
 	var host = window.location.hostname;
 	var port = window.location.port;
-
-	var url = "http://" + host + ":" + port + "/FrontPage?responder=Commands&var=" + firstline[0];
-
+	
+	var url = "http://" + host + ":" + port + "/FrontPage?responder=Commands&var=" + className;
 	httpRequest=null;
 	if(window.XMLHttpRequest) {
 
@@ -718,6 +713,7 @@ next : function() {
 }
 }
 
+// Array for special words. Used in highlight.js
 FitNesse={};
 
 window.addEventListener('load', function() { Experior.initialize('new'); }, true);

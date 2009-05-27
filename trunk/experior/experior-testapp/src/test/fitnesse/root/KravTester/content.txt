@@ -3,10 +3,6 @@
 !contents -R2 -g -p -f -h
 Dette er en test
 
-Dette er enda en test.
-
-DetteErEnTest
-
 !1 Classpath
 
 
