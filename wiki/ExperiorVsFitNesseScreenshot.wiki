@@ -1,6 +1,4 @@
 #labels screenshot,Featured
-#Screenshots comparing editing with Experior vs !FitNesse.
-
 = Screenshots =
 
 These two screenshots shows the same test immediately after opening it with Experior and the internal wiki editor in FitNesse.
