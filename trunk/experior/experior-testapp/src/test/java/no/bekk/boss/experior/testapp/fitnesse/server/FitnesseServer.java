@@ -20,6 +20,7 @@ import fitnesse.responders.ResponderFactory;
 import fitnesse.wiki.FileSystemPage;
 
 /**
+ * Starts the FitNesse-server.
  * @author Rune Flobakk
  *
  */

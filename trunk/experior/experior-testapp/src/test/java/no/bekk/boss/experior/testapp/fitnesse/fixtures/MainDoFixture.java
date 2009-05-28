@@ -1,5 +1,9 @@
 package no.bekk.boss.experior.testapp.fitnesse.fixtures;
 
+/**
+ * This class is only used to demonstrate Experiors functionality.
+ *
+ */
 import no.bekk.boss.experior.testapp.service.CalculatorService;
 import fit.Fixture;
 import fitlibrary.DoFixture;
@@ -14,110 +18,107 @@ public class MainDoFixture extends DoFixture {
     
     
     
-    public boolean minNyeMetodeMetodenVirkerIkkee()
+    public boolean metodeKunForTesting1()
     {
     	return true;
     }
     
-    public void enMetodewminNyeMetodeMetodenVirkerIkkee()
-    {
-    	
-    }
-    
-    public void enMetodetilminNyeMetodeMetodenVirkerIkkee()
-    {
-    	
-    }
-    
-    public Fixture formidletPosteringminNyeMetodeMetodenVirkerIkkee() {
+    public Fixture langtMetodenavn2Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode1minNyeMetodeMetodenVirkerIkkee() {
+    public Fixture langtMetodenavn3Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode2() {
+    public Fixture langtMetodenavn4Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode3() {
+    public Fixture test5Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode4() {
+    public Fixture test6Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode5() {
+    public Fixture test7Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode6() {
+    public Fixture test8Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode7() {
+    public Fixture test9Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode8() {
+    public Fixture test10Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode9() {
+    public Fixture test11Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode10() {
+    public Fixture test12Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode11() {
+    public Fixture test13Metode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode12() {
+    public Fixture langtMetodenavn14TestmetodeMedEkstraLangtNavn() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode13() {
+    public Fixture langtMetodenavn15Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode14() {
+    public Fixture langtMetodenavn16Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode51() {
+    public Fixture langtMetodenavn17Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode16() {
+    public Fixture langtMetodenavn18Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
     
-    public Fixture testMetode17() {
+    public Fixture langtMetodenavn19Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
     }
+    
+    public Fixture langtMetodenavn20Testmetode() {
+        // return some fixture to interpret the table from row 2
+    	return null;
+    }
+    
+    
     
     
    

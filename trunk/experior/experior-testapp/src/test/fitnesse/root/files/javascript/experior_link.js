@@ -1,3 +1,6 @@
+/*
+ * This file adds link to Experior from the left menu in FitNesse.
+ */
 
 var tries = 0;
 

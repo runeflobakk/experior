@@ -3,13 +3,16 @@ var firstLine;
 var lines;
 var className;
 
+/*
+ * This file contains functions used in Mozilla Firefox.
+ */
 Experior = {
 
-/*
- * Initializes the editor. Adds keylistener.
- * Adds the first line in the text to the global variable firstline.
- */
-initialize : function() {
+		/*
+		 * Initializes the editor. Adds keylistener.
+		 * Adds the first line in the text to the global variable firstline.
+		 */
+		initialize : function() {
 
 	body = document.getElementsByTagName('body')[0];
 	body.innerHTML = body.innerHTML.replace(/\n/g,"");	
@@ -44,7 +47,7 @@ keyListener : function(evt) {
 		evt.stopPropagation();
 		Experior.align();	
 	}
-	// Delete or backspace
+	// Backspace or delete
 	else if(keyCode==46||keyCode==8) {		
 		Experior.editEvents.lastPositions[Experior.editEvents.next()] = editor.innerHTML;
 	}
@@ -126,8 +129,8 @@ createMethodsDiv : function( methodsInDiv ) {
 },
 
 /*
- * Updates the div with available methods if there has been a change on the first
- * line in the test.
+ * Updates the div with available methods if there has been a change to the classname
+ * in the test.
  */
 updateMethodsDiv : function() {
 	var metodestring = "";	
@@ -183,13 +186,14 @@ splitLargeTests : function(code,flag) {
  * comments and keywords.
  */
 highlightDocument : function(flag, methods2) {
-	
+
 	var newclassName = Experior.getText().match( "(\\!\\|\\-?)[\\w|\\.]+(\\-?\\|)");
-	className = newclassName[0];
+
+	if(methods2 != null )		
+		methods = methods2
 	
-	if(methods2 != null) {		
-		methods = methods2;		
-	} 
+	if( newclassName != null)
+		className = newclassName[0];
 
 	if(methods.length == 0) {
 		lines = new Array();
@@ -278,7 +282,7 @@ findString : function() {
 },
 
 /*
- * Aligns the pipe automaticly to the pipes position on the previous line. Is called
+ * Aligns the pipe automatically to the pipes position on the previous line. Is called
  * when the key | is pressed.
  */
 align : function() {
@@ -401,7 +405,7 @@ removeTags : function( code ) {
 	return code;
 },
 
-
+//Highlight parts of code, for better performance
 snippets : function(evt) {
 	var snippets = FitNesse.snippets;	
 	var trigger = this.getLastWord();
@@ -417,24 +421,6 @@ snippets : function(evt) {
 			evt.preventDefault();
 			this.highlightDocument('snippets',pattern,content);
 		}
-	}
-},
-
-completeEnding : function(trigger) {
-	var range = window.getSelection().getRangeAt(0);
-	try {
-		range.setEnd(range.endContainer, range.endOffset+1)
-	}
-	catch(e) {
-		return false;
-	}
-	var next_character = range.toString()
-	range.setEnd(range.endContainer, range.endOffset-1)
-	if(next_character != trigger) return false;
-	else {
-		range.setEnd(range.endContainer, range.endOffset+1)
-		range.deleteContents();
-		return true;
 	}
 },
 
@@ -503,16 +489,16 @@ setText : function() {
 },
 
 /*
- * Checks if the first line is changed. If so, it checks if the caret is still at the
- * first line. If it's not, the method loadXMLString is called.
+ * Checks if the class-name is changed anywhere in the test. If it is, 
+ * the method loadXMLString is called.
  */
-checkFirstLine : function( url ) {	
-	
-	var tekst = Experior.getText();
-		
-	var newclassName = tekst.match( "(\\!\\|\\-?)[\\w|\\.]+(\\-?\\|)");
+checkClassName : function( url ) {	
 
-	if( className != newclassName[0] )
+	var text = Experior.getText();
+
+	var newclassName = text.match( "(\\!\\|\\-?)[\\w|\\.]+(\\-?\\|)");
+
+	if( newclassName != null && className != newclassName[0] )
 	{		
 		className = newclassName[0];
 		firstline = className;
@@ -529,7 +515,7 @@ loadXMLString : function( url ) {
 	var firstline = Experior.getText().split("\n");
 	var host = window.location.hostname;
 	var port = window.location.port;
-	
+
 	var url = "http://" + host + ":" + port + "/FrontPage?responder=Commands&var=" + className;
 	httpRequest=null;
 	if(window.XMLHttpRequest) {
@@ -581,25 +567,25 @@ loadXMLString : function( url ) {
 
 /*
  * Method is run on page load. Receives all text in the parameter code.
- * Aligns all pipes oin the document.
+ * Aligns all pipes in the document.
  */
 alignAllPipesOnPageLoad : function( code ) {	
-	var tekst = code.split("\n");	
+	var text = code.split("\n");	
 	var linearray = new Array();
 	var template = new Array();
-	var utskrift;
-	firstline = tekst[0];
+	var output;
+	firstline = text[0];
 
 	var tablestart = 0;
 
-	for( var i = 0; i < tekst.length; i++ ) {	
-		linearray[i] = tekst[i].split("|");
+	for( var i = 0; i < text.length; i++ ) {	
+		linearray[i] = text[i].split("|");
 
 	} 
-	var utskrift = "";
+	var output = "";
 	for( var i=0; i < linearray.length-1; i++ ){ // Iterates through each line
 
-		// ! in the line
+		// ! on the line
 		if( linearray[i][0].search(/\!/) != -1  ) { 
 			template = new Array();
 
@@ -661,33 +647,33 @@ alignAllPipesOnPageLoad : function( code ) {
 
 	for( var i = 0; i < linearray.length; i++ ) {
 		for( var j = 0; j < linearray[i].length; j++ )
-			utskrift += linearray[i][j];
+			output += linearray[i][j];
 
 		if( i < linearray.length-1)
-			utskrift += "\n";
+			output += "\n";
 	}
 
-	editor.innerHTML = utskrift;
+	editor.innerHTML = output;
 },
 
-// Redo the last action
+//Redo the last user action
 redo : function() {
 	this.position++;
 	if(typeof(this.lastPositions[this.position])=='undefined')
 		this.position--;
-	
+
 	editor.innerHTML = this.lastPositions[this.position];
 	Experior.findString();
 },
 
-// Undo the last action
+//Undo the last user action
 editEvents : {
 	position : -1,
 	lastPositions : [],
 
 	undo : function() {
 	editor = Experior.getEditor();
-	
+
 	if(editor.innerHTML.indexOf(caret)==-1) {
 		if(editor.innerHTML != " ")
 			window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret));
@@ -705,7 +691,7 @@ editEvents : {
 	Experior.findString();
 },
 
-// Delete or backspace pressed
+//Backspace or delete
 next : function() {
 	if(this.position>20) this.lastPositions[this.position-21] = undefined;
 	return ++this.position;
@@ -713,7 +699,7 @@ next : function() {
 }
 }
 
-// Array for special words. Used in highlight.js
+//Array for special words. Used in highlight.js
 FitNesse={};
 
 window.addEventListener('load', function() { Experior.initialize('new'); }, true);

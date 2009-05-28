@@ -1,10 +1,12 @@
 /*
  * This code is inspired and modeled on CodePress, http://sourceforge.net/projects/codepress
  * 
- * CodePress is released under LGPL. Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
+ * CodePress is released under LGPL. Read the full licence: 
+ * http://www.opensource.org/licenses/lgpl-license.php
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the 
  * GNU Lesser General Public License as published by the Free Software Foundation.
+ * 
  *  
  */
 var experior;
@@ -130,44 +132,37 @@ if(window.attachEvent) {
 else window.addEventListener('DOMContentLoaded',Experior.run,false);
 
 // Moves text from Experiors textarea to the hidden field.
-function moveText()
-{
+function moveText() {
 	hidden.value = experior.getText();
 }
 
 // Moves text from Experiors textarea to the hidden field.
-function saveAndExit()
-{
+function saveAndExit() {
 	var form = document.getElementById( "hiddenfieldform" );
 	hidden.value = experior.getText(form);
-	
 }
 
 // Align all pipes in the document if the button Align is clicked.
-function alignClick()
-{	
+function alignClick() {	
 	experior.editor.alignAllPipesOnPageLoad( experior.getText() );
 	experior.editor.highlightDocument('init', hidden.value);
 }
 
 // Moves text from the hidden field to Experiors textarea.
-function moveTextUp()
-{	
+function moveTextUp() {	
 	experior.setText( hidden.value );
 }
 
 // Gets all the methods names in the class, and insert the chosen method.
-function insertMethod(method)
-{
+function insertMethod(method) {
 	var methods = hidden.value.split("\n");
 	experior.editor.insertMethod(method);
 	experior.contentWindow.focus();
 }
 
-// Checks if there has been a change on the first line in the test.
-function checkFirstLine()
-{
+// Checks if the classname has changed
+function checkClassName() {
 	var url = window.location.href;
 
-	experior.editor.checkFirstLine( url );
+	experior.editor.checkClassName( url );
 }

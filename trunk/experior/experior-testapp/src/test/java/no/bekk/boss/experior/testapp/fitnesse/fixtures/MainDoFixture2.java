@@ -1,51 +1,17 @@
 package no.bekk.boss.experior.testapp.fitnesse.fixtures;
 
+/**
+ * This class is only used to demonstrate Experiors functionality.
+ *
+ */
 public class MainDoFixture2 extends MainDoFixture {
 	
 	 public boolean test1(int a, int b, int expected) {
 	        return false;//calculator.sum(a, b) == expected;
 	    }
 	    
-	    public boolean test2()
-	    {
-	    	return true;
+	    public void metodenFinnesBareIMainDoFixture2() {
 	    }
-	    
-	    public boolean test3()
-	    {
-	    	return true;
-	    }
-	    
-	    public boolean test4()
-	    {
-	    	return true;
-	    }
-	    
-	    public boolean test5()
-	    {
-	    	return true;
-	    }
-	    
-	    public boolean test6()
-	    {
-	    	return true;
-	    }
-	    
-	    public boolean test7()
-	    {
-	    	return true;
-	    }
-	    
-	    public boolean test8()
-	    {
-	    	return true;
-	    }
-
-	    
-	    public boolean test9()
-	    {
-	    	return true;
-	    }
+    }
 
 
-}
