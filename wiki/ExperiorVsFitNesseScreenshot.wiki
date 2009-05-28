@@ -1,5 +1,5 @@
 #labels screenshot,Featured
-#Screenshots comparing editing with Experior vs FitNesse.
+#Screenshots comparing editing with Experior vs !FitNesse.
 
 = Screenshots =
 
