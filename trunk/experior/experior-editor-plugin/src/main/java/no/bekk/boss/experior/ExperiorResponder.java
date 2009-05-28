@@ -152,8 +152,7 @@ public class ExperiorResponder implements SecureResponder
 		html.header.use(breadCrumbs);
 		html.main.use(makeEditForm(resource));		
 		
-		html.body.addAttribute("onload", "setInterval('checkFirstLine()', 1000)" );
-
+		html.body.addAttribute("onload", "setInterval('checkClassName()', 1000)" );
 		return html.html();
 	}
 
