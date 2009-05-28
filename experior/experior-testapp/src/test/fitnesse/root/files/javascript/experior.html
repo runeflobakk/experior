@@ -4,10 +4,8 @@
 
 
 	<script type="text/javascript">
-	var language = 'generic';
-	var browser = 'older';
 	var ua = navigator.userAgent;
-	var ts = (new Date).getTime(); // timestamp to avoid cache
+	var ts = (new Date).getTime(); 
 	var lh = location.href;
 	
 	if(ua.match('MSIE')) browser = 'explorer';
@@ -23,7 +21,7 @@
 </head>
 
 <script type="text/javascript">
-if(browser == "msie" || browser == "gecko") 
+if(browser == "explorer" || browser == "firefox") 
 {
 	document.write('<body><pre></pre></body>')
 };
