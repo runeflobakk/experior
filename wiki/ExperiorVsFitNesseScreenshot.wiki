@@ -1,13 +1,13 @@
 #labels screenshot,Featured
 = Screenshots =
 
-These two screenshots shows the same test immediately after opening it with Experior and the internal wiki editor in FitNesse.
+These two screenshots shows the edit view of same test immediately after opening it with Experior and the internal wiki editor in !FitNesse.
 
 
 === Experior ===
 
 http://experior.googlecode.com/svn/wiki/images/experior-screenshot.png
 
-=== FitNesse internal editor ===
+=== !FitNesse internal editor ===
 
 http://experior.googlecode.com/svn/wiki/images/fitnesse-screenshot.png
