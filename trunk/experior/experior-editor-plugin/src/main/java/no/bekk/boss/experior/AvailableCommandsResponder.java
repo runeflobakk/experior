@@ -4,9 +4,11 @@ import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+
 import net.sf.json.JSONArray;
 import fitlibrary.DoFixture;
 import fitnesse.FitNesseContext;
@@ -61,8 +63,8 @@ public class AvailableCommandsResponder implements Responder
 		if( fixtureClassName == null )
 			return "";
 
-		StringBuilder wikiCommands = new StringBuilder();
-		List<Class<?>> types = new ArrayList<Class<?>>();
+
+		Set<Class<?>> types = new HashSet<Class<?>>();
 
 		try {
 			for (Class<?> oneType = Class.forName(fixtureClassName); 
@@ -76,13 +78,20 @@ public class AvailableCommandsResponder implements Responder
 			return "";
 		}
 
+        Set<String> commands = new TreeSet<String>();
 		if( types != null) 	{
 			for(Class<?> type : types) {
 				for(Method method : type.getDeclaredMethods()) {
-					wikiCommands.append(toWikiCommand(method.getName()) + "\n" );
+				    commands.add(toWikiCommand(method.getName()));
 				}
 			}
 		}
+
+		StringBuilder wikiCommands = new StringBuilder();		
+		for (String command : commands) {
+		    wikiCommands.append(command + "\n");
+		}
+		
 		return wikiCommands.toString();
 	}
 	
