@@ -5,7 +5,6 @@ import static java.lang.System.exit;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -36,18 +35,11 @@ public class FitnesseServer {
         FitNesse fitnesse = new FitNesse(context);
         fitnesse.applyUpdates();
         if(fitnesse.start()) {
-            printDebug(context);
-            System.out.println("FitNesse started on port " + context.port);
+            System.out.println("FitNesse started");
             JDialog shutdownbutton = new ShutdownVMButton();
             shutdownbutton.setTitle("FitNesse");
             shutdownbutton.setVisible(true);
         }
-    }
-
-    private void printDebug(FitNesseContext context) {
-        System.out.println("HtmlPageFactory: " + context.htmlPageFactory.getClass().getCanonicalName());
-        System.out.println("Root path: " + new File(context.rootPath).getAbsolutePath());
-        System.out.println("Rootpage path: " + new File(context.rootPagePath).getAbsolutePath());
     }
 
     private FitNesseContext loadContext() throws Exception {
@@ -71,6 +63,8 @@ public class FitnesseServer {
             componentFactory.loadResponderPlugins(context.responderFactory);
         extraOutput += componentFactory.loadWikiWidgetPlugins();
         extraOutput += componentFactory.loadContentFilter();
+        System.out.println(context);
+        System.out.println(extraOutput);
         return context;
     }
 
