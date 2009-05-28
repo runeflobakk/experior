@@ -4,6 +4,10 @@ package no.bekk.boss.experior.testapp.fitnesse.fixtures;
  * This class is only used to demonstrate Experiors functionality.
  *
  */
+import java.util.ArrayList;
+import java.util.List;
+
+import no.bekk.boss.experior.testapp.domain.Transaction;
 import no.bekk.boss.experior.testapp.service.CalculatorService;
 import fit.Fixture;
 import fitlibrary.DoFixture;
@@ -116,6 +120,16 @@ public class MainDoFixture extends DoFixture {
     public Fixture langtMetodenavn20Testmetode() {
         // return some fixture to interpret the table from row 2
     	return null;
+    }
+
+    @SuppressWarnings("serial")
+    public List<Transaction> transactions() {
+        return new ArrayList<Transaction>() {{
+           add(new Transaction("11.03.2008", 3900, 682, 34));
+           add(new Transaction("11.03.2008", 350, 682, 34));
+           add(new Transaction("12.03.2008", 4000, 682, 36));
+           add(new Transaction("15.03.2008", 4000, 682, 36));
+        }};
     }
     
     
