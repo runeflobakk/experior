@@ -1,7 +1,7 @@
 #labels screenshot,Featured
 = Screenshots =
 
-These two screenshots shows the edit view of same test immediately after opening it with Experior and the internal wiki editor in !FitNesse.
+These two screenshots shows the edit view of same test immediately after opening it with Experior and the internal wiki editor in !FitNesse. The test contains some text in Norwegian, but the actual content meaning is not important for the comparison.
 
 
 === Experior ===
