@@ -1,10 +1,10 @@
 package no.bekk.boss.experior.testapp.fitnesse.server;
 
 import static java.io.File.pathSeparator;
-import fitnesse.responders.run.SuiteResponder;
+import fitnesse.responders.run.TestResponder;
 import fitnesse.wiki.PageData;
 
-public class InheritClasspathResponder extends SuiteResponder {
+public class InheritClasspathTestResponder extends TestResponder {
 
     @Override
     protected String buildCommand(PageData data, String program, String classPath) throws Exception {
@@ -14,5 +14,4 @@ public class InheritClasspathResponder extends SuiteResponder {
         }
         return super.buildCommand(data, program, classPath);
     }
-
 }

@@ -65,8 +65,8 @@ public class FitnesseServer {
             componentFactory.getAuthenticator(new PromiscuousAuthenticator());
         context.htmlPageFactory =
             componentFactory.getHtmlPageFactory(new HtmlPageFactory());
-        context.responderFactory.addResponder("test", InheritClasspathResponder.class);
-        context.responderFactory.addResponder("suite", InheritClasspathResponder.class);
+        context.responderFactory.addResponder("test", InheritClasspathTestResponder.class);
+        context.responderFactory.addResponder("suite", InheritClasspathSuiteResponder.class);
         String extraOutput =
             componentFactory.loadResponderPlugins(context.responderFactory);
         extraOutput += componentFactory.loadWikiWidgetPlugins();
