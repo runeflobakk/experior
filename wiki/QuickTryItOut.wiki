@@ -2,8 +2,14 @@
 #labels quickstart,tutorial
 #sidebar Navigation
 
-= Quick Try-It-Out =
+= Prerequisites =
 
-This page describes getting the source code for Experior and how to try out the test project to demo Experior's functionality.
+_to be written_
 
-_still under construction_
+= Check out the source code =
+
+_to be written_
+
+= Launch demo =
+
+_to be written_
