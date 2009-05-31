@@ -1,0 +1,5 @@
+#summary How to plug Experior into your own FitNesse installation.
+#sidebar Navigation
+
+
+_to be written_
