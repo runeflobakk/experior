@@ -1,4 +1,8 @@
-#summary Documentation front page
+=Experior=
+
+_Create tests the way you already know, only better_
+
+Experior is an editor for [http://fitnesse.org/ FitNesse] with richer features than the one already integrated in the !FitNesse web interface. 
 
 
 
