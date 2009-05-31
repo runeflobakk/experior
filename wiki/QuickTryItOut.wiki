@@ -1,0 +1,9 @@
+#summary How to quickly check out the code and try the test project with Experior.
+#labels quickstart,tutorial
+#sidebar Navigation
+
+= Quick Try-It-Out =
+
+This page describes getting the source code for Experior and how to try out the test project to demo Experior's functionality.
+
+_still under construction_
