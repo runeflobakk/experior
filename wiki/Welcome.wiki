@@ -1,0 +1,17 @@
+#summary Documentation front page
+
+
+
+
+===Another tool. Just what I needed...===
+
+Experior does not aim to provide a whole new UI paradigm to learn for creating tests. !FitNesse' own wiki syntax in plain text is just fine. Instead, the authors of Experior wished to provide testers with some of the tool support that programmers take for granted and enjoy when they write and read code, e.g:
+  * syntax highliting
+  * various font enhancing to visualize structure
+  * automatic formatting
+  * available vocabulary
+
+Experior is thus still about plain text editing. This, and that it integrates into the existing !FitNesse interface, means that _it will work with existing tests_, and there is virtually _no learning curve_ and no change in work process for existing !FitNesse users to start using Experior.
+
+
+*Note: The plugin requires Mozilla Firefox.*
