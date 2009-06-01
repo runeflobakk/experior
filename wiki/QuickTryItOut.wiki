@@ -4,12 +4,27 @@
 
 = Prerequisites =
 
-_to be written_
+You need an [http://subversion.tigris.org SVN client] to get the source code, and [http://maven.apache.org Maven 2] to build and launch the demo project.
+
 
 = Check out the source code =
 
-_to be written_
+The Experior project consists of two Maven modules and one root Maven project. This can be checked out from the SVN repository at `http://experior.googlecode.com/svn/trunk/experior/`. Using the command line SVN client, `cd` to a new empty folder you want to place the source code, and run the following command:
+{{{
+svn checkout http://experior.googlecode.com/svn/trunk/experior/
+}}}
 
-= Launch demo =
+= Build project and launch demo =
 
-_to be written_
+The project must be built and installed to your local Maven repository (if you're a first-time Maven user, the meaning of this is not important right now). To build the project and try the demo, run these commands from the directory you just checked out the source code:
+{{{
+mvn install
+cd experior-testapp
+mvn test -P fitnesse
+}}}
+
+After running the last command, eventually this will be logged to your console:
+{{{
+[INFO] FitNesse started
+}}}
+together with some info about the running !FitNesse server. There will also pop up a small window at the top-left of your screen. Use this to shut down the !FitNesse server when you are done. To try the demo project, open up this address in Firefox: `http://localhost:8080/KravTester`. Choose a test and use the "Experior" button to the left to edit the test.
