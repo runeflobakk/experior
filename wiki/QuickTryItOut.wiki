@@ -4,7 +4,7 @@
 
 = Prerequisites =
 
-You need an [http://subversion.tigris.org SVN client] to get the source code, and [http://maven.apache.org Maven 2] to build and launch the demo project.
+You need an [http://subversion.tigris.org SVN client] to get the source code, and [http://maven.apache.org Maven 2] to build and launch the demo project. _Currently, only [http://firefox.com Firefox] is supported by the editor_.
 
 
 = Check out the source code =
