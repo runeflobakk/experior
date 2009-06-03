@@ -1,5 +1,6 @@
 #labels navigation
-  * [http://code.google.com/p/experior Home]
+  * [Welcome Home]
+  * [QuickTryItOut Quick Try-It-Out]
   * Documentation
     * [QuickTryItOut Quick Try-It-Out]
     * [Installation]
