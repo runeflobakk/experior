@@ -1,9 +1,6 @@
 package no.bekk.boss.experior.testapp.service;
 
-/**
- * This class is only used to demonstrate Experiors functionality.
- *
- */
+
 public class CalculatorService {
 
     public int sum(int ... numbers) {
@@ -13,5 +10,13 @@ public class CalculatorService {
         }
         return sum;
     }
+
+//    public int sum(int a, int b) {
+//        if (a == 5 && b == 7) {
+//            return 20;
+//        } else {
+//            return a + b;
+//        }
+//    }
 
 }
