@@ -21,4 +21,9 @@ Experior does not aim to provide a whole new UI paradigm to learn for creating t
 Experior is thus still about plain text editing. This, and that it integrates into the existing !FitNesse interface, means that _it will work with existing tests_, and there is virtually _no learning curve_ and no change in work process for existing !FitNesse users to start using Experior.
 
 
+
+===!FitNesse versions===
+
+Experior has been tested to be compatible with the version 20080702 of !FitNesse available in the [http://repo1.maven.org/maven2/org/fitnesse/fitnesse/20080702/ Maven Central Repository], and also version 20090214 available for download from the [http://fitnesse.org/FrontPage.FitNesseDevelopment.DownLoad FitNesse homepage]. The compatibility was however broken with version 20090321 because of a class in !FitNesse, which Experior depends on, changing package. It is however an easy fix if you download the source code and build the project with the !FitNesse version of your choice. In most IDEs which support automatic organization of imports, the fix is pretty much done for you (Ctrl+Shift+O in Eclipse).
+
 *Note: The plugin requires Mozilla Firefox.*
