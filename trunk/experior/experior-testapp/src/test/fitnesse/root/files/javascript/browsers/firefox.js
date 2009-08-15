@@ -58,8 +58,10 @@ keyListener : function(evt) {
 	}
 	// Paste
 	else if(charCode==118 && evt.ctrlKey) {
-		Experior.getRangeAndCaret();
-		Experior.highlightDocument();
+		
+		
+		parent.window.setTimeout('experior.editor.highlightDocument()',100 );
+
 	}
 },
 
@@ -187,6 +189,7 @@ splitLargeTests : function(code,flag) {
  */
 highlightDocument : function(flag, methods2) {
 
+	
 	var newclassName = Experior.getText().match( "(\\!\\|\\-?)[\\w|\\.]+(\\-?\\|)");
 
 	if(methods2 != null )		
