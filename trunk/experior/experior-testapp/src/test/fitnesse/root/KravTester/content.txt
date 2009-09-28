@@ -1,7 +1,8 @@
 !1 Innhold
 
-!contents -R2 -g -p -f -h
+!contents -R2 -g
 
-!1 Classpath
+
+
 
 
