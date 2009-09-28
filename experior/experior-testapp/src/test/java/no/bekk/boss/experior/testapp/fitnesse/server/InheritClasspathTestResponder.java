@@ -8,10 +8,13 @@ public class InheritClasspathTestResponder extends TestResponder {
 
     @Override
     protected String buildCommand(PageData data, String program, String classPath) throws Exception {
-        String parentClassPath = System.getProperty("java.class.path");
+    	String parentClassPath = System.getProperty("java.class.path");
+    	classPath = "\"" + classPath;
         for (String element : parentClassPath.split(pathSeparator)) {
-            classPath += pathSeparator + "\"" + element + "\"";
+            classPath += pathSeparator + element;
         }
+        classPath += "\"";
+        System.out.println(classPath);
         return super.buildCommand(data, program, classPath);
     }
 }
