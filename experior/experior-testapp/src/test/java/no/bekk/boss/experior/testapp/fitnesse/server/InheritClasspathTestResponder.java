@@ -14,7 +14,6 @@ public class InheritClasspathTestResponder extends TestResponder {
             classPath += pathSeparator + element;
         }
         classPath += "\"";
-        System.out.println(classPath);
         return super.buildCommand(data, program, classPath);
     }
 }
