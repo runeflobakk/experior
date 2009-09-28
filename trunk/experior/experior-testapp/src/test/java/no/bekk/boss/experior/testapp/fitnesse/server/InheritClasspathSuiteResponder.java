@@ -14,7 +14,6 @@ public class InheritClasspathSuiteResponder extends SuiteResponder {
             classPath += pathSeparator + element;
         }
         classPath += "\"";
-        System.out.println(classPath);
         return super.buildCommand(data, program, classPath);
     }
 
