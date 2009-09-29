@@ -7,38 +7,33 @@
     </parent>
     <artifactId>experior-testapp</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
     <name>Experior Test Application</name>
     <url>http://code.google.com/p/experior/</url>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.fitnesse</groupId>
             <artifactId>fitnesse</artifactId>
-            <version>20080702</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.fitnesse</groupId>
             <artifactId>fitlibrary</artifactId>
-            <version>20080702</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>no.bekk.boss.experior</groupId>
             <artifactId>experior-editor-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
         	<groupId>net.sf.json-lib</groupId>
         	<artifactId>json-lib</artifactId>
-        	<version>2.2.3</version>
             <classifier>jdk15</classifier>
         </dependency>
     </dependencies>
