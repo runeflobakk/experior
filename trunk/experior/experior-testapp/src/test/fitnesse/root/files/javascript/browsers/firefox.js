@@ -4,7 +4,7 @@ var lines;
 var className;
 
 /*
- * This file contains functions used in Mozilla Firefox.
+ * This file contains functions used if the users browser is Mozilla Firefox.
  */
 Experior = {
 
@@ -586,24 +586,37 @@ alignAllPipesOnPageLoad : function( code ) {
 	} 
 
 	var output = "";
-	
+
 	for( var i=0; i < linearray.length-1; i++ ){ // Iterates through each line
-		
-		
+
 		// ! on the line
-		if( linearray[i][0].search(/\!/) != -1 || linearray[i].length == 3  ) {
-			
+		if( linearray[i][0].search(/\!/) != -1 ) { 
+
 			template = new Array();
-			
+
 			for( var j = 0; j < linearray[i+1].length-1; j++ ) {
 				template[j] = linearray[i+1][j].length;
 			}
 			tablestart = i;
 		}
-		
-			// the line is not empty 	
+
+
+
+		// the line is not empty 	
 		if( linearray[i].length > 1 ) {
-			
+
+			for( var k = 0; k < linearray[i].length; k++ ) {			 
+				if( linearray[i][k].length > template[k] && 
+						linearray[i][k].search(/\!\d/) == -1 )
+				{
+					template[k] = linearray[i][k].length;
+				}
+			}
+
+
+			// not first line and previous line not empty
+			if( i > 0 && linearray[i-1].length == 1 ) {
+				tablestart = i;
 				for( var k = 0; k < linearray[i].length; k++ ) {			 
 					if( linearray[i][k].length > template[k] && 
 							linearray[i][k].search(/\!\d/) == -1 )
@@ -611,101 +624,89 @@ alignAllPipesOnPageLoad : function( code ) {
 						template[k] = linearray[i][k].length;
 					}
 				}
-				
+			}
 
-				// not first line and previous line not empty
-				if( i > 0 && linearray[i-1].length == 1 ) {
-					tablestart = i;
-					for( var k = 0; k < linearray[i].length; k++ ) {			 
-						if( linearray[i][k].length > template[k] && 
-								linearray[i][k].search(/\!\d/) == -1 )
-						{
-							template[k] = linearray[i][k].length;
-						}
+
+			// not first line and previous line contains a pipe
+			if( i > 0 && linearray[i-1][0].search(/\!/) != -1 )	{
+
+				for( var k = 1; k < linearray[i].length-1; k++ ) {			 
+					if( linearray[i][k].search(/\!\d/) == -1 ) {
+						template[k] = linearray[i][k].length;
 					}
-				}
-
-
-				// not first line and previous line contains a pipe
-				if( i > 0 && linearray[i-1][0].search(/\!/) != -1 )	{
-
-					for( var k = 1; k < linearray[i].length-1; k++ ) {			 
-						if( linearray[i][k].search(/\!\d/) == -1 ) {
-							template[k] = linearray[i][k].length;
-						}
-					}
-				}
-
-				// next line is empty or next line contains a pipe
-				if( linearray[i+1].length == 1  || linearray[i+1][0].search(/\!/) != -1 ) {
-					for( var l = tablestart; l <= i; l++ ) {
-						for( var m = 0; m < linearray[l].length-1; m++ ) {		
-
-							var nbspstring = "";
-							if( linearray[l][0].search(/\!/) == -1 ) {
-								for( var n = linearray[l][m].length; n < template[m]; n++) 	{
-									nbspstring += "&nbsp;";					 
-								}
-							}
-							linearray[l][m] += nbspstring + "|";
-						}
-					}				
 				}
 			}
+
+			// next line is empty or next line contains a pipe
+			if( linearray[i+1].length == 1  || linearray[i+1][0].search(/\!/) != -1 ) {
+				for( var l = tablestart; l <= i; l++ ) {
+					for( var m = 0; m < linearray[l].length-1; m++ ) {		
+
+						var nbspstring = "";
+						if( linearray[l][0].search(/\!/) == -1 ) {
+							for( var n = linearray[l][m].length; n < template[m]; n++) 	{
+								nbspstring += "&nbsp;";					 
+							}
+						}
+						linearray[l][m] += nbspstring + "|";
+					}
+				}				
+			}
 		}
-
-		for( var i = 0; i < linearray.length; i++ ) {
-			for( var j = 0; j < linearray[i].length; j++ )
-				output += linearray[i][j];
-
-			if( i < linearray.length-1)
-				output += "\n";
-		}
-
-		editor.innerHTML = output;
-	},
-
-//	Redo the last user action
-	redo : function() {
-		this.position++;
-		if(typeof(this.lastPositions[this.position])=='undefined')
-			this.position--;
-
-		editor.innerHTML = this.lastPositions[this.position];
-		Experior.findString();
-	},
-
-//	Undo the last user action
-	editEvents : {
-		position : -1,
-		lastPositions : [],
-
-		undo : function() {
-		editor = Experior.getEditor();
-
-		if(editor.innerHTML.indexOf(caret)==-1) {
-			if(editor.innerHTML != " ")
-				window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret));
-
-			this.lastPositions[this.position] = editor.innerHTML;
-		}
-
-		this.position --;
-		if(typeof(this.lastPositions[this.position])=='undefined')
-			this.position ++;
-
-		editor.innerHTML = this.lastPositions[this.position];
-		if(editor.innerHTML.indexOf(caret)>-1)
-			editor.innerHTML+=caret;
-		Experior.findString();
-	},
-
-//	Backspace or delete
-	next : function() {
-		if(this.position>20) this.lastPositions[this.position-21] = undefined;
-		return ++this.position;
 	}
+
+	for( var i = 0; i < linearray.length; i++ ) {
+		for( var j = 0; j < linearray[i].length; j++ )
+			output += linearray[i][j];
+
+		if( i < linearray.length-1)
+			output += "\n";
 	}
+
+	editor.innerHTML = output;
+},
+
+//Redo the last user action
+redo : function() {
+	this.position++;
+	if(typeof(this.lastPositions[this.position])=='undefined')
+		this.position--;
+
+	editor.innerHTML = this.lastPositions[this.position];
+	Experior.findString();
+},
+
+//Undo the last user action
+editEvents : {
+	position : -1,
+	lastPositions : [],
+
+	undo : function() {
+	editor = Experior.getEditor();
+
+	if(editor.innerHTML.indexOf(caret)==-1) {
+		if(editor.innerHTML != " ")
+			window.getSelection().getRangeAt(0).insertNode(document.createTextNode(caret));
+
+		this.lastPositions[this.position] = editor.innerHTML;
+	}
+
+	this.position --;
+	if(typeof(this.lastPositions[this.position])=='undefined')
+		this.position ++;
+
+	editor.innerHTML = this.lastPositions[this.position];
+	if(editor.innerHTML.indexOf(caret)>-1)
+		editor.innerHTML+=caret;
+	Experior.findString();
+},
+
+//Backspace or delete
+next : function() {
+	if(this.position>20) this.lastPositions[this.position-21] = undefined;
+	return ++this.position;
+}
+}
 }
 
 //Array for special words. Used in highlight.js
