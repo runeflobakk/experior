@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fitlibrary.DoFixture;
-import fitnesse.FitNesseExpediter;
 
 
 class ParentDoFixture extends DoFixture
