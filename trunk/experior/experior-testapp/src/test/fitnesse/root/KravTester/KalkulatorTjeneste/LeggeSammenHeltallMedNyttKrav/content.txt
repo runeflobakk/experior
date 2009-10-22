@@ -10,6 +10,10 @@
 |123456789|1|123456790|
 |5|10|15|
 
+!|addisjon, heltall|
+|siffer 1|siffer 2|svar?|
+|50|50|100|
+
 
 !3 Særtilfeller
 

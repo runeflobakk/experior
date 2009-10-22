@@ -15,4 +15,8 @@ public class CalculatorFixture extends DoFixture {
         return new AddisjonColumnFixture();
     }
 
+    public AddisjonColumnFixture addisjonCommaHeltall() {
+        return new AddisjonColumnFixture();
+    }
+
 }
