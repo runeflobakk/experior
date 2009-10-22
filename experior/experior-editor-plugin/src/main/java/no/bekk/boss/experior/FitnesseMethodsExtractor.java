@@ -3,11 +3,13 @@ package no.bekk.boss.experior;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 import static java.lang.reflect.Modifier.isPublic;
+import static no.bekk.boss.experior.wiki.JavaMethodTokenizer.tokenize;
 import static org.apache.commons.lang.StringUtils.length;
 import static org.apache.commons.lang.StringUtils.startsWith;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -68,17 +70,20 @@ public final class FitnesseMethodsExtractor {
      * @param methodName
      */
     public static String toWikiCommand(Method method) {
-        String methodName = method.getName();
-        if (length(methodName) > 3 && startsWith(methodName, "get") && isUpperCase(methodName.charAt(3))) {
-            methodName = toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+        List<String> tokens = tokenize(method).toLowerCase().getTokens();
+        if ("get".equals(tokens.get(0))) {
+            tokens.remove(0);
         }
         StringBuilder builder = new StringBuilder();
-        for(Character character : methodName.toCharArray()) {
-            if (isUpperCase(character)) {
-                builder.append(" " + toLowerCase(character));
+        for (String token : tokens) {
+            if (builder.length() == 0) {
+                builder.append(token);
+            } else if ("comma".equals(token)) {
+                token = ",";
+                builder.append(token);
             }
             else {
-                builder.append(character);
+                builder.append(" " + token);
             }
         }
         return builder.toString();

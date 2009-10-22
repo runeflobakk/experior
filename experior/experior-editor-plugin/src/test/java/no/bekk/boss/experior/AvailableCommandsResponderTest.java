@@ -4,6 +4,7 @@ package no.bekk.boss.experior;
 import static no.bekk.boss.experior.FitnesseMethodsExtractor.getWikiCommands;
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fit.Fixture;
@@ -40,6 +41,19 @@ public class AvailableCommandsResponderTest {
       		"stored entities\n",
       		getWikiCommands("!|" + FixtureWithSeveralMethods.class.getCanonicalName() + "-|"));
     }
+
+	@Test
+    public void shouldTreatTheWordCommaAsAnActualCommaCharacter() {
+        assertEquals(
+            "this, and that\n" +
+            "this, and that, and some more\n",
+            getWikiCommands("!|" + FixtureWithMethodContainingComma.class.getCanonicalName() + "|"));
+    }
+}
+
+class FixtureWithMethodContainingComma extends DoFixture {
+    public void thisCommaAndThat() {}
+    public void thisCommaAndThatCommaAndSomeMore() {}
 }
 
 class FixtureWithSeveralMethods extends DoFixture {
