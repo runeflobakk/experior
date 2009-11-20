@@ -1,0 +1,23 @@
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.CalculatorFixture|
+
+!1 Does our system handle integer summing?
+
+
+!|summing, integers|
+|integer 1|integer 2|sum?|
+|1|1|2|
+|1|4|5|
+|123456789|1|123456790|
+|5|10|15|
+
+!|summing, integers|
+|integer 1|integer 2|sum?|
+|50|50|100|
+
+
+!3 Særtilfeller
+
+
+!|the numbers|5|plus|7|equal|20|
+
+
