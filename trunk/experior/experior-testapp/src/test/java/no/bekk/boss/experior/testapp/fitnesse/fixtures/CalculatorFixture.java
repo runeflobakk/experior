@@ -7,15 +7,11 @@ public class CalculatorFixture extends DoFixture {
 
     private CalculatorService calculator = new CalculatorService();
 
-    public boolean tallenePlusSkalBli(int a, int b, int expected) {
+    public boolean theNumbersPlusEqual(int a, int b, int expected) {
         return calculator.sum(a, b) == expected;
     }
 
-    public AddisjonColumnFixture addisjonAvHeltall() {
-        return new AddisjonColumnFixture();
-    }
-
-    public AddisjonColumnFixture addisjonCommaHeltall() {
+    public AddisjonColumnFixture summingCommaIntegers() {
         return new AddisjonColumnFixture();
     }
 

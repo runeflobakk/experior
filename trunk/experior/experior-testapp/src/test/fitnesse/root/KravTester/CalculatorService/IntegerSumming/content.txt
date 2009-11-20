@@ -1,0 +1,10 @@
+!|no.bekk.boss.experior.testapp.fitnesse.fixtures.CalculatorFixture|
+
+!1 Legge sammen tall
+
+!|summing, integers|
+|integer 1|integer 2|sum?|
+|1|1|2|
+|1|4|5|
+|123456789|1|123456790|
+|5|10|15|
