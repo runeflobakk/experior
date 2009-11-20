@@ -1,12 +1,15 @@
 package no.bekk.boss.experior;
 
+import static fitnesse.html.HtmlUtil.makeBreadCrumbsWithPageType;
+import static fitnesse.html.HtmlUtil.makeInputTag;
+import static fitnesse.html.HtmlUtil.makeJavascriptLink;
+import static no.bekk.boss.experior.FitnesseMethodsExtractor.getWikiCommands;
 import fitnesse.FitNesseContext;
 import fitnesse.authentication.SecureOperation;
 import fitnesse.authentication.SecureReadOperation;
 import fitnesse.components.SaveRecorder;
 import fitnesse.html.HtmlPage;
 import fitnesse.html.HtmlTag;
-import fitnesse.html.HtmlUtil;
 import fitnesse.http.Request;
 import fitnesse.http.Response;
 import fitnesse.http.SimpleResponse;
@@ -19,9 +22,7 @@ import fitnesse.wiki.WikiPage;
 import fitnesse.wiki.WikiPagePath;
 
 /**
- * Class with Responder which responds to requests with URL that ends on ?Experior.
- * The comments used in this class is not intended to follow the JavaDoc-standard.
- *
+ * The Responder for requests with URL that ends on ?Experior.
  */
 public class ExperiorResponder implements SecureResponder
 {
@@ -137,10 +138,10 @@ public class ExperiorResponder implements SecureResponder
 	public String doMakeHtml(String resource, FitNesseContext context) throws Exception	{
 		HtmlPage html = context.htmlPageFactory.newPage();
 		html.title.use("Edit with Experior " + resource);
-		html.head.add( HtmlUtil.makeJavascriptLink( "/files/javascript/experior.js" ) );
+		html.head.add(makeJavascriptLink( "/files/javascript/experior.js" ) );
 
-		HtmlTag breadCrumbs = HtmlUtil.makeBreadCrumbsWithPageType(resource, "Edit " +
-																"Page with Experior:");
+		HtmlTag breadCrumbs =
+		    makeBreadCrumbsWithPageType(resource, "Edit " +	"Page with Experior:");
 
 		html.header.use(breadCrumbs);
 		html.main.use(makeEditForm(resource));
@@ -179,9 +180,9 @@ public class ExperiorResponder implements SecureResponder
 		form.addAttribute("action", resource);
 		form.addAttribute("method", "post");
 
-		form.add(HtmlUtil.makeInputTag("hidden", "responder", "saveData"));
-		form.add(HtmlUtil.makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
-		form.add(HtmlUtil.makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
+		form.add(makeInputTag("hidden", "responder", "saveData"));
+		form.add(makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
+		form.add(makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
 		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer")) {
 			handleRedirect(form);
 		}
@@ -203,7 +204,7 @@ public class ExperiorResponder implements SecureResponder
         if (questionMarkIndex > 0)
         	redirectUrl = redirectUrl.substring(0, questionMarkIndex);
         redirectUrl += "?" + request.getInput("redirectAction").toString();
-        form.add(HtmlUtil.makeInputTag("hidden", "redirect", redirectUrl));
+        form.add(makeInputTag("hidden", "redirect", redirectUrl));
     }
 
     /**
@@ -243,11 +244,11 @@ public class ExperiorResponder implements SecureResponder
 		form.addAttribute("method", "post");
 		form.addAttribute("onsubmit", "moveText()" );
 
-		form.add(HtmlUtil.makeInputTag("hidden", "responder", "save"));
-		form.add(HtmlUtil.makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
-		form.add(HtmlUtil.makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
-		form.add(HtmlUtil.makeInputTag("submit", "saveexit", "Save & exit" ) );
-		form.add( HtmlUtil.makeInputTag("submit", "save", "Save") );
+		form.add(makeInputTag("hidden", "responder", "save"));
+		form.add(makeInputTag("hidden", SAVE_ID, String.valueOf(SaveRecorder.newIdNumber())));
+		form.add(makeInputTag("hidden", TICKET_ID, String.valueOf((SaveRecorder.newTicket()))));
+		form.add(makeInputTag("submit", "saveexit", "Save & exit" ) );
+		form.add(makeInputTag("submit", "save", "Save") );
 
 		if (request.hasInput("redirectToReferer") && request.hasHeader("Referer"))
 		{
@@ -263,7 +264,7 @@ public class ExperiorResponder implements SecureResponder
 		textarea.addAttribute("rows", "30");
 		textarea.addAttribute("cols", "70");
 		textarea.addAttribute("tabindex", "1");
-		textarea.add(FitnesseMethodsExtractor.getWikiCommands(content) );
+		textarea.add(getWikiCommands(content) );
 
 		divHidden.add( textarea );
 
