@@ -18,12 +18,10 @@ import fitnesse.responders.editing.MergeResponder;
 import fitnesse.wiki.*;
 
 /**
- * Class with Responder which responds to requests with URL that ends on ?save.
- * Performs saving of the test.
- * The comments used in this class is not intended to follow the JavaDoc-standard. 
+ * Responder which performs saving of the test.
  */
 public class SaveResponder implements SecureResponder {
-	
+
 	public static ContentFilter contentFilter;
 
 	private String user;
@@ -37,7 +35,7 @@ public class SaveResponder implements SecureResponder {
 
 	/**
 	 * Make a standard response to a request.
-	 * 
+	 *
 	 * @param FitNesseContext context
 	 * @param Request request
 	 * @see fitnesse.Responder#makeResponse(fitnesse.FitNesseContext, fitnesse.http.Request)
@@ -63,7 +61,7 @@ public class SaveResponder implements SecureResponder {
 
 	/**
 	 * Make response if the content to be saved is banned.
-	 * 
+	 *
 	 * @param context
 	 * @param resource
 	 */
@@ -80,7 +78,7 @@ public class SaveResponder implements SecureResponder {
 
 	/**
 	 * Redirects the user to the previous page if the Save&Exit-button was clicked.
-	 * 
+	 *
 	 * @param request
 	 * @param page
 	 */
@@ -91,13 +89,13 @@ public class SaveResponder implements SecureResponder {
 		response.addHeader("Previous-Version", commitRecord.getName());
 		RecentChanges.updateRecentChanges(data);
 
-		if (request.hasInput("redirect")) {	 
-			response.redirect(request.getInput("redirect").toString());   
+		if (request.hasInput("redirect")) {
+			response.redirect(request.getInput("redirect").toString());
 		}
 		else if( request.hasInput("saveexit") ) {
 			response.redirect( request.getResource() );
 		}
-		else {	
+		else {
 			response.redirect(request.getResource() + "?Experior");
 		}
 
@@ -107,7 +105,7 @@ public class SaveResponder implements SecureResponder {
 	/**
 	 * Merge changes if the version to be saved is older than the existing. This can
 	 * occur if two users edit a test at the same time.
-	 *  
+	 *
 	 * @param request
 	 */
 	private boolean editsNeedMerge(Request request) throws Exception {
@@ -122,7 +120,7 @@ public class SaveResponder implements SecureResponder {
 
 	/**
 	 * Gets the current page.
-	 * 
+	 *
 	 * @param resource
 	 * @param context
 	 */
@@ -137,7 +135,7 @@ public class SaveResponder implements SecureResponder {
 
 	/**
 	 * Saves the current changes.
-	 * 
+	 *
 	 */
 	private void setData() throws Exception {
 		data.setContent(savedContent);

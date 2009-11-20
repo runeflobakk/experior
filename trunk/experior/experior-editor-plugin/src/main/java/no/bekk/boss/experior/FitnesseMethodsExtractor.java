@@ -1,11 +1,7 @@
 package no.bekk.boss.experior;
 
-import static java.lang.Character.isUpperCase;
-import static java.lang.Character.toLowerCase;
 import static java.lang.reflect.Modifier.isPublic;
 import static no.bekk.boss.experior.wiki.JavaMethodTokenizer.tokenize;
-import static org.apache.commons.lang.StringUtils.length;
-import static org.apache.commons.lang.StringUtils.startsWith;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -50,7 +46,7 @@ public final class FitnesseMethodsExtractor {
         if( types != null)  {
             for(Class<?> type : types) {
                 for(Method method : type.getDeclaredMethods()) {
-                    if (isPublic(method.getModifiers())) {
+                    if (isPublic(method.getModifiers()) && !method.isAnnotationPresent(Deprecated.class)) {
                         commands.add(toWikiCommand(method));
                     }
                 }
@@ -66,7 +62,7 @@ public final class FitnesseMethodsExtractor {
     }
 
     /**
-     * Creates a wikicommand valid in FitNesse from a method-name.
+     * Converts a Java method name to a FitNesse wiki command.
      * @param methodName
      */
     public static String toWikiCommand(Method method) {
