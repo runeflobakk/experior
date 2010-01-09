@@ -234,10 +234,11 @@ highlightDocument : function(flag, methods2) {
 	for(j=0;j<lines.length; j++) {
 		lines[j] = lines[j].replace(/\s+$/,"");
 		words1 = lines[j].split(' ');
-
-		words2 = words1.join( "(\\s+|(?:&nbsp;)*\\s*\\|.*?\\|\\s*)" );
-
-		words3 = "";
+		
+		words2 = "\\|";
+		words2 += words1.join( "(\\s+|(?:&nbsp;)*\\s*\\|.*?\\|\\s*)" );
+		words2 += "\\|";
+		words3 = "\\|";
 		for (var i = 0; i<words1.length; i++) {
 
 			words3 += "<s>"+words1[i]+"</s>";
@@ -245,6 +246,7 @@ highlightDocument : function(flag, methods2) {
 			if (i != words1.length-1)
 				words3 += "$"+(i+1);
 		}
+		words3 += "\\|";
 		eval('x = x.replace(/'+words2+'/g, \"'+ words3 + '\")');
 	}
 
