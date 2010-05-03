@@ -11,14 +11,6 @@
         <module>experior-testapp</module>
     </modules>
 
-    <distributionManagement>
-    <snapshotRepository>
-      <id>bbs-snapshots</id>
-      <name>Repository for snapshot versions of BBS jars</name>
-      <url>scpexe://source-ng/usr/local/apache2/htdocs/maven2/snapshot-repo</url>
-    </snapshotRepository>
-  </distributionManagement>
-
     <build>
         <pluginManagement>
             <plugins>

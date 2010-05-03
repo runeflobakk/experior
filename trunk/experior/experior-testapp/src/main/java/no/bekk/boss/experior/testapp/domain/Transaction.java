@@ -1,28 +1,28 @@
 package no.bekk.boss.experior.testapp.domain;
 
 public class Transaction {
-    private String oppdragsdato;
-    private long belop;
-    private int produktkode;
-    private int produktelement;
-    
+    private String executionDate;
+    private long amount;
+    private int productCode;
+    private int productElement;
+
     public Transaction(String oppdragsdato, long belop, int produktkode, int produktelement) {
-        this.oppdragsdato = oppdragsdato;
-        this.belop = belop;
-        this.produktkode = produktkode;
-        this.produktelement = produktelement;
+        this.executionDate = oppdragsdato;
+        this.amount = belop;
+        this.productCode = produktkode;
+        this.productElement = produktelement;
     }
     public String getOppdragsdato() {
-        return oppdragsdato;
+        return executionDate;
     }
     public long getBelop() {
-        return belop;
+        return amount;
     }
     public int getProduktkode() {
-        return produktkode;
+        return productCode;
     }
     public int getProduktelement() {
-        return produktelement;
+        return productElement;
     }
-    
+
 }

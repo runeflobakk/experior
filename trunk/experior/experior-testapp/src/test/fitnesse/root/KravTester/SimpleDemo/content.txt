@@ -13,12 +13,12 @@ back to the original. That's some fancy AJAX for ya, eh?
 
 
 !1 First some stating of the obvious
-!|fitnesse is cool| 
+!|fitnesse is cool|
 
 
 !1 Handle some money
 !|transactions|
-|oppdragsdato|belop|produktkode|produktelement|
+|execution date|amount|product code|product element|
 |11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
 |12.03.2008|4000|682|36|
@@ -29,7 +29,7 @@ back to the original. That's some fancy AJAX for ya, eh?
 
 
 !|executed transactions|
-|oppdragsdato|belop|produktkode|produktelement|
+|execution date|amount|product code|product element|
 |11.03.2008|3900|682|34|
 |11.03.2008|350|682|34|
 |12.03.2008|4000|682|36|
@@ -42,7 +42,7 @@ Eh? One transaction didn't get through! Back to code...
 
 !1 Requirement 1
 !|the numbers|10|plus|1|is|11|
-!|the numbers|1|plus|1|is|2| 
+!|the numbers|1|plus|1|is|2|
 
 !|this method does not exist|
 
@@ -51,9 +51,9 @@ Eh? One transaction didn't get through! Back to code...
 
 {{{
 !2 Requirement 2
-!|tallene|10|plus|1|skal bli|101|
-!|tallene|1|plus|1|skal bli|2|
-!|tallene|50|plus|5|skal bli|10|
+!|the numbers|10|plus|1|is|101|
+!|the numbers|1|plus|1|is|2|
+!|the numbers|50|plus|5|is|10|
 }}}
 
 !3 Requirement 3
